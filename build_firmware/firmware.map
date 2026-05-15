@@ -1,0 +1,1049 @@
+Archive member included to satisfy reference by file (symbol)
+
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-exit.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o (exit)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-exit.o) (__stdio_exit_handler)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fwalk.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o) (_fwalk_sglue)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memset.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o (memset)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-init.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o (__libc_init_array)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o) (__retarget_lock_init_recursive)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-impure.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o) (_impure_data)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memcpy-stub.o)
+                              CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj (memcpy)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mallocr.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o) (_malloc_r)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mlock.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mallocr.o) (__malloc_lock)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o) (__sread)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fflush.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o) (_fflush_r)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lseekr.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o) (_lseek_r)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-readr.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o) (_read_r)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-sbrkr.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mallocr.o) (_sbrk_r)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-writer.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o) (_write_r)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-closer.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o) (_close_r)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-reent.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lseekr.o) (errno)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-freer.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fflush.o) (_free_r)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(close.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-closer.o) (_close)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(lseek.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lseekr.o) (_lseek)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(read.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-readr.o) (_read)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(sbrk.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-sbrkr.o) (_sbrk)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(write.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-writer.o) (_write)
+/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(_exit.o)
+                              /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-exit.o) (_exit)
+
+Discarded input sections
+
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crti.o
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crti.o
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crti.o
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .rodata.all_implied_fbits
+                0x00000000       0x24 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .init_array    0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .fini_array    0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .eh_frame      0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .tm_clone_table
+                0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .text.deregister_tm_clones
+                0x00000000       0x1c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .text.register_tm_clones
+                0x00000000       0x24 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .data.__dso_handle
+                0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .text.__do_global_dtors_aux
+                0x00000000       0x28 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .text.frame_dummy
+                0x00000000       0x24 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .bss.completed.1
+                0x00000000        0x1 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .bss.object.0  0x00000000       0x18 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+ .text          0x00000000       0x7c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o
+ .ARM.extab     0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o
+ .ARM.exidx     0x00000000       0x10 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o
+ .debug_line_str
+                0x00000000       0xdc /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o
+ .ARM.attributes
+                0x00000000       0x1c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o
+ .text          0x00000000       0x14 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/system_stm32f3xx.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/system_stm32f3xx.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/system_stm32f3xx.c.obj
+ .text.SystemCoreClockUpdate
+                0x00000000       0x5c CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/system_stm32f3xx.c.obj
+ .rodata.APBPrescTable
+                0x00000000        0x8 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/system_stm32f3xx.c.obj
+ .rodata.AHBPrescTable
+                0x00000000       0x10 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/system_stm32f3xx.c.obj
+ .data.SystemCoreClock
+                0x00000000        0x4 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/system_stm32f3xx.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_clock.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_clock.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_clock.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+ .text.board_outputs_assert_power_enable
+                0x00000000        0xc CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+ .text.board_outputs_release_power
+                0x00000000       0x10 CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+ .text.board_outputs_set_led0
+                0x00000000       0x14 CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+ .text.board_outputs_set_power_led
+                0x00000000       0x14 CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_uart.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_uart.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_uart.c.obj
+ .text.board_uart_read
+                0x00000000       0x24 CMakeFiles/bms_firmware.elf.dir/src/board/board_uart.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+ .text.board_spi_is_busy
+                0x00000000        0xc CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
+ .text.board_i2c_read_reg
+                0x00000000        0x4 CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
+ .text.board_i2c_write_reg
+                0x00000000        0x4 CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
+ .text.board_adc_read_raw
+                0x00000000        0x4 CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
+ .text.board_can_send
+                0x00000000        0x4 CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+ .text.ltc6812_run_open_wire
+                0x00000000        0x4 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+ .text.bms_faults_clear_latched
+                0x00000000       0x30 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+ .text.bms_state_notify_charger_present
+                0x00000000        0x2 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-exit.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-exit.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-exit.o)
+ .text.exit     0x00000000       0x24 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-exit.o)
+ .debug_frame   0x00000000       0x28 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-exit.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-exit.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text.std      0x00000000       0x6c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text.stdio_exit_handler
+                0x00000000       0x18 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text.cleanup_stdio
+                0x00000000       0x40 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text.__fp_lock
+                0x00000000       0x18 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text.__fp_unlock
+                0x00000000       0x18 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text.global_stdio_init.part.0
+                0x00000000       0x40 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text.__sfp_lock_acquire
+                0x00000000        0xc /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text.__sfp_lock_release
+                0x00000000        0xc /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text.__sfp    0x00000000       0xa4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text.__sinit  0x00000000       0x30 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text.__fp_lock_all
+                0x00000000       0x1c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text.__fp_unlock_all
+                0x00000000       0x1c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .data.__sglue  0x00000000        0xc /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .bss.__sf      0x00000000      0x138 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .bss.__stdio_exit_handler
+                0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .debug_frame   0x00000000      0x144 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-findfp.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fwalk.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fwalk.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fwalk.o)
+ .text._fwalk_sglue
+                0x00000000       0x3a /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fwalk.o)
+ .debug_frame   0x00000000       0x34 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fwalk.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fwalk.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memset.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memset.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memset.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-init.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-init.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-init.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .text.__retarget_lock_init
+                0x00000000        0x2 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .text.__retarget_lock_init_recursive
+                0x00000000        0x2 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .text.__retarget_lock_close
+                0x00000000        0x2 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .text.__retarget_lock_close_recursive
+                0x00000000        0x2 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .text.__retarget_lock_acquire
+                0x00000000        0x2 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .text.__retarget_lock_acquire_recursive
+                0x00000000        0x2 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .text.__retarget_lock_try_acquire
+                0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .text.__retarget_lock_try_acquire_recursive
+                0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .text.__retarget_lock_release
+                0x00000000        0x2 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .text.__retarget_lock_release_recursive
+                0x00000000        0x2 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .bss.__lock___arc4random_mutex
+                0x00000000        0x1 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .bss.__lock___dd_hash_mutex
+                0x00000000        0x1 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .bss.__lock___tz_mutex
+                0x00000000        0x1 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .bss.__lock___env_recursive_mutex
+                0x00000000        0x1 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .bss.__lock___malloc_recursive_mutex
+                0x00000000        0x1 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .bss.__lock___at_quick_exit_mutex
+                0x00000000        0x1 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .bss.__lock___atexit_recursive_mutex
+                0x00000000        0x1 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .bss.__lock___sfp_recursive_mutex
+                0x00000000        0x1 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .debug_frame   0x00000000       0xb0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lock.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-impure.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-impure.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-impure.o)
+ .data._impure_ptr
+                0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-impure.o)
+ .data._impure_data
+                0x00000000       0x4c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-impure.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-impure.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memcpy-stub.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memcpy-stub.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memcpy-stub.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mallocr.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mallocr.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mallocr.o)
+ .text.sbrk_aligned
+                0x00000000       0x44 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mallocr.o)
+ .text._malloc_r
+                0x00000000       0xf8 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mallocr.o)
+ .bss.__malloc_sbrk_start
+                0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mallocr.o)
+ .bss.__malloc_free_list
+                0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mallocr.o)
+ .debug_frame   0x00000000       0x50 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mallocr.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mallocr.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mlock.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mlock.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mlock.o)
+ .text.__malloc_lock
+                0x00000000        0xc /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mlock.o)
+ .text.__malloc_unlock
+                0x00000000        0xc /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mlock.o)
+ .debug_frame   0x00000000       0x30 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mlock.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-mlock.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o)
+ .text.__sread  0x00000000       0x22 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o)
+ .text.__seofread
+                0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o)
+ .text.__swrite
+                0x00000000       0x38 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o)
+ .text.__sseek  0x00000000       0x26 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o)
+ .text.__sclose
+                0x00000000        0x8 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o)
+ .debug_frame   0x00000000       0x88 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-stdio.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fflush.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fflush.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fflush.o)
+ .text.__sflush_r
+                0x00000000       0xf8 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fflush.o)
+ .text._fflush_r
+                0x00000000       0x50 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fflush.o)
+ .text.fflush   0x00000000       0x28 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fflush.o)
+ .debug_frame   0x00000000       0x5c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fflush.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-fflush.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lseekr.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lseekr.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lseekr.o)
+ .text._lseek_r
+                0x00000000       0x24 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lseekr.o)
+ .debug_frame   0x00000000       0x2c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lseekr.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-lseekr.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-readr.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-readr.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-readr.o)
+ .text._read_r  0x00000000       0x24 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-readr.o)
+ .debug_frame   0x00000000       0x2c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-readr.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-readr.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-sbrkr.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-sbrkr.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-sbrkr.o)
+ .text._sbrk_r  0x00000000       0x20 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-sbrkr.o)
+ .debug_frame   0x00000000       0x2c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-sbrkr.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-sbrkr.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-writer.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-writer.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-writer.o)
+ .text._write_r
+                0x00000000       0x24 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-writer.o)
+ .debug_frame   0x00000000       0x2c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-writer.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-writer.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-closer.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-closer.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-closer.o)
+ .text._close_r
+                0x00000000       0x20 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-closer.o)
+ .debug_frame   0x00000000       0x2c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-closer.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-closer.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-reent.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-reent.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-reent.o)
+ .text._reclaim_reent
+                0x00000000       0xbc /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-reent.o)
+ .bss.errno     0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-reent.o)
+ .debug_frame   0x00000000       0x38 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-reent.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-reent.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-freer.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-freer.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-freer.o)
+ .text._free_r  0x00000000       0x98 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-freer.o)
+ .debug_frame   0x00000000       0x38 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-freer.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-freer.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(close.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(close.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(close.o)
+ .text._close   0x00000000       0x10 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(close.o)
+ .gnu.warning._close
+                0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(close.o)
+ .debug_frame   0x00000000       0x20 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(close.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(close.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(lseek.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(lseek.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(lseek.o)
+ .text._lseek   0x00000000       0x10 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(lseek.o)
+ .gnu.warning._lseek
+                0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(lseek.o)
+ .debug_frame   0x00000000       0x20 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(lseek.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(lseek.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(read.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(read.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(read.o)
+ .text._read    0x00000000       0x10 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(read.o)
+ .gnu.warning._read
+                0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(read.o)
+ .debug_frame   0x00000000       0x20 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(read.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(read.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(sbrk.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(sbrk.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(sbrk.o)
+ .text._sbrk    0x00000000       0x1c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(sbrk.o)
+ .bss.heap_end.0
+                0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(sbrk.o)
+ .debug_frame   0x00000000       0x20 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(sbrk.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(sbrk.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(write.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(write.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(write.o)
+ .text._write   0x00000000       0x10 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(write.o)
+ .gnu.warning._write
+                0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(write.o)
+ .debug_frame   0x00000000       0x20 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(write.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(write.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(_exit.o)
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(_exit.o)
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(_exit.o)
+ .text._exit    0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(_exit.o)
+ .debug_frame   0x00000000       0x20 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(_exit.o)
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a(_exit.o)
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtend.o
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtend.o
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtend.o
+ .rodata.all_implied_fbits
+                0x00000000       0x24 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtend.o
+ .eh_frame      0x00000000        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtend.o
+ .tm_clone_table
+                0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtend.o
+ .ARM.attributes
+                0x00000000       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtend.o
+ .text          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
+ .data          0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
+ .bss           0x00000000        0x0 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x08008000         0x0002f000         xr
+RAM              0x20000000         0x0000a000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crti.o
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtbegin.o
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/crt0.o
+LOAD CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/system_stm32f3xx.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/board/board_clock.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/board/board_uart.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
+START GROUP
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/libgcc.a
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a
+END GROUP
+START GROUP
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/libgcc.a
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a
+END GROUP
+START GROUP
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/libgcc.a
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libnosys.a
+END GROUP
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtend.o
+LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
+
+.text           0x08008000     0x2128
+ *(.isr_vector)
+ .isr_vector    0x08008000      0x188 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+                0x08008000                g_pfnVectors
+ *(.text)
+ *(.text.*)
+ .text.Reset_Handler
+                0x08008188       0x50 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+                0x08008188                Reset_Handler
+ .text.Default_Handler
+                0x080081d8        0x2 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+                0x080081d8                TIM1_BRK_TIM15_IRQHandler
+                0x080081d8                TIM8_TRG_COM_IRQHandler
+                0x080081d8                TIM8_CC_IRQHandler
+                0x080081d8                DebugMon_Handler
+                0x080081d8                TIM1_CC_IRQHandler
+                0x080081d8                HardFault_Handler
+                0x080081d8                USB_HP_IRQHandler
+                0x080081d8                PVD_IRQHandler
+                0x080081d8                TAMP_STAMP_IRQHandler
+                0x080081d8                PendSV_Handler
+                0x080081d8                NMI_Handler
+                0x080081d8                EXTI3_IRQHandler
+                0x080081d8                USB_HP_CAN_TX_IRQHandler
+                0x080081d8                EXTI0_IRQHandler
+                0x080081d8                I2C2_EV_IRQHandler
+                0x080081d8                FPU_IRQHandler
+                0x080081d8                TIM1_UP_TIM16_IRQHandler
+                0x080081d8                UsageFault_Handler
+                0x080081d8                ADC1_2_IRQHandler
+                0x080081d8                SPI1_IRQHandler
+                0x080081d8                CAN_SCE_IRQHandler
+                0x080081d8                TIM6_DAC_IRQHandler
+                0x080081d8                TIM8_UP_IRQHandler
+                0x080081d8                DMA2_Channel2_IRQHandler
+                0x080081d8                DMA1_Channel4_IRQHandler
+                0x080081d8                USART3_IRQHandler
+                0x080081d8                DMA1_Channel7_IRQHandler
+                0x080081d8                UART5_IRQHandler
+                0x080081d8                ADC3_IRQHandler
+                0x080081d8                TIM4_IRQHandler
+                0x080081d8                CAN_RX1_IRQHandler
+                0x080081d8                DMA2_Channel1_IRQHandler
+                0x080081d8                I2C1_EV_IRQHandler
+                0x080081d8                DMA1_Channel6_IRQHandler
+                0x080081d8                UART4_IRQHandler
+                0x080081d8                DMA2_Channel4_IRQHandler
+                0x080081d8                TIM3_IRQHandler
+                0x080081d8                RCC_IRQHandler
+                0x080081d8                DMA1_Channel1_IRQHandler
+                0x080081d8                Default_Handler
+                0x080081d8                USBWakeUp_RMP_IRQHandler
+                0x080081d8                EXTI15_10_IRQHandler
+                0x080081d8                TIM7_IRQHandler
+                0x080081d8                EXTI9_5_IRQHandler
+                0x080081d8                RTC_WKUP_IRQHandler
+                0x080081d8                SPI2_IRQHandler
+                0x080081d8                USB_LP_CAN_RX0_IRQHandler
+                0x080081d8                MemManage_Handler
+                0x080081d8                SVC_Handler
+                0x080081d8                DMA2_Channel5_IRQHandler
+                0x080081d8                DMA1_Channel5_IRQHandler
+                0x080081d8                USB_LP_IRQHandler
+                0x080081d8                EXTI4_IRQHandler
+                0x080081d8                TIM1_TRG_COM_TIM17_IRQHandler
+                0x080081d8                DMA1_Channel3_IRQHandler
+                0x080081d8                ADC4_IRQHandler
+                0x080081d8                WWDG_IRQHandler
+                0x080081d8                TIM2_IRQHandler
+                0x080081d8                COMP7_IRQHandler
+                0x080081d8                COMP1_2_3_IRQHandler
+                0x080081d8                EXTI1_IRQHandler
+                0x080081d8                USART2_IRQHandler
+                0x080081d8                COMP4_5_6_IRQHandler
+                0x080081d8                I2C2_ER_IRQHandler
+                0x080081d8                DMA1_Channel2_IRQHandler
+                0x080081d8                TIM8_BRK_IRQHandler
+                0x080081d8                FLASH_IRQHandler
+                0x080081d8                BusFault_Handler
+                0x080081d8                USART1_IRQHandler
+                0x080081d8                SPI3_IRQHandler
+                0x080081d8                I2C1_ER_IRQHandler
+                0x080081d8                USBWakeUp_IRQHandler
+                0x080081d8                DMA2_Channel3_IRQHandler
+                0x080081d8                EXTI2_TSC_IRQHandler
+                0x080081d8                RTC_Alarm_IRQHandler
+ .text.SystemInit
+                0x080081da        0x2 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/system_stm32f3xx.c.obj
+                0x080081da                SystemInit
+ .text.SysTick_Handler
+                0x080081dc       0x10 CMakeFiles/bms_firmware.elf.dir/src/board/board_clock.c.obj
+                0x080081dc                SysTick_Handler
+ .text.board_clock_init
+                0x080081ec       0x98 CMakeFiles/bms_firmware.elf.dir/src/board/board_clock.c.obj
+                0x080081ec                board_clock_init
+ .text.board_clock_get_ms
+                0x08008284        0xc CMakeFiles/bms_firmware.elf.dir/src/board/board_clock.c.obj
+                0x08008284                board_clock_get_ms
+ .text.board_clock_delay_ms
+                0x08008290       0x14 CMakeFiles/bms_firmware.elf.dir/src/board/board_clock.c.obj
+                0x08008290                board_clock_delay_ms
+ .text.board_outputs_init_safe
+                0x080082a4       0x3c CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+                0x080082a4                board_outputs_init_safe
+ .text.board_outputs_set_master_ok
+                0x080082e0       0x2c CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+                0x080082e0                board_outputs_set_master_ok
+ .text.board_outputs_set_discharge_permission
+                0x0800830c       0x2c CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+                0x0800830c                board_outputs_set_discharge_permission
+ .text.board_outputs_set_charge_permission
+                0x08008338       0x28 CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+                0x08008338                board_outputs_set_charge_permission
+ .text.board_outputs_set_charger_safety
+                0x08008360       0x28 CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+                0x08008360                board_outputs_set_charger_safety
+ .text.board_outputs_disable_all
+                0x08008388       0x2c CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+                0x08008388                board_outputs_disable_all
+ .text.board_outputs_get_state
+                0x080083b4        0xc CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+                0x080083b4                board_outputs_get_state
+ .text.board_uart_init
+                0x080083c0       0x38 CMakeFiles/bms_firmware.elf.dir/src/board/board_uart.c.obj
+                0x080083c0                board_uart_init
+ .text.board_uart_write
+                0x080083f8       0x24 CMakeFiles/bms_firmware.elf.dir/src/board/board_uart.c.obj
+                0x080083f8                board_uart_write
+ .text.board_uart_rx_ready
+                0x0800841c       0x10 CMakeFiles/bms_firmware.elf.dir/src/board/board_uart.c.obj
+                0x0800841c                board_uart_rx_ready
+ .text.board_uart_read_byte
+                0x0800842c        0xc CMakeFiles/bms_firmware.elf.dir/src/board/board_uart.c.obj
+                0x0800842c                board_uart_read_byte
+ .text.board_spi_init
+                0x08008438       0x84 CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+                0x08008438                board_spi_init
+ .text.board_spi_cs_assert
+                0x080084bc       0x24 CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+                0x080084bc                board_spi_cs_assert
+ .text.board_spi_cs_deassert
+                0x080084e0       0x24 CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+                0x080084e0                board_spi_cs_deassert
+ .text.board_spi_transfer
+                0x08008504       0x38 CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+                0x08008504                board_spi_transfer
+ .text.board_spi_write
+                0x0800853c        0x8 CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+                0x0800853c                board_spi_write
+ .text.board_i2c_init
+                0x08008544       0x2e CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
+                0x08008544                board_i2c_init
+ .text.board_adc_init
+                0x08008572        0xe CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
+                0x08008572                board_adc_init
+ .text.board_can_init
+                0x08008580       0x26 CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
+                0x08008580                board_can_init
+ *fill*         0x080085a6        0x2 
+ .text.flash_unlock
+                0x080085a8       0x28 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+ .text.flash_lock
+                0x080085d0       0x10 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+ .text.flash_wait_idle
+                0x080085e0       0x20 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+ .text.board_flash_erase_config_slot
+                0x08008600       0x78 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+                0x08008600                board_flash_erase_config_slot
+ .text.board_flash_write
+                0x08008678       0x94 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+                0x08008678                board_flash_write
+ .text.board_flash_read
+                0x0800870c        0xa CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+                0x0800870c                board_flash_read
+ *fill*         0x08008716        0x2 
+ .text.isospi_pec15
+                0x08008718       0x64 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+                0x08008718                isospi_pec15
+ .text.isospi_wakeup
+                0x0800877c       0x28 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+                0x0800877c                isospi_wakeup
+ .text.isospi_cmd_broadcast
+                0x080087a4       0x3a CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+                0x080087a4                isospi_cmd_broadcast
+ .text.isospi_write_all
+                0x080087de       0x6a CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+                0x080087de                isospi_write_all
+ .text.isospi_read_all
+                0x08008848       0xa4 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+                0x08008848                isospi_read_all
+ .text.poll_adc_done.isra.0
+                0x080088ec       0x24 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+ .text.ltc6812_init_chain
+                0x08008910       0x56 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008910                ltc6812_init_chain
+ *fill*         0x08008966        0x2 
+ .text.ltc6812_read_cells
+                0x08008968       0xbc CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008968                ltc6812_read_cells
+ .text.ltc6812_read_aux
+                0x08008a24       0xcc CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008a24                ltc6812_read_aux
+ .text.ltc6812_temp_chain_set_sensor_bias
+                0x08008af0       0x40 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008af0                ltc6812_temp_chain_set_sensor_bias
+ .text.ltc6812_temp_chain_clear_s_outputs
+                0x08008b30       0x2a CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008b30                ltc6812_temp_chain_clear_s_outputs
+ .text.ltc6812_cell_chain_set_balance
+                0x08008b5a       0x60 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008b5a                ltc6812_cell_chain_set_balance
+ .text.ltc6812_cell_chain_clear_balance
+                0x08008bba       0x16 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008bba                ltc6812_cell_chain_clear_balance
+ .text.bms_config_compute_crc
+                0x08008bd0       0x48 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x08008bd0                bms_config_compute_crc
+ .text.bms_config_validate
+                0x08008c18      0x29c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x08008c18                bms_config_validate
+ .text.bms_config_get
+                0x08008eb4        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x08008eb4                bms_config_get
+ .text.bms_config_apply_ram
+                0x08008ebc       0x24 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x08008ebc                bms_config_apply_ram
+ .text.bms_config_store
+                0x08008ee0       0xe0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x08008ee0                bms_config_store
+ .text.bms_config_load_defaults
+                0x08008fc0       0x1c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x08008fc0                bms_config_load_defaults
+ .text.bms_config_load
+                0x08008fdc       0x78 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x08008fdc                bms_config_load
+ .text.bms_measurements_run_cell_cycle
+                0x08009054       0x74 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x08009054                bms_measurements_run_cell_cycle
+ .text.bms_measurements_run_temp_cycle
+                0x080090c8       0xb0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x080090c8                bms_measurements_run_temp_cycle
+ .text.bms_measurements_run_pack_cycle
+                0x08009178       0x24 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x08009178                bms_measurements_run_pack_cycle
+ .text.bms_measurements_get_cells
+                0x0800919c        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x0800919c                bms_measurements_get_cells
+ .text.bms_measurements_get_temps
+                0x080091a4        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x080091a4                bms_measurements_get_temps
+ .text.bms_measurements_get_pack
+                0x080091ac        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x080091ac                bms_measurements_get_pack
+ .text.set_active
+                0x080091b4       0x50 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+ .text.bms_faults_evaluate
+                0x08009204      0x23e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x08009204                bms_faults_evaluate
+ *fill*         0x08009442        0x2 
+ .text.bms_faults_get_active
+                0x08009444        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x08009444                bms_faults_get_active
+ .text.bms_faults_get_latched
+                0x08009450        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x08009450                bms_faults_get_latched
+ .text.bms_faults_set
+                0x0800945c       0x40 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x0800945c                bms_faults_set
+ .text.bms_outputs_apply
+                0x0800949c       0x6c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+                0x0800949c                bms_outputs_apply
+ .text.bms_outputs_deassert_all
+                0x08009508        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+                0x08009508                bms_outputs_deassert_all
+ .text.bms_outputs_get_state
+                0x0800950c        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+                0x0800950c                bms_outputs_get_state
+ .text.bms_state_init
+                0x08009510       0x14 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+                0x08009510                bms_state_init
+ .text.bms_state_tick
+                0x08009524       0x5c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+                0x08009524                bms_state_tick
+ .text.bms_state_get
+                0x08009580        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+                0x08009580                bms_state_get
+ .text.bms_state_request_bootloader_entry
+                0x0800958c        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+                0x0800958c                bms_state_request_bootloader_entry
+ .text.bms_balance_disable_all
+                0x08009598        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+                0x08009598                bms_balance_disable_all
+ .text.bms_balance_tick
+                0x080095a0        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+                0x080095a0                bms_balance_tick
+ .text.bms_protocol_crc16
+                0x080095a4       0x2c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+                0x080095a4                bms_protocol_crc16
+ .text.send_response
+                0x080095d0       0x6c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ .text.send_error
+                0x0800963c       0x16 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ *fill*         0x08009652        0x2 
+ .text.bms_protocol_init
+                0x08009654       0x10 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+                0x08009654                bms_protocol_init
+ .text.bms_protocol_tick
+                0x08009664      0x574 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+                0x08009664                bms_protocol_tick
+ .text.bms_main_loop_init
+                0x08009bd8       0x6c CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+                0x08009bd8                bms_main_loop_init
+ .text.bms_main_loop_run
+                0x08009c44       0xfc CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+                0x08009c44                bms_main_loop_run
+ .text.startup.main
+                0x08009d40       0x38 CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
+                0x08009d40                main
+ .text.memset   0x08009d78       0x10 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memset.o)
+                0x08009d78                memset
+ .text.__libc_init_array
+                0x08009d88       0x48 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-init.o)
+                0x08009d88                __libc_init_array
+ .text.memcpy   0x08009dd0       0x1c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memcpy-stub.o)
+                0x08009dd0                memcpy
+ *(.rodata)
+ .rodata        0x08009dec      0x203 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ *(.rodata.*)
+ *fill*         0x08009fef        0x1 
+ .rodata.aux_cmds.0
+                0x08009ff0        0x8 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+ .rodata.cv_cmds.1
+                0x08009ff8        0xa CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+ .rodata.k_defaults
+                0x0800a002       0xe2 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+ .rodata.k_boot_banner
+                0x0800a0e4       0x29 CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
+ *(.init)
+ *fill*         0x0800a10d        0x3 
+ .init          0x0800a110        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crti.o
+                0x0800a110                _init
+ .init          0x0800a114        0x8 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
+ *(.fini)
+ .fini          0x0800a11c        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crti.o
+                0x0800a11c                _fini
+ .fini          0x0800a120        0x8 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
+                0x0800a128                        . = ALIGN (0x4)
+                0x0800a128                        _etext = .
+
+.glue_7         0x0800a128        0x0
+ .glue_7        0x0800a128        0x0 linker stubs
+
+.glue_7t        0x0800a128        0x0
+ .glue_7t       0x0800a128        0x0 linker stubs
+
+.vfp11_veneer   0x0800a128        0x0
+ .vfp11_veneer  0x0800a128        0x0 linker stubs
+
+.v4_bx          0x0800a128        0x0
+ .v4_bx         0x0800a128        0x0 linker stubs
+
+.iplt           0x0800a128        0x0
+ .iplt          0x0800a128        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+
+.rel.dyn        0x0800a128        0x0
+ .rel.iplt      0x0800a128        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+
+.ARM.exidx      0x0800a128        0x0
+                0x0800a128                        __exidx_start = .
+ *(.ARM.exidx*)
+                0x0800a128                        __exidx_end = .
+                0x0800a128                        _sidata = LOADADDR (.data)
+
+.data           0x20000000        0x0 load address 0x0800a128
+                0x20000000                        . = ALIGN (0x4)
+                0x20000000                        _sdata = .
+ *(.data)
+ *(.data.*)
+                0x20000000                        . = ALIGN (0x4)
+                0x20000000                        _edata = .
+
+.igot.plt       0x20000000        0x0 load address 0x0800a128
+ .igot.plt      0x20000000        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+
+.bss            0x20000000      0x914 load address 0x0800a128
+                0x20000000                        . = ALIGN (0x4)
+                0x20000000                        _sbss = .
+ *(.bss)
+ *(.bss.*)
+ .bss.s_tick_ms
+                0x20000000        0x4 CMakeFiles/bms_firmware.elf.dir/src/board/board_clock.c.obj
+ .bss.s_state   0x20000004        0x1 CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+ .bss.s_busy    0x20000005        0x1 CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+ .bss.s_pec_table_ready
+                0x20000006        0x1 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+ *fill*         0x20000007        0x1 
+ .bss.s_pec_table
+                0x20000008      0x200 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+ .bss.s_active_config
+                0x20000208       0xe2 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+ *fill*         0x200002ea        0x2 
+ .bss.s_pack    0x200002ec       0x14 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+ .bss.s_temps   0x20000300       0xec CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+ .bss.s_cells   0x200003ec       0xec CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+ .bss.s_latched
+                0x200004d8        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+ .bss.s_active  0x200004e0        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+ .bss.s_bl_entry_requested
+                0x200004e8        0x1 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+ .bss.s_state   0x200004e9        0x1 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+ .bss.s_tx_buf  0x200004ea      0x20a CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ .bss.s_rx      0x200006f4      0x214 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ .bss.s_last_pack_ms
+                0x20000908        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+ .bss.s_last_temp_ms
+                0x2000090c        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+ .bss.s_last_cell_ms
+                0x20000910        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+ *(COMMON)
+                0x20000914                        . = ALIGN (0x4)
+                0x20000914                        _ebss = .
+
+.stack          0x20000914     0x1004 load address 0x0800a128
+                0x20000918                        . = ALIGN (0x8)
+ *fill*         0x20000914        0x4 
+                0x20000918                        _stack_end = .
+                0x20001918                        . = (. + 0x1000)
+ *fill*         0x20000918     0x1000 
+                0x20001918                        . = ALIGN (0x8)
+                0x20001918                        _stack_start = .
+                0x20001918                        _estack = _stack_start
+OUTPUT(bms_firmware.elf elf32-littlearm)
+LOAD linker stubs
+
+.ARM.attributes
+                0x00000000       0x2a
+ .ARM.attributes
+                0x00000000       0x1e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crti.o
+ .ARM.attributes
+                0x0000001e       0x21 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+ .ARM.attributes
+                0x0000003f       0x2e CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/system_stm32f3xx.c.obj
+ .ARM.attributes
+                0x0000006d       0x2e CMakeFiles/bms_firmware.elf.dir/src/board/board_clock.c.obj
+ .ARM.attributes
+                0x0000009b       0x2e CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+ .ARM.attributes
+                0x000000c9       0x2e CMakeFiles/bms_firmware.elf.dir/src/board/board_uart.c.obj
+ .ARM.attributes
+                0x000000f7       0x2e CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+ .ARM.attributes
+                0x00000125       0x2e CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
+ .ARM.attributes
+                0x00000153       0x2e CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
+ .ARM.attributes
+                0x00000181       0x2e CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
+ .ARM.attributes
+                0x000001af       0x2e CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+ .ARM.attributes
+                0x000001dd       0x2e CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+ .ARM.attributes
+                0x0000020b       0x2e CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+ .ARM.attributes
+                0x00000239       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+ .ARM.attributes
+                0x00000267       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+ .ARM.attributes
+                0x00000295       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+ .ARM.attributes
+                0x000002c3       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+ .ARM.attributes
+                0x000002f1       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+ .ARM.attributes
+                0x0000031f       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+ .ARM.attributes
+                0x0000034d       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ .ARM.attributes
+                0x0000037b       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+ .ARM.attributes
+                0x000003a9       0x2e CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
+ .ARM.attributes
+                0x000003d7       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memset.o)
+ .ARM.attributes
+                0x00000405       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-init.o)
+ .ARM.attributes
+                0x00000433       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memcpy-stub.o)
+ .ARM.attributes
+                0x00000461       0x1e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
+
+.comment        0x00000000       0x45
+ .comment       0x00000000       0x45 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/system_stm32f3xx.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_clock.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_outputs.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_uart.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_spi.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
+                                 0x46 (size before relaxing)
+
+.debug_frame    0x00000000       0x74
+ .debug_frame   0x00000000       0x20 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memset.o)
+ .debug_frame   0x00000020       0x2c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-init.o)
+ .debug_frame   0x0000004c       0x28 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memcpy-stub.o)

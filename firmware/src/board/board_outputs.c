@@ -1,0 +1,122 @@
+/* board_outputs.c — permission output implementation.
+ *
+ * See board_outputs.h for the output polarity contract.
+ * This file is the ONLY place in the firmware that drives permission GPIOs.
+ */
+#include "board_outputs.h"
+#include "board_pins.h"
+#include "bms_hal.h"
+#include <stdint.h>
+
+/* ── GPIO helpers ─────────────────────────────────────────────────────────── */
+
+static inline void gpio_set_pin(GPIO_TypeDef *port, uint32_t pin) {
+    port->BSRR = (uint32_t)(1u << pin);
+}
+
+static inline void gpio_clear_pin(GPIO_TypeDef *port, uint32_t pin) {
+    port->BSRR = (uint32_t)(1u << (pin + 16u));
+}
+
+/* ── Output polarity encoding ─────────────────────────────────────────────── */
+/* For PB10/PB11: logical true (permission active) → MCU HIGH.
+ * For PB0/PB2: polarity TBD (OQ-POL); currently logical true → MCU HIGH.
+ * For PB5: logical true (power latched) → MCU HIGH. */
+static inline void perm_output_set(GPIO_TypeDef *port, uint32_t pin, bool active) {
+    if (active) {
+        gpio_set_pin(port, pin);
+    } else {
+        gpio_clear_pin(port, pin);
+    }
+}
+
+/* ── Shadow state (logical permission state, not MCU pin level) ──────────── */
+static BmsOutputsBitmask s_state;
+
+/* ── API ──────────────────────────────────────────────────────────────────── */
+
+void board_outputs_init_safe(void) {
+    /* All permission outputs start inactive (MCU LOW).
+     * GPIO clock must be enabled by board_clock_init() before this is called. */
+    gpio_clear_pin(OUTPUT_PORT_B, PIN_MASTER_OK);
+    gpio_clear_pin(OUTPUT_PORT_B, PIN_DISCHARGE_ENABLE);
+    gpio_clear_pin(OUTPUT_PORT_B, PIN_CHARGE_ENABLE);
+    gpio_clear_pin(OUTPUT_PORT_B, PIN_CHARGER_SAFETY);
+    gpio_clear_pin(OUTPUT_PORT_B, PIN_LED0);
+    gpio_clear_pin(OUTPUT_PORT_B, PIN_POWER_LED);
+    /* PowerEnable is asserted here to keep the board alive after init.
+     * It is only deasserted as the last step in the shutdown sequence. */
+    gpio_set_pin(OUTPUT_PORT_B, PIN_POWER_ENABLE);
+
+    s_state = 0;
+}
+
+void board_outputs_set_master_ok(bool allowed) {
+    perm_output_set(OUTPUT_PORT_B, PIN_MASTER_OK, allowed);
+    if (allowed) {
+        s_state |= OUTPUTS_BIT_MASTER_OK;
+    } else {
+        s_state &= (BmsOutputsBitmask)(~OUTPUTS_BIT_MASTER_OK);
+    }
+}
+
+void board_outputs_set_discharge_permission(bool allowed) {
+    perm_output_set(OUTPUT_PORT_B, PIN_DISCHARGE_ENABLE, allowed);
+    if (allowed) {
+        s_state |= OUTPUTS_BIT_DISCHARGE;
+    } else {
+        s_state &= (BmsOutputsBitmask)(~OUTPUTS_BIT_DISCHARGE);
+    }
+}
+
+void board_outputs_set_charge_permission(bool allowed) {
+    /* OQ-POL: confirm active polarity of Charge_enabled before hardware test */
+    perm_output_set(OUTPUT_PORT_B, PIN_CHARGE_ENABLE, allowed);
+    if (allowed) {
+        s_state |= OUTPUTS_BIT_CHARGE;
+    } else {
+        s_state &= (BmsOutputsBitmask)(~OUTPUTS_BIT_CHARGE);
+    }
+}
+
+void board_outputs_set_charger_safety(bool allowed) {
+    /* OQ-POL: confirm active polarity of Charger_Safety before hardware test */
+    perm_output_set(OUTPUT_PORT_B, PIN_CHARGER_SAFETY, allowed);
+    if (allowed) {
+        s_state |= OUTPUTS_BIT_CHARGER_SAFETY;
+    } else {
+        s_state &= (BmsOutputsBitmask)(~OUTPUTS_BIT_CHARGER_SAFETY);
+    }
+}
+
+void board_outputs_assert_power_enable(void) {
+    gpio_set_pin(OUTPUT_PORT_B, PIN_POWER_ENABLE);
+}
+
+void board_outputs_release_power(void) {
+    /* Releasing power latch causes board to lose power.
+     * All permissions must already be deasserted before calling this. */
+    gpio_clear_pin(OUTPUT_PORT_B, PIN_POWER_ENABLE);
+}
+
+void board_outputs_set_led0(bool on) {
+    if (on) { gpio_set_pin(OUTPUT_PORT_B, PIN_LED0); }
+    else     { gpio_clear_pin(OUTPUT_PORT_B, PIN_LED0); }
+}
+
+void board_outputs_set_power_led(bool on) {
+    if (on) { gpio_set_pin(OUTPUT_PORT_B, PIN_POWER_LED); }
+    else    { gpio_clear_pin(OUTPUT_PORT_B, PIN_POWER_LED); }
+}
+
+void board_outputs_disable_all(void) {
+    gpio_clear_pin(OUTPUT_PORT_B, PIN_MASTER_OK);
+    gpio_clear_pin(OUTPUT_PORT_B, PIN_DISCHARGE_ENABLE);
+    gpio_clear_pin(OUTPUT_PORT_B, PIN_CHARGE_ENABLE);
+    gpio_clear_pin(OUTPUT_PORT_B, PIN_CHARGER_SAFETY);
+    s_state = 0;
+}
+
+BmsOutputsBitmask board_outputs_get_state(void) {
+    return s_state;
+}

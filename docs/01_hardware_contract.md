@@ -127,35 +127,39 @@ STM32 SPI1 ──► LTC6820 (CS_TEMP=PB12)
 | Parameter | Value |
 |---|---|
 | Devices | 5 |
-| Channels per device | 15 C-inputs (used as AUX GPIO voltage channels) |
+| Channels per device | 15 C-input measurements |
 | Total channels | 75 |
-| Input signals | Enepaq temperature sensor voltage |
-| S outputs | Sensor bias enable (temporary, turn off after measurement) |
-| DCC outputs | **MUST REMAIN ZERO AT ALL TIMES** |
-| Conversion command | ADAX (GPIO/AUX conversion), not ADCV |
-| Read command | RDAUX register group A/B/C/D |
+| Input signals | Enepaq temperature sensor voltage measured through LTC6812 C-input pairs |
+| S outputs | Sensor-bias enable controls only; enabled temporarily during measurement |
+| CELL balancing on TEMP chain | Forbidden |
+| DCC/S-output use on TEMP chain | Allowed only through a dedicated TEMP sensor-bias API |
+| Conversion command | ADCV, because the sensors are measured on C-inputs |
+| Read command | RDCVA / RDCVB / RDCVC / RDCVD / RDCVE |
 
-The TEMP chain LTC6812 C-inputs are wired to the Enepaq sensor voltage divider output, not to battery cells. Writing any configuration that sets DCC bits on TEMP-chain devices is a firmware error. This constraint must be enforced at the driver layer — a separate `chain_id` parameter identifies CELL vs TEMP at call time.
+The TEMP-chain LTC6812 devices are used as floating multi-channel voltage ADCs for Enepaq temperature sensor voltages. The measured channels are the LTC6812 C-input measurements, not GPIO/AUX measurements.
+
+The TEMP-chain S outputs are reused only as temporary sensor-bias enables. They must never be exposed through the CELL-balancing API. Any generic balancing/DCC write to the TEMP chain is a firmware error.
 
 ---
 
 ## 8. Enepaq Temperature Sensor Measurement Model
 
-The Enepaq/Sony-Murata sensor behaves as a temperature-variable impedance (NTC-like). The TEMP-chain LTC6812 provides a bias current through ~680 Ω and reads the resulting voltage on the C-input.
+The Enepaq/Sony-Murata temperature sensor behaves as a temperature-variable voltage shunt/reference. The TEMP-chain LTC6812 measures the resulting sensor voltage through its C-input measurement path.
 
-**Measurement sequence:**
-1. Assert TEMP chain CS
-2. Write TEMP CFGRA to set required S-output bits (sensor bias enables)
-3. Issue WRCFG / STSCTRL to activate S outputs
-4. Wait `TEMP_SETTLE_TIME_MS` (configurable; default 5 ms; OPEN QUESTION: validate with Enepaq datasheet figure)
-5. Issue ADAX (all GPIO channels, appropriate MD)
-6. Poll PLADC or wait worst-case conversion time
-7. Issue RDAUX A/B/C/D to read all voltage channels
-8. Write TEMP CFGRA to clear all S-output bits; re-issue WRCFG/STSCTRL
-9. Convert each voltage to temperature using Enepaq V-T table (piecewise linear interpolation)
-10. Validate: voltage must be within sensor's operating range (OPEN QUESTION: Enepaq min/max Vsensor — read from datasheet)
+Measurement sequence:
 
-**S outputs must be cleared on success AND on failure/error.**
+1. Select TEMP chain.
+2. Write TEMP-chain configuration to enable the required S-output sensor-bias switches.
+3. Wait `TEMP_SETTLE_TIME_MS`.
+4. Issue `ADCV` on the TEMP chain.
+5. Wait for conversion completion or poll as supported.
+6. Read `RDCVA` through `RDCVE`.
+7. Clear all TEMP-chain S-output sensor-bias enables.
+8. Convert each measured voltage to temperature using the Enepaq voltage-temperature table.
+9. Mark any out-of-range channel invalid.
+10. Require all configured/required TEMP channels to be fresh and valid before declaring temperature coverage valid.
+
+S outputs must be cleared on success and on every failure/error path.
 
 > **OPEN QUESTION:** Enepaq/Sony-Murata datasheet V-T table — confirm lookup table breakpoints (voltage at 0°C, 25°C, 45°C, 60°C, 80°C at minimum). Confirm bias current calculation with 680 Ω and LTC6812 GPIO drive.
 > **OPEN QUESTION:** Maximum number of sensors that can be biased simultaneously (thermal/power budget of 680 Ω resistors).
