@@ -1,0 +1,245 @@
+# BMS Firmware Package Format
+# Machine-readable; consumed by package builder, bootloader validator, and desktop tool.
+# Doc ref: docs/06_flash_and_bootloader.md
+
+meta:
+  pkg_format_version: 1
+  header_size_bytes: 64
+  endian: little
+  doc_ref: docs/06_flash_and_bootloader.md
+
+file_layout:
+  - region: header
+    offset: 0
+    size: 64
+    description: "Fixed-size package header"
+  - region: payload
+    offset: 64
+    size: variable
+    description: "Raw application binary image"
+    notes: "Size defined by header.app_size"
+
+header:
+  total_bytes: 64
+  fields:
+
+    - name: pkg_magic
+      offset: 0
+      size: 4
+      type: uint32
+      endian: little
+      value: 0xBF00BF00
+      validation: "== 0xBF00BF00"
+      notes: "First check; reject immediately on mismatch"
+
+    - name: pkg_version
+      offset: 4
+      size: 2
+      type: uint16
+      endian: little
+      current_value: 1
+      validation: "<= BOOTLOADER_MAX_SUPPORTED_PKG_VERSION"
+      notes: "Package format version; not firmware version"
+
+    - name: hw_profile_id
+      offset: 6
+      size: 2
+      type: uint16
+      endian: little
+      validation: "== HW_PROFILE_ID (firmware compile-time constant)"
+      tool_behavior: "Compare against GET_CAPABILITIES.hw_profile_id; refuse if mismatch"
+
+    - name: target_mcu_id
+      offset: 8
+      size: 4
+      type: uint32
+      endian: little
+      validation: "== DBGMCU_IDCODE (read from target; OPEN_QUESTION: confirm value for STM32F303 variant)"
+      notes: >
+        STM32F303 DBGMCU_IDCODE at 0xE0042000.
+        Lower 12 bits = device ID (0x422 for STM32F303xB/C, 0x446 for STM32F303xD/E — OPEN_QUESTION: confirm).
+        Bootloader reads at runtime and compares.
+
+    - name: image_type
+      offset: 12
+      size: 1
+      type: uint8
+      values:
+        0x01: application
+        0x02: bootloader_update
+      current_supported: [0x01]
+      validation: "== 0x01 in v1 (application images only)"
+
+    - name: reserved_type
+      offset: 13
+      size: 3
+      type: uint8[3]
+      value: [0x00, 0x00, 0x00]
+      validation: "all zeros"
+
+    - name: app_start_addr
+      offset: 16
+      size: 4
+      type: uint32
+      endian: little
+      value: 0x08008000
+      validation: "== APP_START_ADDR (0x08008000, PROVISIONAL)"
+      notes: "Bootloader verifies this matches its compiled APP_START_ADDR"
+
+    - name: app_size
+      offset: 20
+      size: 4
+      type: uint32
+      endian: little
+      units: bytes
+      validation: "> 0 AND <= APP_REGION_SIZE AND divisible by 4 recommended"
+      notes: "Exact byte count of payload section"
+
+    - name: app_crc32
+      offset: 24
+      size: 4
+      type: uint32
+      endian: little
+      crc_algorithm: CRC-32/ISO-HDLC
+      crc_coverage: "payload bytes [0..app_size-1]"
+      notes: "Verified by bootloader after all chunks received"
+
+    - name: fw_version
+      offset: 28
+      size: 3
+      type: uint8[3]
+      description: "[major, minor, patch] of firmware in this package"
+      tool_behavior: "Display to user on Firmware Flash page before flashing"
+
+    - name: reserved_fw
+      offset: 31
+      size: 1
+      type: uint8
+      value: 0x00
+      validation: "== 0"
+
+    - name: min_bootloader_version
+      offset: 32
+      size: 3
+      type: uint8[3]
+      description: "Minimum bootloader version required to install this package"
+      validation: >
+        Bootloader must compare its own version against this.
+        If bootloader_version < min_bootloader_version: reject with ERR_PACKAGE_INVALID.
+      notes: "v1: set to [1,0,0]; future packages may require newer bootloader features"
+
+    - name: reserved_bl
+      offset: 35
+      size: 1
+      type: uint8
+      value: 0x00
+
+    - name: required_config_schema
+      offset: 36
+      size: 2
+      type: uint16
+      endian: little
+      description: "Config schema version this firmware expects"
+      validation: >
+        Bootloader does not reject on mismatch (warning only in v1).
+        Tool warns user if required_config_schema != device config_schema_version.
+        After update, if schema changed, user must re-validate and store config.
+
+    - name: reserved_schema
+      offset: 38
+      size: 2
+      type: uint16
+      value: 0x0000
+      validation: "== 0"
+
+    - name: pkg_header_crc32
+      offset: 40
+      size: 4
+      type: uint32
+      endian: little
+      crc_algorithm: CRC-32/ISO-HDLC
+      crc_coverage: "header bytes [0..39] (before this field)"
+      notes: "First integrity check after magic. Fail = reject without reading payload."
+
+    - name: reserved_end
+      offset: 44
+      size: 20
+      type: uint8[20]
+      value: all_zeros
+      validation: "all zeros"
+
+# ─── CRC / Hash Strategy ──────────────────────────────────────────────────────
+
+crc_strategy:
+  algorithm: CRC-32/ISO-HDLC
+  polynomial: 0xEDB88320  # reflected
+  init: 0xFFFFFFFF
+  final_xor: 0xFFFFFFFF
+  notes: "Standard Ethernet/ZIP CRC32. Same algorithm used for config CRC and STM32 flash self-check."
+
+# ─── Validation Rules (Bootloader) ───────────────────────────────────────────
+
+validation_order:
+  - step: 1
+    check: "pkg_magic == 0xBF00BF00"
+    on_fail: ERR_PACKAGE_INVALID
+  - step: 2
+    check: "pkg_version <= BOOTLOADER_MAX_SUPPORTED_PKG_VERSION"
+    on_fail: ERR_PACKAGE_INVALID
+  - step: 3
+    check: "hw_profile_id == HW_PROFILE_ID"
+    on_fail: ERR_WRONG_TARGET
+  - step: 4
+    check: "target_mcu_id == DBGMCU_IDCODE"
+    on_fail: ERR_WRONG_TARGET
+  - step: 5
+    check: "image_type == 0x01"
+    on_fail: ERR_PACKAGE_INVALID
+  - step: 6
+    check: "app_start_addr == APP_START_ADDR"
+    on_fail: ERR_PACKAGE_INVALID
+  - step: 7
+    check: "0 < app_size <= APP_REGION_SIZE"
+    on_fail: ERR_PACKAGE_INVALID
+  - step: 8
+    check: "pkg_header_crc32 matches CRC32(header[0..39])"
+    on_fail: ERR_PACKAGE_INVALID
+  - step: 9
+    check: "bootloader_version >= min_bootloader_version"
+    on_fail: ERR_PACKAGE_INVALID
+  - step: 10
+    check: "reserved_type, reserved_fw, reserved_bl, reserved_schema, reserved_end all zero"
+    on_fail: ERR_PACKAGE_INVALID
+    severity: warning  # may relax to warning in future
+  - step: 11
+    check: "After all chunks: app_crc32 matches CRC32(written payload)"
+    on_fail: ERR_PACKAGE_INVALID
+    timing: post_transfer
+  - step: 12
+    check: "image[0] (SP) in SRAM range"
+    on_fail: ERR_PACKAGE_INVALID
+    timing: post_transfer
+  - step: 13
+    check: "image[1] (reset vector, bit0 masked) in APP flash range"
+    on_fail: ERR_PACKAGE_INVALID
+    timing: post_transfer
+
+# ─── Package Builder Requirements ─────────────────────────────────────────────
+
+package_builder:
+  tool_script: "tools/build_package.py (to be implemented)"
+  inputs:
+    - binary_image: "app.bin (raw binary from ELF)"
+    - config_file: "package.yaml or command-line args"
+  process:
+    1: "Read app.bin; compute app_size and app_crc32"
+    2: "Populate all header fields"
+    3: "Compute pkg_header_crc32 over header[0..39]"
+    4: "Write header (64 bytes) + payload to .pkg file"
+  output: "firmware_<version>_hw<hw_profile>.pkg"
+
+compatibility_rules:
+  - "Tool must refuse to flash .pkg with hw_profile_id != GET_CAPABILITIES.hw_profile_id"
+  - "Tool must warn if required_config_schema differs from current device config_schema_version"
+  - "Tool must display fw_version, hw_profile_id, required_config_schema to user before beginning update"
+  - "No silent downgrade: tool should warn (not block) if package fw_version < current device fw_version"

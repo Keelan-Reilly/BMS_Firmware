@@ -1,0 +1,276 @@
+# BMS Protocol Packet Definitions
+# Machine-readable; consumed by code generators and the desktop tool.
+# Byte order: little-endian throughout.
+# CRC: CRC-16/CCITT-FALSE on full frame (SOF through payload).
+
+meta:
+  protocol_version: 1
+  doc_ref: docs/04_protocol_contract.md
+
+packets:
+
+  # ─── System / Capabilities ────────────────────────────────────────────────
+
+  - name: GET_CAPABILITIES
+    id: 0x0001
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: empty
+    response_type: CapabilitiesResponse
+    idempotent: true
+    notes: >
+      Must be the first packet sent. Response establishes device mode.
+      Tool must match hw_profile_id and protocol_version before any
+      config write or firmware update.
+
+  - name: GET_VALUES
+    id: 0x0101
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: empty
+    response_type: ValuesResponse
+    idempotent: true
+    notes: Pack summary: Vbat, Vpack, current, state, faults, output states.
+
+  - name: GET_CELLS
+    id: 0x0102
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: GetCellsRequest
+    response_type: GetCellsResponse
+    idempotent: true
+    notes: All 75 cell voltages in mV (uint16_t each). Optional validity bitfield.
+
+  - name: GET_TEMPS
+    id: 0x0103
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: empty
+    response_type: GetTempsResponse
+    idempotent: true
+    notes: All 75 temperature readings in °C×10 (int16_t). 0x8000 = INVALID.
+
+  - name: GET_FAULTS
+    id: 0x0104
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: empty
+    response_type: GetFaultsResponse
+    idempotent: true
+    notes: Active and latched fault bitmaps (uint64_t each).
+
+  - name: CLEAR_LATCHED_FAULTS
+    id: 0x0105
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: ClearLatchedFaultsRequest
+    response_type: ClearLatchedFaultsResponse
+    idempotent: false
+    notes: >
+      Clears latched faults. Only clears faults whose active condition is
+      resolved. Returns mask of faults actually cleared.
+
+  # ─── Configuration ────────────────────────────────────────────────────────
+
+  - name: GET_CONFIG
+    id: 0x0201
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: empty
+    response_type: BmsConfigBlob
+    idempotent: true
+    notes: Returns full config struct (226 bytes for schema v1).
+
+  - name: VALIDATE_CONFIG
+    id: 0x0202
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: BmsConfigBlob
+    response_type: ConfigValidationResponse
+    idempotent: true
+    notes: >
+      Validates config without storing. Returns pass/fail, field error offset,
+      and human-readable error message.
+
+  - name: SET_CONFIG_RAM
+    id: 0x0203
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: BmsConfigBlob
+    response_type: ConfigValidationResponse
+    idempotent: false
+    notes: >
+      Applies config to RAM without flash write. Reverts on reset.
+      Useful for live threshold testing. Runs full validation first.
+
+  - name: STORE_CONFIG
+    id: 0x0204
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: BmsConfigBlob
+    response_type: StoreConfigResponse
+    idempotent: false
+    notes: >
+      Validates and persistently writes config to flash (dual-slot).
+      Config blob must include correct CRC32 computed by host.
+
+  # ─── Diagnostics ──────────────────────────────────────────────────────────
+
+  - name: GET_DIAGNOSTICS_SUMMARY
+    id: 0x0301
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: empty
+    response_type: DiagnosticsSummaryResponse
+    idempotent: true
+    notes: PEC counters, open-wire result, I2C error count, reset cause.
+
+  - name: GET_DIAGNOSTICS_LOG
+    id: 0x0302
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: GetDiagLogRequest
+    response_type: GetDiagLogResponse
+    idempotent: true
+    notes: Paged read of diagnostic event ring buffer (12 bytes/entry).
+
+  - name: RUN_OPENWIRE
+    id: 0x0303
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: empty
+    response_type: RunOpenwireResponse
+    idempotent: false
+    notes: >
+      Triggers open-wire diagnostic cycle on CELL chain.
+      State machine must allow this (balancing must be inactive).
+      Result available via GET_DIAGNOSTICS_SUMMARY.
+
+  # ─── Boot / Firmware Update ───────────────────────────────────────────────
+
+  - name: GET_BOOT_INFO
+    id: 0x0401
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: empty
+    response_type: BootInfoResponse
+    idempotent: true
+    notes: Boot mode, bootloader version, flash map, update-in-progress flag.
+
+  - name: ENTER_BOOTLOADER
+    id: 0x0402
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: EnterBootloaderRequest
+    response_type: empty
+    idempotent: false
+    notes: >
+      Application only. Request payload: 4-byte magic 0xB007B007.
+      Device deasserts permissions, sets boot flag, resets.
+      Tool must reconnect and wait for GET_CAPABILITIES in bootloader mode.
+
+  - name: BOOT_UPDATE_BEGIN
+    id: 0x0403
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: FirmwarePackageHeader
+    response_type: BootUpdateBeginResponse
+    idempotent: false
+    notes: >
+      Bootloader only. Validates package header (magic, hw_profile, MCU ID,
+      header CRC, app size). On accept, erases app region and prepares for
+      chunk transfer.
+
+  - name: BOOT_UPDATE_CHUNK
+    id: 0x0404
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: BootUpdateChunkRequest
+    response_type: BootUpdateChunkResponse
+    idempotent: false
+    notes: >
+      Bootloader only. Sequential chunks (4-byte index + 4-byte len + data).
+      Device writes to flash and acks. Out-of-order chunks return ERR_SEQUENCE.
+
+  - name: BOOT_UPDATE_FINALIZE
+    id: 0x0405
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: empty
+    response_type: BootUpdateFinalizeResponse
+    idempotent: false
+    notes: >
+      Bootloader only. Device computes CRC32 of written image, compares to
+      package header. On match: marks image valid. On mismatch: returns
+      ERR_PACKAGE_INVALID; image must be retransmitted from BEGIN.
+
+  - name: BOOT_UPDATE_ABORT
+    id: 0x0406
+    direction: host_to_device
+    minimum_protocol_version: 1
+    request_type: empty
+    response_type: BootUpdateAbortResponse
+    idempotent: false
+    notes: >
+      Bootloader only. Discards in-progress update. Bootloader remains active.
+
+# ─── Response Type Schemas ────────────────────────────────────────────────────
+# Defined here for reference; firmware generated from this YAML.
+
+response_types:
+
+  CapabilitiesResponse:
+    fields:
+      - {name: firmware_type,          offset: 0,  size: 2, type: uint16}
+      - {name: firmware_version,       offset: 2,  size: 3, type: uint8[3]}
+      - {name: hw_profile_id,          offset: 5,  size: 2, type: uint16}
+      - {name: protocol_version,       offset: 7,  size: 2, type: uint16}
+      - {name: config_schema_version,  offset: 9,  size: 2, type: uint16}
+      - {name: cell_count,             offset: 11, size: 1, type: uint8}
+      - {name: temp_count,             offset: 12, size: 1, type: uint8}
+      - {name: feature_flags,          offset: 13, size: 4, type: uint32}
+      - {name: max_payload_bytes_log2, offset: 17, size: 1, type: uint8}
+      - {name: flash_app_size,         offset: 18, size: 4, type: uint32}
+      - {name: flash_config_size,      offset: 22, size: 4, type: uint32}
+    total_bytes: 26
+
+  ValuesResponse:
+    fields:
+      - {name: vbat_mv,           offset: 0,  size: 4, type: int32,  units: mV}
+      - {name: vpack_mv,          offset: 4,  size: 4, type: int32,  units: mV}
+      - {name: i_batt_ma,         offset: 8,  size: 4, type: int32,  units: mA, notes: "positive=discharge"}
+      - {name: state,             offset: 12, size: 2, type: uint16}
+      - {name: active_faults,     offset: 14, size: 8, type: uint64}
+      - {name: latched_faults,    offset: 22, size: 8, type: uint64}
+      - {name: outputs_state,     offset: 30, size: 1, type: uint8,  notes: "bit0=MasterOk bit1=Disch bit2=Chg bit3=ChgrSafety"}
+      - {name: uptime_ms,         offset: 31, size: 4, type: uint32, units: ms}
+      - {name: measurement_flags, offset: 35, size: 1, type: uint8,  notes: "bit0=cells_valid bit1=temps_valid bit2=vbat bit3=vpack"}
+    total_bytes: 36
+
+  GetCellsRequest:
+    fields:
+      - {name: flags, offset: 0, size: 1, type: uint8, notes: "bit0: include validity bitfield"}
+    total_bytes: 1
+
+  GetCellsResponse:
+    fields:
+      - {name: cell_count,    offset: 0,   size: 2,   type: uint16}
+      - {name: cell_mv,       offset: 2,   size: 150, type: uint16[75], units: mV}
+      - {name: timestamp_ms,  offset: 152, size: 4,   type: uint32, units: ms}
+      - {name: validity_bits, offset: 156, size: 10,  type: uint8[10], notes: "present only if flags.bit0=1; 75 bits, LE bit order"}
+    total_bytes_base: 156
+    total_bytes_with_validity: 166
+
+  BootUpdateBeginResponse:
+    fields:
+      - {name: result,              offset: 0, size: 1, type: uint8,  notes: "0=accepted"}
+      - {name: reject_reason,       offset: 1, size: 1, type: uint8,  notes: "ERR_* code"}
+      - {name: expected_chunk_size, offset: 2, size: 4, type: uint32, units: bytes}
+      - {name: total_chunks,        offset: 6, size: 4, type: uint32}
+    total_bytes: 10
+
+  BootUpdateFinalizeResponse:
+    fields:
+      - {name: result,        offset: 0, size: 1, type: uint8}
+      - {name: computed_crc,  offset: 1, size: 4, type: uint32}
+    total_bytes: 5

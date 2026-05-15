@@ -1,0 +1,171 @@
+# BMS Capabilities Payload Definition
+# Machine-readable; reflects GET_CAPABILITIES response layout.
+# Doc ref: docs/04_protocol_contract.md §6.1
+
+meta:
+  doc_ref: docs/04_protocol_contract.md
+  packet_id: 0x0001
+
+# ─── Known Firmware Types ────────────────────────────────────────────────────
+
+firmware_types:
+  - value: 0x0001
+    name: BMS_APPLICATION
+    description: "Main BMS application firmware"
+    allowed_packets:
+      - "all non-bootloader packets"
+  - value: 0x0002
+    name: BOOTLOADER
+    description: "Bootloader mode"
+    allowed_packets:
+      - GET_CAPABILITIES
+      - GET_BOOT_INFO
+      - BOOT_UPDATE_BEGIN
+      - BOOT_UPDATE_CHUNK
+      - BOOT_UPDATE_FINALIZE
+      - BOOT_UPDATE_ABORT
+
+# ─── Feature Flags (uint32 bitfield) ─────────────────────────────────────────
+
+feature_flags:
+  - bit: 0
+    name: FEAT_BALANCING
+    description: "Passive cell balancing supported (CELL chain DCC)"
+  - bit: 1
+    name: FEAT_OPENWIRE
+    description: "Open-wire diagnostic (ADOW) supported"
+  - bit: 2
+    name: FEAT_BOOTLOADER
+    description: "Bootloader-based firmware update supported"
+  - bit: 3
+    name: FEAT_CAN
+    description: "CAN interface present and configured"
+  - bit: 4
+    name: FEAT_OVERCURRENT
+    description: "Hardware overcurrent measurement (ISL28022 shunt) present"
+  - bits: [5, 31]
+    reserved: true
+    value: 0
+
+# ─── Capabilities Response Payload (26 bytes) ────────────────────────────────
+
+response_payload:
+  total_bytes: 26
+  fields:
+    - name: firmware_type
+      offset: 0
+      size: 2
+      type: uint16
+      description: "0x0001 = BMS application, 0x0002 = bootloader"
+
+    - name: firmware_version
+      offset: 2
+      size: 3
+      type: uint8[3]
+      description: "[major, minor, patch] — semantic versioning"
+      notes: "Tool should display as 'major.minor.patch'"
+
+    - name: hw_profile_id
+      offset: 5
+      size: 2
+      type: uint16
+      description: "Hardware profile identifier; must match firmware package and config"
+      tool_behavior: >
+        Tool must verify this against the firmware package hw_profile_id before any update.
+        Tool must verify this against stored config hw_profile_id before writing config.
+
+    - name: protocol_version
+      offset: 7
+      size: 2
+      type: uint16
+      description: "Protocol version implemented by device"
+      tool_behavior: >
+        Tool must compare against TOOL_MIN_PROTOCOL_VERSION.
+        If device protocol_version < TOOL_MIN_PROTOCOL_VERSION: refuse all operations; display error.
+
+    - name: config_schema_version
+      offset: 9
+      size: 2
+      type: uint16
+      description: "Config schema version currently supported by firmware"
+      tool_behavior: >
+        Tool must use this to determine which config schema to use for editing.
+        If package requires a different schema version, tool warns user config may need re-write.
+
+    - name: cell_count
+      offset: 11
+      size: 1
+      type: uint8
+      description: "Total cell channels (always 75 for this hardware profile)"
+      tool_behavior: "Allocate cell display grid based on this value"
+
+    - name: temp_count
+      offset: 12
+      size: 1
+      type: uint8
+      description: "Total temperature sensor channels (always 75 for this hardware profile)"
+
+    - name: feature_flags
+      offset: 13
+      size: 4
+      type: uint32
+      description: "Bitfield of supported features (see feature_flags above)"
+      tool_behavior: >
+        FEAT_BALANCING: show/hide balance controls in Config page.
+        FEAT_BOOTLOADER: enable firmware update via bootloader flow.
+        FEAT_OPENWIRE: show 'Run Open Wire Test' button.
+
+    - name: max_payload_bytes_log2
+      offset: 17
+      size: 1
+      type: uint8
+      description: "log2(max payload size in bytes); 10 = 1024 bytes"
+      tool_behavior: "Use to set maximum chunk size for BOOT_UPDATE_CHUNK"
+
+    - name: flash_app_size
+      offset: 18
+      size: 4
+      type: uint32
+      units: bytes
+      description: "Size of application flash region"
+
+    - name: flash_config_size
+      offset: 22
+      size: 4
+      type: uint32
+      units: bytes
+      description: "Size of one config flash slot"
+
+# ─── Tool Compatibility Matrix ────────────────────────────────────────────────
+
+tool_compatibility:
+  TOOL_MIN_PROTOCOL_VERSION: 1
+  notes: >
+    Protocol version 1 is the initial version.
+    Any device responding with protocol_version < 1 is either incompatible or pre-release.
+    The tool should display a clear error and refuse config/update operations if incompatible.
+
+  known_hw_profile_ids:
+    - id: TBD
+      name: "BMS Rev A"
+      description: "Initial production hardware"
+      cell_count: 75
+      temp_count: 75
+      notes: "OPEN_QUESTION — assign value after hardware revision is confirmed"
+
+# ─── No-Capabilities Enforcement ─────────────────────────────────────────────
+
+no_capabilities_policy:
+  description: >
+    If GET_CAPABILITIES fails (timeout, bad CRC, unexpected response), the tool
+    must enter UNKNOWN_TARGET mode. In this mode:
+      - No config writes permitted
+      - No firmware updates permitted
+      - Terminal/diagnostics tab available for raw debugging only
+      - User must manually disconnect before retrying
+  tool_behavior:
+    - STORE_CONFIG: BLOCKED — "No capabilities response received. Cannot write config."
+    - SET_CONFIG_RAM: BLOCKED
+    - VALIDATE_CONFIG: BLOCKED
+    - BOOT_UPDATE_BEGIN: BLOCKED — "No capabilities response received. Cannot begin update."
+    - All monitoring reads: ALLOWED (read-only)

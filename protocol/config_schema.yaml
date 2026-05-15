@@ -1,0 +1,597 @@
+# BMS Configuration Schema — Machine-Readable
+# Schema version: 1
+# Total struct size: 226 bytes
+# Storage: little-endian packed (no padding)
+# CRC: CRC-32/ISO-HDLC covering bytes [0..221] (CRC field at offset 14 treated as 0 during computation)
+# Doc ref: docs/05_config_schema.md
+
+meta:
+  schema_version: 1
+  total_bytes: 226
+  magic: 0xBBCC0001
+  crc_algorithm: CRC-32/ISO-HDLC
+  crc_coverage: "bytes [0..221]; bytes [14..17] (crc field) treated as 0x00000000 during computation"
+  endian: little
+  packing: packed_no_padding
+
+sections:
+
+  # ─── Header (64 bytes, offset 0) ──────────────────────────────────────────
+
+  header:
+    fields:
+      - name: magic
+        offset: 0
+        size: 4
+        type: uint32
+        default: 0xBBCC0001
+        validation: "== 0xBBCC0001"
+        storage_order: 1
+        notes: Must be exactly 0xBBCC0001
+
+      - name: schema_version
+        offset: 4
+        size: 2
+        type: uint16
+        default: 1
+        min: 1
+        max: 65535
+        validation: "== CONFIG_SCHEMA_VERSION (compile-time constant)"
+        storage_order: 2
+
+      - name: total_length
+        offset: 6
+        size: 2
+        type: uint16
+        default: 226
+        validation: "== 226 (compile-time CONFIG_SCHEMA_SIZE)"
+        storage_order: 3
+
+      - name: hw_profile_id
+        offset: 8
+        size: 2
+        type: uint16
+        default: TBD
+        validation: "== HW_PROFILE_ID (compile-time constant)"
+        storage_order: 4
+        notes: OPEN_QUESTION — define after hardware confirmation
+
+      - name: config_generation
+        offset: 10
+        size: 4
+        type: uint32
+        default: 0
+        min: 0
+        max: 4294967294
+        validation: "!= 0xFFFFFFFF"
+        storage_order: 5
+        notes: Incremented on each store. Dual-slot selector uses highest valid generation.
+
+      - name: config_crc32
+        offset: 14
+        size: 4
+        type: uint32
+        default: 0
+        validation: "CRC32 over bytes [0..221] with this field treated as 0"
+        storage_order: 6
+
+      - name: reserved_header
+        offset: 18
+        size: 46
+        type: uint8[46]
+        default: all_zeros
+        validation: "all bytes == 0x00"
+        storage_order: 7
+
+  # ─── Topology (4 bytes, offset 64) ───────────────────────────────────────
+
+  topology:
+    fields:
+      - name: cell_count
+        offset: 64
+        size: 1
+        type: uint8
+        default: 75
+        min: 1
+        max: 75
+        validation: "== 75 for HW_PROFILE_ID v1"
+        units: cells
+        storage_order: 8
+
+      - name: temp_count
+        offset: 65
+        size: 1
+        type: uint8
+        default: 75
+        min: 1
+        max: 75
+        validation: "== 75 for HW_PROFILE_ID v1"
+        units: sensors
+        storage_order: 9
+
+      - name: reserved_topology
+        offset: 66
+        size: 2
+        type: uint16
+        default: 0
+        validation: "== 0"
+        storage_order: 10
+
+  # ─── Cell Voltage Thresholds (16 bytes, offset 68) ───────────────────────
+
+  cell_thresholds:
+    fields:
+      - name: cell_uv_hard_mv
+        offset: 68
+        size: 2
+        type: uint16
+        units: mV
+        default: 2750
+        min: 1000
+        max: 5000
+        validation: "< cell_uv_soft_mv AND < cell_ov_hard_mv"
+        storage_order: 11
+
+      - name: cell_uv_soft_mv
+        offset: 70
+        size: 2
+        type: uint16
+        units: mV
+        default: 3000
+        min: 1000
+        max: 5000
+        validation: "> cell_uv_hard_mv AND < cell_balance_target_mv"
+        storage_order: 12
+
+      - name: cell_ov_soft_mv
+        offset: 72
+        size: 2
+        type: uint16
+        units: mV
+        default: 4150
+        min: 1000
+        max: 5000
+        validation: "< cell_ov_hard_mv AND > cell_balance_target_mv"
+        storage_order: 13
+
+      - name: cell_ov_hard_mv
+        offset: 74
+        size: 2
+        type: uint16
+        units: mV
+        default: 4200
+        min: 1000
+        max: 5000
+        validation: "> cell_ov_soft_mv"
+        storage_order: 14
+
+      - name: cell_balance_target_mv
+        offset: 76
+        size: 2
+        type: uint16
+        units: mV
+        default: 3800
+        min: 1000
+        max: 5000
+        validation: ">= cell_uv_hard_mv AND <= cell_ov_soft_mv"
+        storage_order: 15
+
+      - name: cell_balance_hysteresis_mv
+        offset: 78
+        size: 2
+        type: uint16
+        units: mV
+        default: 10
+        min: 0
+        max: 500
+        validation: "< (cell_ov_soft_mv - cell_balance_target_mv)"
+        storage_order: 16
+
+      - name: cell_nominal_mv
+        offset: 80
+        size: 2
+        type: uint16
+        units: mV
+        default: 3700
+        min: 1000
+        max: 5000
+        validation: "in [cell_uv_hard_mv, cell_ov_hard_mv]"
+        storage_order: 17
+        notes: Informational; reserved for future SoC estimation
+
+      - name: reserved_cell_thresholds
+        offset: 82
+        size: 2
+        type: uint16
+        default: 0
+        validation: "== 0"
+        storage_order: 18
+
+  # ─── Temperature Thresholds (16 bytes, offset 84) ────────────────────────
+
+  temp_thresholds:
+    fields:
+      - name: temp_charge_warn_cx10
+        offset: 84
+        size: 2
+        type: int16
+        units: "°C × 10"
+        default: 400
+        min: -500
+        max: 1000
+        validation: "< temp_charge_hard_cx10"
+        storage_order: 19
+        notes: 400 = 40.0°C
+
+      - name: temp_charge_hard_cx10
+        offset: 86
+        size: 2
+        type: int16
+        units: "°C × 10"
+        default: 450
+        min: -500
+        max: 1000
+        validation: "> temp_charge_warn_cx10 AND <= temp_hard_abs_cx10"
+        storage_order: 20
+
+      - name: temp_discharge_warn_cx10
+        offset: 88
+        size: 2
+        type: int16
+        units: "°C × 10"
+        default: 550
+        min: -500
+        max: 1000
+        validation: "< temp_discharge_hard_cx10"
+        storage_order: 21
+
+      - name: temp_discharge_hard_cx10
+        offset: 90
+        size: 2
+        type: int16
+        units: "°C × 10"
+        default: 600
+        min: -500
+        max: 1000
+        validation: "> temp_discharge_warn_cx10 AND <= temp_hard_abs_cx10"
+        storage_order: 22
+
+      - name: temp_hard_abs_cx10
+        offset: 92
+        size: 2
+        type: int16
+        units: "°C × 10"
+        default: 700
+        min: -500
+        max: 1000
+        validation: ">= max(temp_charge_hard_cx10, temp_discharge_hard_cx10)"
+        storage_order: 23
+
+      - name: temp_cold_charge_limit_cx10
+        offset: 94
+        size: 2
+        type: int16
+        units: "°C × 10"
+        default: 0
+        min: -500
+        max: 500
+        validation: "< 100"
+        storage_order: 24
+        notes: Below this temperature, charging is prohibited
+
+      - name: temp_cold_discharge_limit_cx10
+        offset: 96
+        size: 2
+        type: int16
+        units: "°C × 10"
+        default: -200
+        min: -500
+        max: 500
+        validation: "<= temp_cold_charge_limit_cx10"
+        storage_order: 25
+
+      - name: reserved_temp_thresholds
+        offset: 98
+        size: 2
+        type: uint16
+        default: 0
+        validation: "== 0"
+        storage_order: 26
+
+  # ─── Current Limits (8 bytes, offset 100) ────────────────────────────────
+
+  current_limits:
+    fields:
+      - name: overcurrent_hard_ma
+        offset: 100
+        size: 4
+        type: uint32
+        units: mA
+        default: 100000
+        min: 1000
+        max: 500000
+        validation: "> 0 AND >= overcurrent_warn_ma"
+        storage_order: 27
+
+      - name: overcurrent_warn_ma
+        offset: 104
+        size: 4
+        type: uint32
+        units: mA
+        default: 80000
+        min: 1000
+        max: 500000
+        validation: "<= overcurrent_hard_ma"
+        storage_order: 28
+
+  # ─── Precharge (8 bytes, offset 108) ─────────────────────────────────────
+
+  precharge:
+    fields:
+      - name: precharge_pct
+        offset: 108
+        size: 2
+        type: uint16
+        units: "%"
+        default: 90
+        min: 50
+        max: 99
+        validation: "in [50, 99]"
+        storage_order: 29
+        notes: Vpack must reach this % of Vbat for precharge to complete
+
+      - name: precharge_timeout_ms
+        offset: 110
+        size: 4
+        type: uint32
+        units: ms
+        default: 10000
+        min: 500
+        max: 60000
+        validation: "> 0"
+        storage_order: 30
+
+      - name: precharge_delta_max_pct
+        offset: 114
+        size: 2
+        type: uint16
+        units: "%"
+        default: 5
+        min: 1
+        max: 20
+        validation: "in [1, 20]"
+        storage_order: 31
+        notes: Max |Vpack - Vbat| / Vbat × 100 allowed after precharge
+
+  # ─── Balancing (8 bytes, offset 116) ─────────────────────────────────────
+
+  balancing:
+    fields:
+      - name: balance_on_time_ms
+        offset: 116
+        size: 4
+        type: uint32
+        units: ms
+        default: 5000
+        min: 100
+        max: 30000
+        validation: "> 0"
+        storage_order: 32
+
+      - name: balance_off_time_ms
+        offset: 120
+        size: 4
+        type: uint32
+        units: ms
+        default: 1000
+        min: 100
+        max: 30000
+        validation: "> 0"
+        storage_order: 33
+
+  # ─── Temperature Measurement (4 bytes, offset 124) ───────────────────────
+
+  temp_measurement:
+    fields:
+      - name: temp_settle_time_ms
+        offset: 124
+        size: 2
+        type: uint16
+        units: ms
+        default: 5
+        min: 1
+        max: 100
+        validation: "> 0"
+        storage_order: 34
+        notes: OPEN_QUESTION — validate settle time with Enepaq sensor datasheet
+
+      - name: reserved_temp_params
+        offset: 126
+        size: 2
+        type: uint16
+        default: 0
+        validation: "== 0"
+        storage_order: 35
+
+  # ─── Stale Data Timeout (4 bytes, offset 128) ────────────────────────────
+
+  timing:
+    fields:
+      - name: stale_data_timeout_ms
+        offset: 128
+        size: 4
+        type: uint32
+        units: ms
+        default: 500
+        min: 100
+        max: 5000
+        validation: "> 0"
+        storage_order: 36
+
+  # ─── Masks (30 bytes, offset 132) ────────────────────────────────────────
+
+  masks:
+    notes: >
+      75-bit masks stored as 10 bytes (80 bits), LE bit order.
+      Bit N = cell/sensor index N (0-based).
+      Bits 75–79 must be zero.
+    fields:
+      - name: required_cell_mask
+        offset: 132
+        size: 10
+        type: uint8[10]
+        default: 0xFFFFFFFFFFFFFFFFFFFF  # all 75 bits set (last byte 0x7F)
+        validation: "bits [75..79] must be 0; i.e., byte[9] & 0xF8 == 0"
+        storage_order: 37
+        notes: Cells not in mask are excluded from permission gating
+
+      - name: required_temp_mask
+        offset: 142
+        size: 10
+        type: uint8[10]
+        default: 0xFFFFFFFFFFFFFFFFFFFF
+        validation: "bits [75..79] must be 0"
+        storage_order: 38
+
+      - name: balance_allowed_mask
+        offset: 152
+        size: 10
+        type: uint8[10]
+        default: 0xFFFFFFFFFFFFFFFFFFFF
+        validation: "bits [75..79] must be 0"
+        storage_order: 39
+        notes: Only cells with corresponding bit set may be balanced
+
+  # ─── Calibration (16 bytes, offset 162) ──────────────────────────────────
+
+  calibration:
+    fields:
+      - name: vpack_gain_x1000
+        offset: 162
+        size: 4
+        type: uint32
+        units: "dimensionless × 1000"
+        default: 1000
+        min: 100
+        max: 10000
+        validation: "> 0"
+        storage_order: 40
+        notes: "Vpack_mV = (adc_raw / 4095) × VREF_mV × gain / 1000 + offset"
+
+      - name: vpack_offset_mv
+        offset: 166
+        size: 4
+        type: int32
+        units: mV
+        default: 0
+        min: -5000
+        max: 5000
+        storage_order: 41
+
+      - name: vbat_gain_x1000
+        offset: 170
+        size: 2
+        type: uint16
+        units: "dimensionless × 1000"
+        default: 1000
+        min: 100
+        max: 10000
+        validation: "> 0"
+        storage_order: 42
+
+      - name: vbat_offset_mv
+        offset: 172
+        size: 2
+        type: int16
+        units: mV
+        default: 0
+        min: -5000
+        max: 5000
+        storage_order: 43
+
+      - name: current_gain_x1000
+        offset: 174
+        size: 2
+        type: uint16
+        units: "dimensionless × 1000"
+        default: 1000
+        min: 100
+        max: 10000
+        validation: "> 0"
+        storage_order: 44
+
+      - name: current_offset_ma
+        offset: 176
+        size: 2
+        type: int16
+        units: mA
+        default: 0
+        min: -1000
+        max: 1000
+        storage_order: 45
+
+  # ─── CAN / Communication (8 bytes, offset 178) ───────────────────────────
+
+  communication:
+    fields:
+      - name: can_watchdog_timeout_ms
+        offset: 178
+        size: 4
+        type: uint32
+        units: ms
+        default: 0
+        min: 0
+        max: 60000
+        validation: "0 = disabled"
+        storage_order: 46
+
+      - name: can_base_id
+        offset: 182
+        size: 2
+        type: uint16
+        default: 0x0500
+        min: 0x000
+        max: 0x7FF
+        validation: "<= 0x7FF"
+        storage_order: 47
+        notes: CAN 11-bit base message ID for BMS telemetry
+
+      - name: reserved_can
+        offset: 184
+        size: 2
+        type: uint16
+        default: 0
+        validation: "== 0"
+        storage_order: 48
+
+  # ─── Reserved (40 bytes, offset 186) ─────────────────────────────────────
+
+  reserved_end:
+    fields:
+      - name: reserved
+        offset: 186
+        size: 40
+        type: uint8[40]
+        default: all_zeros
+        validation: "all bytes == 0x00"
+        storage_order: 49
+        notes: For future schema expansion
+
+# ─── Validation Relationships ─────────────────────────────────────────────────
+# Cross-field ordering invariants (firmware validates in this order):
+
+validation_invariants:
+  - id: INV-01
+    description: "cell_uv_hard_mv < cell_uv_soft_mv < cell_balance_target_mv < cell_ov_soft_mv < cell_ov_hard_mv"
+  - id: INV-02
+    description: "temp_charge_warn_cx10 < temp_charge_hard_cx10 <= temp_hard_abs_cx10"
+  - id: INV-03
+    description: "temp_discharge_warn_cx10 < temp_discharge_hard_cx10 <= temp_hard_abs_cx10"
+  - id: INV-04
+    description: "temp_cold_discharge_limit_cx10 <= temp_cold_charge_limit_cx10"
+  - id: INV-05
+    description: "overcurrent_warn_ma <= overcurrent_hard_ma"
+  - id: INV-06
+    description: "All mask bytes [N].bits[75..79] == 0 (for N = required_cell_mask, required_temp_mask, balance_allowed_mask)"
+  - id: INV-07
+    description: "config_generation != 0xFFFFFFFF"

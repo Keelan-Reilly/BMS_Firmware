@@ -1,0 +1,309 @@
+# BMS Fault Bit Definitions
+# Machine-readable; consumed by firmware codegen, desktop tool, and validation tests.
+# Fault bitmaps: uint64_t (active_faults, latched_faults).
+# Doc ref: docs/02_safety_model.md
+
+meta:
+  fault_bitmap_width: 64
+  doc_ref: docs/02_safety_model.md
+
+# Severity levels: INFO=0, WARNING=1, ERROR=2, CRITICAL=3, FATAL=4
+# permission_effect: which permissions are blocked when this fault is active
+#   blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+# balancing_effect: "disabled" if this fault disables balancing, "none" otherwise
+
+faults:
+
+  - bit: 0
+    name: FAULT_CELL_OV
+    severity: CRITICAL
+    latching: true
+    source: bms_measurements
+    condition: "Any cell voltage (in required_cell_mask) > cell_ov_hard_mv"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: disabled
+    ui_text: "Cell overvoltage — hard limit exceeded"
+    ui_description: "One or more cells exceeded the hard overvoltage threshold. Latch requires explicit clear after resolution."
+
+  - bit: 1
+    name: FAULT_CELL_UV
+    severity: CRITICAL
+    latching: true
+    source: bms_measurements
+    condition: "Any cell voltage (in required_cell_mask) < cell_uv_hard_mv"
+    permission_effect:
+      blocks: [master_ok, discharge_perm]
+    balancing_effect: none
+    ui_text: "Cell undervoltage — hard limit exceeded"
+    ui_description: "One or more cells fell below the hard undervoltage threshold."
+
+  - bit: 2
+    name: FAULT_CELL_OV_SOFT
+    severity: WARNING
+    latching: false
+    source: bms_measurements
+    condition: "Any cell voltage > cell_ov_soft_mv AND <= cell_ov_hard_mv"
+    permission_effect:
+      blocks: []
+    balancing_effect: none
+    ui_text: "Cell overvoltage — soft warning"
+    ui_description: "One or more cells exceeded the soft overvoltage threshold."
+
+  - bit: 3
+    name: FAULT_CELL_UV_SOFT
+    severity: WARNING
+    latching: false
+    source: bms_measurements
+    condition: "Any cell voltage (in required_cell_mask) < cell_uv_soft_mv AND >= cell_uv_hard_mv"
+    permission_effect:
+      blocks: []
+    balancing_effect: none
+    ui_text: "Cell undervoltage — soft warning"
+
+  - bit: 4
+    name: FAULT_CELL_READ_INVALID
+    severity: ERROR
+    latching: false
+    source: bms_measurements
+    condition: "PEC error on CELL chain (after retries), or measurement timestamp stale"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: disabled
+    ui_text: "Cell measurement invalid"
+    ui_description: "CELL chain read failed or data is stale. All permissions blocked until valid read."
+
+  - bit: 5
+    name: FAULT_CELL_OPENWIRE
+    severity: ERROR
+    latching: true
+    source: bms_diagnostics
+    condition: "Open-wire detected on any cell in required_cell_mask during ADOW diagnostic"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: disabled
+    ui_text: "Open-wire detected"
+    ui_description: "Open circuit detected on cell voltage connection. Check cell wiring."
+
+  - bit: 6
+    name: FAULT_TEMP_OVER_CHARGE
+    severity: CRITICAL
+    latching: true
+    source: bms_measurements
+    condition: "Any required temperature sensor > temp_charge_hard_cx10 while charging"
+    permission_effect:
+      blocks: [charge_perm, charger_safety]
+    balancing_effect: none
+    ui_text: "Over-temperature during charge"
+
+  - bit: 7
+    name: FAULT_TEMP_OVER_DISCHARGE
+    severity: CRITICAL
+    latching: true
+    source: bms_measurements
+    condition: "Any required temperature sensor > temp_discharge_hard_cx10 while discharging"
+    permission_effect:
+      blocks: [discharge_perm]
+    balancing_effect: none
+    ui_text: "Over-temperature during discharge"
+
+  - bit: 8
+    name: FAULT_TEMP_OVER_ABS
+    severity: CRITICAL
+    latching: true
+    source: bms_measurements
+    condition: "Any required temperature sensor > temp_hard_abs_cx10 (absolute max, regardless of state)"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: disabled
+    ui_text: "Absolute over-temperature"
+    ui_description: "Temperature exceeded the absolute maximum limit. Immediate shutdown."
+
+  - bit: 9
+    name: FAULT_TEMP_READ_INVALID
+    severity: ERROR
+    latching: false
+    source: bms_measurements
+    condition: "PEC error on TEMP chain (after retries), S-output cycle failed, or measurement stale"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: none
+    ui_text: "Temperature measurement invalid"
+    notes: "S outputs will have been cleared in the error path."
+
+  - bit: 10
+    name: FAULT_TEMP_COVERAGE
+    severity: ERROR
+    latching: false
+    source: bms_measurements
+    condition: "One or more sensors in required_temp_mask are invalid or out of conversion range"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: none
+    ui_text: "Temperature coverage incomplete"
+    ui_description: "Required temperature sensors are not providing valid readings."
+
+  - bit: 11
+    name: FAULT_VBAT_INVALID
+    severity: ERROR
+    latching: false
+    source: bms_measurements
+    condition: "ISL28022 I2C read failed, NACK, timeout, or Vbat stale"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: none
+    ui_text: "Vbat measurement invalid"
+
+  - bit: 12
+    name: FAULT_VPACK_INVALID
+    severity: ERROR
+    latching: false
+    source: bms_measurements
+    condition: "PA1 ADC conversion failed or Vpack stale"
+    permission_effect:
+      blocks: [master_ok, discharge_perm]
+    balancing_effect: none
+    ui_text: "Vpack measurement invalid"
+
+  - bit: 13
+    name: FAULT_PRECHARGE_TIMEOUT
+    severity: ERROR
+    latching: true
+    source: bms_state
+    condition: "Vpack did not reach precharge_pct% of Vbat within precharge_timeout_ms"
+    permission_effect:
+      blocks: [master_ok]
+    balancing_effect: none
+    ui_text: "Precharge timeout"
+    ui_description: "Load-side voltage did not rise to target within the allowed time."
+
+  - bit: 14
+    name: FAULT_PRECHARGE_DELTA
+    severity: ERROR
+    latching: true
+    source: bms_state
+    condition: "|Vpack - Vbat| / Vbat > precharge_delta_max_pct after precharge completion"
+    permission_effect:
+      blocks: [master_ok, discharge_perm]
+    balancing_effect: none
+    ui_text: "Precharge voltage mismatch"
+    ui_description: "After precharge, Vpack and Vbat differ by more than the allowed delta."
+
+  - bit: 15
+    name: FAULT_ISOSPI_CELL
+    severity: ERROR
+    latching: false
+    source: ltc6812_driver
+    condition: "Consecutive PEC errors > LTC6812_MAX_PEC_RETRIES on CELL chain"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: disabled
+    ui_text: "CELL isoSPI communication error"
+
+  - bit: 16
+    name: FAULT_ISOSPI_TEMP
+    severity: ERROR
+    latching: false
+    source: ltc6812_driver
+    condition: "Consecutive PEC errors > LTC6812_MAX_PEC_RETRIES on TEMP chain"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: none
+    ui_text: "TEMP isoSPI communication error"
+
+  - bit: 17
+    name: FAULT_I2C_ISL28022
+    severity: ERROR
+    latching: false
+    source: isl28022_driver
+    condition: "I2C NACK or timeout on ISL28022 after retries"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: none
+    ui_text: "ISL28022 I2C communication error"
+
+  - bit: 18
+    name: FAULT_WATCHDOG
+    severity: FATAL
+    latching: false
+    source: board_clock
+    condition: "IWDG fired (recorded from RCC reset flags at boot)"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: disabled
+    ui_text: "Watchdog reset occurred"
+    ui_description: "MCU was reset by IWDG. Indicates main loop stall or firmware fault."
+    notes: "This bit is set at boot if reset cause was IWDG. It is active until explicitly cleared."
+
+  - bit: 19
+    name: FAULT_CONFIG_INVALID
+    severity: ERROR
+    latching: true
+    source: bms_config
+    condition: "Stored config failed validation at boot (bad magic, CRC, schema version, hw profile, threshold, mask)"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: disabled
+    ui_text: "Configuration invalid"
+    ui_description: "Stored configuration failed validation. Write a valid config via the desktop tool."
+
+  - bit: 20
+    name: FAULT_OVERCURRENT
+    severity: CRITICAL
+    latching: true
+    source: bms_measurements
+    condition: "|i_batt_ma| > overcurrent_hard_ma"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: disabled
+    ui_text: "Overcurrent"
+    ui_description: "Battery current exceeded the hard overcurrent limit."
+
+  - bit: 21
+    name: FAULT_BALANCE_TEMP_VIOLATION
+    severity: ERROR
+    latching: true
+    source: bms_balance
+    condition: "Temperature exceeded balance-inhibit threshold during active balancing"
+    permission_effect:
+      blocks: []
+    balancing_effect: disabled
+    ui_text: "Balancing inhibited — over-temperature"
+
+  - bit: 22
+    name: FAULT_TEMP_CHAIN_BALANCE_ATTEMPT
+    severity: FATAL
+    latching: true
+    source: ltc6812_driver
+    condition: "DCC write attempted to TEMP chain (firmware coding error)"
+    permission_effect:
+      blocks: [master_ok, discharge_perm, charge_perm, charger_safety]
+    balancing_effect: disabled
+    ui_text: "CRITICAL: Balance write to TEMP chain attempted"
+    ui_description: "Firmware error: balancing write was directed at TEMP chain. This should never occur."
+
+  - bit: 23
+    name: FAULT_TEMP_COLD_CHARGE
+    severity: ERROR
+    latching: false
+    source: bms_measurements
+    condition: "Any temperature < temp_cold_charge_limit_cx10 while charging"
+    permission_effect:
+      blocks: [charge_perm, charger_safety]
+    balancing_effect: none
+    ui_text: "Temperature too cold for charging"
+
+  - bit: 24
+    name: FAULT_TEMP_COLD_DISCHARGE
+    severity: WARNING
+    latching: false
+    source: bms_measurements
+    condition: "Any temperature < temp_cold_discharge_limit_cx10"
+    permission_effect:
+      blocks: []
+    balancing_effect: none
+    ui_text: "Temperature too cold — discharge caution"
+
+  - bits: [25, 63]
+    name: RESERVED
+    notes: Reserved for future use. Must be 0 in all current firmware.
