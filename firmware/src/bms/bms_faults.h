@@ -12,6 +12,19 @@ void bms_faults_evaluate(const CellSnapshot    *cells,
                           const PackMeasurement *pack,
                           const BmsConfig       *cfg);
 
+/* Report a PEC error on the given chain. Escalates to ISOSPI fault after
+ * LTC6812_MAX_RETRIES consecutive errors. */
+void bms_faults_report_pec_error(BmsChain chain);
+
+/* Clear the PEC consecutive error counter and active ISOSPI fault for a chain. */
+void bms_faults_clear_pec_counter(BmsChain chain);
+
+/* Report an I2C error on the ISL28022 bus. */
+void bms_faults_report_i2c_error(void);
+
+/* Clear the active I2C fault (call after a successful I2C transaction). */
+void bms_faults_clear_i2c_error(void);
+
 /* Returns current active fault bitmap (conditions present now). */
 uint64_t bms_faults_get_active(void);
 

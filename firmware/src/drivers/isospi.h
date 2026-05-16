@@ -31,7 +31,8 @@
 #define LTC_CMD_RDAUXD      (0x000Fu)  /* Read Auxiliary Register Group D      */
 #define LTC_CMD_ADCV        (0x0360u)  /* Start Cell Voltage ADC (all ch, 7kHz)*/
 #define LTC_CMD_ADAX        (0x0560u)  /* Start Aux ADC (all GPIO, 7kHz)       */
-#define LTC_CMD_ADOW        (0x0228u)  /* Open-Wire check (PUP=0, discharge)   */
+#define LTC_CMD_ADOW_PDN    (0x0228u)  /* Open-Wire check, pull-down (PUP=0)   */
+#define LTC_CMD_ADOW_PUP    (0x0268u)  /* Open-Wire check, pull-up  (PUP=1)    */
 #define LTC_CMD_CLRCELL     (0x0711u)  /* Clear Cell Voltage registers         */
 #define LTC_CMD_CLRAUX      (0x0712u)  /* Clear Aux registers                  */
 #define LTC_CMD_CLRSTAT     (0x0713u)  /* Clear Status registers               */
@@ -70,3 +71,7 @@ BmsResult isospi_write_all(BmsChain chain, uint16_t cmd,
 BmsResult isospi_read_all(BmsChain chain, uint16_t cmd,
                           uint8_t *data, uint8_t num_ics,
                           bool *pec_ok_per_ic);
+
+/* Read one byte from SDO after sending a broadcast command (used for PLADC polling).
+ * out must be a 1-element buffer. CS is asserted and deasserted around the transfer. */
+void isospi_read_byte_after_cmd(BmsChain chain, uint8_t *out);

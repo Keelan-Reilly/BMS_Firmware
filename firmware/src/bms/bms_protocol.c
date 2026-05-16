@@ -6,6 +6,8 @@
 #include "bms_faults.h"
 #include "bms_outputs.h"
 #include "bms_state.h"
+#include "bms_diagnostics.h"
+#include "ltc6812.h"
 #include "board_uart.h"
 #include "board_clock.h"
 #include <string.h>
@@ -205,6 +207,88 @@ static void handle_store_config(uint8_t seq, const uint8_t *payload, uint16_t le
     send_response(PKT_STORE_CONFIG, seq, &resp, 1u, r != BMS_OK);
 }
 
+static void handle_clear_latched_faults(uint8_t seq, const uint8_t *payload, uint16_t len) {
+    uint64_t mask = UINT64_MAX; /* default: attempt to clear all */
+    if (len >= 8) {
+        mask = 0;
+        for (int i = 0; i < 8; i++) { mask |= ((uint64_t)payload[i] << (8 * i)); }
+    }
+    uint64_t cleared = bms_faults_clear_latched(mask);
+    uint8_t resp[8];
+    for (int i = 0; i < 8; i++) { resp[i] = (uint8_t)(cleared >> (8 * i)); }
+    send_response(PKT_CLEAR_LATCHED_FAULTS, seq, resp, sizeof(resp), false);
+}
+
+static void handle_get_diagnostics_summary(uint8_t seq) {
+    const BmsDiagnostics *diag = bms_diagnostics_get();
+    /* Layout: reset_cause(1) + pec_cell(4) + pec_temp(4) + i2c(4) +
+     *          open_wire_valid(1) + open_wire_mask(10) + uptime_ms(4) = 28 bytes */
+    uint8_t resp[28];
+    memset(resp, 0, sizeof(resp));
+    resp[0] = diag->reset_cause;
+    resp[1] = (uint8_t)(diag->pec_errors_cell);
+    resp[2] = (uint8_t)(diag->pec_errors_cell >> 8);
+    resp[3] = (uint8_t)(diag->pec_errors_cell >> 16);
+    resp[4] = (uint8_t)(diag->pec_errors_cell >> 24);
+    resp[5] = (uint8_t)(diag->pec_errors_temp);
+    resp[6] = (uint8_t)(diag->pec_errors_temp >> 8);
+    resp[7] = (uint8_t)(diag->pec_errors_temp >> 16);
+    resp[8] = (uint8_t)(diag->pec_errors_temp >> 24);
+    resp[9]  = (uint8_t)(diag->i2c_errors);
+    resp[10] = (uint8_t)(diag->i2c_errors >> 8);
+    resp[11] = (uint8_t)(diag->i2c_errors >> 16);
+    resp[12] = (uint8_t)(diag->i2c_errors >> 24);
+    resp[13] = diag->open_wire_valid ? 1u : 0u;
+    /* Pack open_wire_detected[75] into 10 bytes (75 bits). */
+    for (uint8_t i = 0; i < TOTAL_CELL_COUNT; i++) {
+        if (diag->open_wire_detected[i]) {
+            resp[14 + i / 8u] |= (uint8_t)(1u << (i % 8u));
+        }
+    }
+    uint32_t up = diag->uptime_ms;
+    resp[24] = (uint8_t)up; resp[25] = (uint8_t)(up>>8);
+    resp[26] = (uint8_t)(up>>16); resp[27] = (uint8_t)(up>>24);
+    send_response(PKT_GET_DIAGNOSTICS_SUMMARY, seq, resp, sizeof(resp), false);
+}
+
+static void handle_run_openwire(uint8_t seq) {
+    bool detected[TOTAL_CELL_COUNT];
+    BmsResult r = ltc6812_run_open_wire(BMS_CHAIN_CELL, CELL_IC_COUNT, detected);
+    bool valid = (r == BMS_OK);
+    bms_diagnostics_set_open_wire(valid, detected);
+    /* Response: status(1) + open_wire_mask(10) = 11 bytes */
+    uint8_t resp[11];
+    memset(resp, 0, sizeof(resp));
+    resp[0] = valid ? 0u : 1u;
+    if (valid) {
+        for (uint8_t i = 0; i < TOTAL_CELL_COUNT; i++) {
+            if (detected[i]) { resp[1 + i / 8u] |= (uint8_t)(1u << (i % 8u)); }
+        }
+    }
+    send_response(PKT_RUN_OPENWIRE, seq, resp, sizeof(resp), false);
+}
+
+static void handle_get_boot_info(uint8_t seq) {
+    const BmsDiagnostics *diag = bms_diagnostics_get();
+    /* Layout: fw_type(2) + major(1) + minor(1) + patch(1) + hw_profile_id(2) +
+     *          proto_version(2) + reset_cause(1) + uptime_ms(4) = 14 bytes */
+    uint8_t resp[14];
+    resp[0]  = (uint8_t)(FIRMWARE_TYPE_BMS_APP & 0xFFu);
+    resp[1]  = (uint8_t)(FIRMWARE_TYPE_BMS_APP >> 8u);
+    resp[2]  = FW_VERSION_MAJOR;
+    resp[3]  = FW_VERSION_MINOR;
+    resp[4]  = FW_VERSION_PATCH;
+    resp[5]  = (uint8_t)(HW_PROFILE_ID & 0xFFu);
+    resp[6]  = (uint8_t)(HW_PROFILE_ID >> 8u);
+    resp[7]  = (uint8_t)(PROTOCOL_VERSION & 0xFFu);
+    resp[8]  = (uint8_t)(PROTOCOL_VERSION >> 8u);
+    resp[9]  = diag->reset_cause;
+    uint32_t up = diag->uptime_ms;
+    resp[10] = (uint8_t)up; resp[11] = (uint8_t)(up>>8);
+    resp[12] = (uint8_t)(up>>16); resp[13] = (uint8_t)(up>>24);
+    send_response(PKT_GET_BOOT_INFO, seq, resp, sizeof(resp), false);
+}
+
 static void handle_enter_bootloader(uint8_t seq, const uint8_t *payload, uint16_t len) {
     if (len < 4) { send_error(PKT_ENTER_BOOTLOADER, seq, PROTO_ERR_BAD_LENGTH); return; }
     uint32_t magic = (uint32_t)payload[0] | ((uint32_t)payload[1]<<8) |
@@ -223,12 +307,23 @@ static void dispatch_packet(uint16_t pkt_id, uint8_t seq,
         case PKT_GET_VALUES:         handle_get_values(seq); break;
         case PKT_GET_CELLS:          handle_get_cells(seq, payload, payload_len); break;
         case PKT_GET_TEMPS:          handle_get_temps(seq); break;
-        case PKT_GET_FAULTS:         handle_get_faults(seq); break;
-        case PKT_GET_CONFIG:         handle_get_config(seq); break;
-        case PKT_VALIDATE_CONFIG:    handle_validate_config(seq, payload, payload_len); break;
-        case PKT_SET_CONFIG_RAM:     handle_set_config_ram(seq, payload, payload_len); break;
-        case PKT_STORE_CONFIG:       handle_store_config(seq, payload, payload_len); break;
-        case PKT_ENTER_BOOTLOADER:   handle_enter_bootloader(seq, payload, payload_len); break;
+        case PKT_GET_FAULTS:              handle_get_faults(seq); break;
+        case PKT_CLEAR_LATCHED_FAULTS:    handle_clear_latched_faults(seq, payload, payload_len); break;
+        case PKT_GET_CONFIG:              handle_get_config(seq); break;
+        case PKT_VALIDATE_CONFIG:         handle_validate_config(seq, payload, payload_len); break;
+        case PKT_SET_CONFIG_RAM:          handle_set_config_ram(seq, payload, payload_len); break;
+        case PKT_STORE_CONFIG:            handle_store_config(seq, payload, payload_len); break;
+        case PKT_GET_DIAGNOSTICS_SUMMARY: handle_get_diagnostics_summary(seq); break;
+        case PKT_RUN_OPENWIRE:            handle_run_openwire(seq); break;
+        case PKT_GET_BOOT_INFO:           handle_get_boot_info(seq); break;
+        case PKT_ENTER_BOOTLOADER:        handle_enter_bootloader(seq, payload, payload_len); break;
+        /* Bootloader update packets not supported in application firmware */
+        case PKT_BOOT_UPDATE_BEGIN:
+        case PKT_BOOT_UPDATE_CHUNK:
+        case PKT_BOOT_UPDATE_FINALIZE:
+        case PKT_BOOT_UPDATE_ABORT:
+            send_error(pkt_id, seq, PROTO_ERR_NOT_SUPPORTED);
+            break;
         default:
             send_error(pkt_id, seq, PROTO_ERR_UNKNOWN_PACKET);
             break;

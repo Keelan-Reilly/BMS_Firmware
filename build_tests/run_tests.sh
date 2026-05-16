@@ -56,6 +56,8 @@ run_test test_bootloader_validate \
     tests/unit/test_bootloader_validate.c \
     bootloader/src/bl_validate.c \
     bootloader/src/bl_jump.c
+run_test test_faults           tests/unit/test_faults.c
+run_test test_balance          tests/unit/test_balance.c
 
 echo "==================================="
 echo "C Unit Tests: $PASS passed, $FAIL failed"

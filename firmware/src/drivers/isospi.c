@@ -91,6 +91,13 @@ BmsResult isospi_write_all(BmsChain chain, uint16_t cmd,
     return BMS_OK;
 }
 
+/* ── Read one byte after a broadcast command (for PLADC polling) ─────────── */
+void isospi_read_byte_after_cmd(BmsChain chain, uint8_t *out) {
+    board_spi_cs_assert(chain);
+    board_spi_transfer(NULL, out, 1u);
+    board_spi_cs_deassert(chain);
+}
+
 /* ── Read all ICs ─────────────────────────────────────────────────────────── */
 BmsResult isospi_read_all(BmsChain chain, uint16_t cmd,
                           uint8_t *data, uint8_t num_ics,

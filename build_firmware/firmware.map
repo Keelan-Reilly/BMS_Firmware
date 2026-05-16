@@ -131,15 +131,11 @@ Discarded input sections
  .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
  .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
  .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
- .text.board_i2c_read_reg
-                0x00000000        0x4 CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
  .text.board_i2c_write_reg
                 0x00000000        0x4 CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
  .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
  .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
  .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
- .text.board_adc_read_raw
-                0x00000000        0x4 CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
  .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
  .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
  .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
@@ -154,8 +150,11 @@ Discarded input sections
  .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
  .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
  .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
- .text.ltc6812_run_open_wire
-                0x00000000        0x4 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/isl28022.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/isl28022.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/isl28022.c.obj
+ .text.isl28022_init
+                0x00000000       0x2c CMakeFiles/bms_firmware.elf.dir/src/drivers/isl28022.c.obj
  .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
  .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
  .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
@@ -165,8 +164,6 @@ Discarded input sections
  .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
  .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
  .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
- .text.bms_faults_clear_latched
-                0x00000000       0x30 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
  .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
  .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
  .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
@@ -174,13 +171,22 @@ Discarded input sections
  .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
  .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
  .text.bms_state_notify_charger_present
-                0x00000000        0x2 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+                0x00000000        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+ .text.bms_state_set_discharge_requested
+                0x00000000        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
  .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
  .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
  .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
  .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
  .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
  .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_diagnostics.c.obj
+ .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_diagnostics.c.obj
+ .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_diagnostics.c.obj
+ .text.bms_diagnostics_init
+                0x00000000       0x6c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_diagnostics.c.obj
+ .text.bms_diagnostics_record_pec_error
+                0x00000000       0x20 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_diagnostics.c.obj
  .text          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
  .data          0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
  .bss           0x00000000        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
@@ -486,6 +492,7 @@ LOAD CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
 LOAD CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
 LOAD CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
 LOAD CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/drivers/isl28022.c.obj
 LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
 LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
 LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
@@ -493,6 +500,7 @@ LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
 LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
 LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
 LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+LOAD CMakeFiles/bms_firmware.elf.dir/src/bms/bms_diagnostics.c.obj
 LOAD CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
 LOAD CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
 START GROUP
@@ -512,7 +520,7 @@ END GROUP
 LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtend.o
 LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
 
-.text           0x08008000     0x2128
+.text           0x08008000     0x2a40
  *(.isr_vector)
  .isr_vector    0x08008000      0x188 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
                 0x08008000                g_pfnVectors
@@ -664,228 +672,266 @@ LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .text.board_i2c_init
                 0x08008544       0x2e CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
                 0x08008544                board_i2c_init
+ .text.board_i2c_read_reg
+                0x08008572        0x4 CMakeFiles/bms_firmware.elf.dir/src/board/board_i2c.c.obj
+                0x08008572                board_i2c_read_reg
  .text.board_adc_init
-                0x08008572        0xe CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
-                0x08008572                board_adc_init
+                0x08008576       0xb4 CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
+                0x08008576                board_adc_init
+ .text.board_adc_read_raw
+                0x0800862a       0x3e CMakeFiles/bms_firmware.elf.dir/src/board/board_adc.c.obj
+                0x0800862a                board_adc_read_raw
  .text.board_can_init
-                0x08008580       0x26 CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
-                0x08008580                board_can_init
- *fill*         0x080085a6        0x2 
+                0x08008668       0x26 CMakeFiles/bms_firmware.elf.dir/src/board/board_can.c.obj
+                0x08008668                board_can_init
+ *fill*         0x0800868e        0x2 
  .text.flash_unlock
-                0x080085a8       0x28 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+                0x08008690       0x28 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
  .text.flash_lock
-                0x080085d0       0x10 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+                0x080086b8       0x10 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
  .text.flash_wait_idle
-                0x080085e0       0x20 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+                0x080086c8       0x20 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
  .text.board_flash_erase_config_slot
-                0x08008600       0x78 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
-                0x08008600                board_flash_erase_config_slot
+                0x080086e8       0x78 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+                0x080086e8                board_flash_erase_config_slot
  .text.board_flash_write
-                0x08008678       0x94 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
-                0x08008678                board_flash_write
+                0x08008760       0x94 CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+                0x08008760                board_flash_write
  .text.board_flash_read
-                0x0800870c        0xa CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
-                0x0800870c                board_flash_read
- *fill*         0x08008716        0x2 
+                0x080087f4        0xa CMakeFiles/bms_firmware.elf.dir/src/board/board_flash.c.obj
+                0x080087f4                board_flash_read
+ *fill*         0x080087fe        0x2 
  .text.isospi_pec15
-                0x08008718       0x64 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
-                0x08008718                isospi_pec15
+                0x08008800       0x64 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+                0x08008800                isospi_pec15
  .text.isospi_wakeup
-                0x0800877c       0x28 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
-                0x0800877c                isospi_wakeup
+                0x08008864       0x28 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+                0x08008864                isospi_wakeup
  .text.isospi_cmd_broadcast
-                0x080087a4       0x3a CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
-                0x080087a4                isospi_cmd_broadcast
+                0x0800888c       0x3a CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+                0x0800888c                isospi_cmd_broadcast
  .text.isospi_write_all
-                0x080087de       0x6a CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
-                0x080087de                isospi_write_all
+                0x080088c6       0x6a CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+                0x080088c6                isospi_write_all
+ .text.isospi_read_byte_after_cmd
+                0x08008930       0x1e CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+                0x08008930                isospi_read_byte_after_cmd
  .text.isospi_read_all
-                0x08008848       0xa4 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
-                0x08008848                isospi_read_all
- .text.poll_adc_done.isra.0
-                0x080088ec       0x24 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x0800894e       0xa4 CMakeFiles/bms_firmware.elf.dir/src/drivers/isospi.c.obj
+                0x0800894e                isospi_read_all
+ .text.poll_adc_done
+                0x080089f2       0x4c CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
  .text.ltc6812_init_chain
-                0x08008910       0x56 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
-                0x08008910                ltc6812_init_chain
- *fill*         0x08008966        0x2 
+                0x08008a3e       0x68 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008a3e                ltc6812_init_chain
+ *fill*         0x08008aa6        0x2 
  .text.ltc6812_read_cells
-                0x08008968       0xbc CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
-                0x08008968                ltc6812_read_cells
- .text.ltc6812_read_aux
-                0x08008a24       0xcc CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
-                0x08008a24                ltc6812_read_aux
+                0x08008aa8       0xb4 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008aa8                ltc6812_read_cells
  .text.ltc6812_temp_chain_set_sensor_bias
-                0x08008af0       0x40 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
-                0x08008af0                ltc6812_temp_chain_set_sensor_bias
+                0x08008b5c       0x44 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008b5c                ltc6812_temp_chain_set_sensor_bias
  .text.ltc6812_temp_chain_clear_s_outputs
-                0x08008b30       0x2a CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
-                0x08008b30                ltc6812_temp_chain_clear_s_outputs
+                0x08008ba0       0x2a CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008ba0                ltc6812_temp_chain_clear_s_outputs
  .text.ltc6812_cell_chain_set_balance
-                0x08008b5a       0x60 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
-                0x08008b5a                ltc6812_cell_chain_set_balance
+                0x08008bca       0xa0 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008bca                ltc6812_cell_chain_set_balance
  .text.ltc6812_cell_chain_clear_balance
-                0x08008bba       0x16 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
-                0x08008bba                ltc6812_cell_chain_clear_balance
+                0x08008c6a       0x16 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008c6a                ltc6812_cell_chain_clear_balance
+ .text.ltc6812_run_open_wire
+                0x08008c80      0x1f0 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x08008c80                ltc6812_run_open_wire
+ .text.isl28022_read
+                0x08008e70       0x42 CMakeFiles/bms_firmware.elf.dir/src/drivers/isl28022.c.obj
+                0x08008e70                isl28022_read
+ *fill*         0x08008eb2        0x2 
  .text.bms_config_compute_crc
-                0x08008bd0       0x48 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
-                0x08008bd0                bms_config_compute_crc
+                0x08008eb4       0x48 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x08008eb4                bms_config_compute_crc
  .text.bms_config_validate
-                0x08008c18      0x29c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
-                0x08008c18                bms_config_validate
+                0x08008efc      0x29c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x08008efc                bms_config_validate
  .text.bms_config_get
-                0x08008eb4        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
-                0x08008eb4                bms_config_get
+                0x08009198        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x08009198                bms_config_get
  .text.bms_config_apply_ram
-                0x08008ebc       0x24 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
-                0x08008ebc                bms_config_apply_ram
+                0x080091a0       0x24 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x080091a0                bms_config_apply_ram
  .text.bms_config_store
-                0x08008ee0       0xe0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
-                0x08008ee0                bms_config_store
+                0x080091c4       0xe0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x080091c4                bms_config_store
  .text.bms_config_load_defaults
-                0x08008fc0       0x1c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
-                0x08008fc0                bms_config_load_defaults
+                0x080092a4       0x1c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x080092a4                bms_config_load_defaults
  .text.bms_config_load
-                0x08008fdc       0x78 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
-                0x08008fdc                bms_config_load
+                0x080092c0       0x78 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x080092c0                bms_config_load
  .text.bms_measurements_run_cell_cycle
-                0x08009054       0x74 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
-                0x08009054                bms_measurements_run_cell_cycle
+                0x08009338       0x84 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x08009338                bms_measurements_run_cell_cycle
  .text.bms_measurements_run_temp_cycle
-                0x080090c8       0xb0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
-                0x080090c8                bms_measurements_run_temp_cycle
+                0x080093bc       0xcc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x080093bc                bms_measurements_run_temp_cycle
+ .text.bms_measurements_update_pack
+                0x08009488       0x24 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x08009488                bms_measurements_update_pack
  .text.bms_measurements_run_pack_cycle
-                0x08009178       0x24 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
-                0x08009178                bms_measurements_run_pack_cycle
+                0x080094ac       0xc4 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x080094ac                bms_measurements_run_pack_cycle
  .text.bms_measurements_get_cells
-                0x0800919c        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
-                0x0800919c                bms_measurements_get_cells
+                0x08009570        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x08009570                bms_measurements_get_cells
  .text.bms_measurements_get_temps
-                0x080091a4        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
-                0x080091a4                bms_measurements_get_temps
+                0x08009578        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x08009578                bms_measurements_get_temps
  .text.bms_measurements_get_pack
-                0x080091ac        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
-                0x080091ac                bms_measurements_get_pack
+                0x08009580        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x08009580                bms_measurements_get_pack
  .text.set_active
-                0x080091b4       0x50 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x08009588       0x50 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
  .text.bms_faults_evaluate
-                0x08009204      0x23e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
-                0x08009204                bms_faults_evaluate
- *fill*         0x08009442        0x2 
+                0x080095d8      0x206 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x080095d8                bms_faults_evaluate
+ *fill*         0x080097de        0x2 
+ .text.bms_faults_report_pec_error
+                0x080097e0       0x64 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x080097e0                bms_faults_report_pec_error
+ .text.bms_faults_clear_pec_counter
+                0x08009844       0x30 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x08009844                bms_faults_clear_pec_counter
+ .text.bms_faults_report_i2c_error
+                0x08009874       0x20 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x08009874                bms_faults_report_i2c_error
+ .text.bms_faults_clear_i2c_error
+                0x08009894       0x10 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x08009894                bms_faults_clear_i2c_error
  .text.bms_faults_get_active
-                0x08009444        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
-                0x08009444                bms_faults_get_active
+                0x080098a4        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x080098a4                bms_faults_get_active
  .text.bms_faults_get_latched
-                0x08009450        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
-                0x08009450                bms_faults_get_latched
+                0x080098b0        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x080098b0                bms_faults_get_latched
+ .text.bms_faults_clear_latched
+                0x080098bc       0x30 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x080098bc                bms_faults_clear_latched
  .text.bms_faults_set
-                0x0800945c       0x40 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
-                0x0800945c                bms_faults_set
+                0x080098ec       0x40 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x080098ec                bms_faults_set
  .text.bms_outputs_apply
-                0x0800949c       0x6c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
-                0x0800949c                bms_outputs_apply
+                0x0800992c       0x74 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+                0x0800992c                bms_outputs_apply
  .text.bms_outputs_deassert_all
-                0x08009508        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
-                0x08009508                bms_outputs_deassert_all
+                0x080099a0        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+                0x080099a0                bms_outputs_deassert_all
  .text.bms_outputs_get_state
-                0x0800950c        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
-                0x0800950c                bms_outputs_get_state
+                0x080099a4        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+                0x080099a4                bms_outputs_get_state
  .text.bms_state_init
-                0x08009510       0x14 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
-                0x08009510                bms_state_init
+                0x080099a8       0x2c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+                0x080099a8                bms_state_init
  .text.bms_state_tick
-                0x08009524       0x5c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
-                0x08009524                bms_state_tick
+                0x080099d4      0x140 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+                0x080099d4                bms_state_tick
  .text.bms_state_get
-                0x08009580        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
-                0x08009580                bms_state_get
+                0x08009b14        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+                0x08009b14                bms_state_get
  .text.bms_state_request_bootloader_entry
-                0x0800958c        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
-                0x0800958c                bms_state_request_bootloader_entry
+                0x08009b20        0xc CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+                0x08009b20                bms_state_request_bootloader_entry
  .text.bms_balance_disable_all
-                0x08009598        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
-                0x08009598                bms_balance_disable_all
+                0x08009b2c        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+                0x08009b2c                bms_balance_disable_all
  .text.bms_balance_tick
-                0x080095a0        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
-                0x080095a0                bms_balance_tick
+                0x08009b34      0x14c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+                0x08009b34                bms_balance_tick
  .text.bms_protocol_crc16
-                0x080095a4       0x2c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
-                0x080095a4                bms_protocol_crc16
+                0x08009c80       0x2c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+                0x08009c80                bms_protocol_crc16
  .text.send_response
-                0x080095d0       0x6c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+                0x08009cac       0x6c CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
  .text.send_error
-                0x0800963c       0x16 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
- *fill*         0x08009652        0x2 
+                0x08009d18       0x16 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ *fill*         0x08009d2e        0x2 
  .text.bms_protocol_init
-                0x08009654       0x10 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
-                0x08009654                bms_protocol_init
+                0x08009d30       0x10 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+                0x08009d30                bms_protocol_init
  .text.bms_protocol_tick
-                0x08009664      0x574 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
-                0x08009664                bms_protocol_tick
+                0x08009d40      0x774 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+                0x08009d40                bms_protocol_tick
+ .text.bms_diagnostics_record_i2c_error
+                0x0800a4b4       0x14 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_diagnostics.c.obj
+                0x0800a4b4                bms_diagnostics_record_i2c_error
+ .text.bms_diagnostics_set_open_wire
+                0x0800a4c8       0x28 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_diagnostics.c.obj
+                0x0800a4c8                bms_diagnostics_set_open_wire
+ .text.bms_diagnostics_get
+                0x0800a4f0        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_diagnostics.c.obj
+                0x0800a4f0                bms_diagnostics_get
  .text.bms_main_loop_init
-                0x08009bd8       0x6c CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
-                0x08009bd8                bms_main_loop_init
+                0x0800a4f8       0x6c CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+                0x0800a4f8                bms_main_loop_init
  .text.bms_main_loop_run
-                0x08009c44       0xfc CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
-                0x08009c44                bms_main_loop_run
+                0x0800a564       0xfc CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+                0x0800a564                bms_main_loop_run
  .text.startup.main
-                0x08009d40       0x38 CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
-                0x08009d40                main
- .text.memset   0x08009d78       0x10 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memset.o)
-                0x08009d78                memset
+                0x0800a660       0x38 CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
+                0x0800a660                main
+ .text.memset   0x0800a698       0x10 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memset.o)
+                0x0800a698                memset
  .text.__libc_init_array
-                0x08009d88       0x48 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-init.o)
-                0x08009d88                __libc_init_array
- .text.memcpy   0x08009dd0       0x1c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memcpy-stub.o)
-                0x08009dd0                memcpy
+                0x0800a6a8       0x48 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-init.o)
+                0x0800a6a8                __libc_init_array
+ .text.memcpy   0x0800a6f0       0x1c /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memcpy-stub.o)
+                0x0800a6f0                memcpy
  *(.rodata)
- .rodata        0x08009dec      0x203 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ .rodata        0x0800a70c      0x203 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
  *(.rodata.*)
- *fill*         0x08009fef        0x1 
- .rodata.aux_cmds.0
-                0x08009ff0        0x8 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+ *fill*         0x0800a90f        0x1 
  .rodata.cv_cmds.1
-                0x08009ff8        0xa CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
+                0x0800a910        0xa CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
  .rodata.k_defaults
-                0x0800a002       0xe2 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x0800a91a       0xe2 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
  .rodata.k_boot_banner
-                0x0800a0e4       0x29 CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
+                0x0800a9fc       0x29 CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
  *(.init)
- *fill*         0x0800a10d        0x3 
- .init          0x0800a110        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crti.o
-                0x0800a110                _init
- .init          0x0800a114        0x8 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
+ *fill*         0x0800aa25        0x3 
+ .init          0x0800aa28        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crti.o
+                0x0800aa28                _init
+ .init          0x0800aa2c        0x8 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
  *(.fini)
- .fini          0x0800a11c        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crti.o
-                0x0800a11c                _fini
- .fini          0x0800a120        0x8 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
-                0x0800a128                        . = ALIGN (0x4)
-                0x0800a128                        _etext = .
+ .fini          0x0800aa34        0x4 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crti.o
+                0x0800aa34                _fini
+ .fini          0x0800aa38        0x8 /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
+                0x0800aa40                        . = ALIGN (0x4)
+                0x0800aa40                        _etext = .
 
-.glue_7         0x0800a128        0x0
- .glue_7        0x0800a128        0x0 linker stubs
+.glue_7         0x0800aa40        0x0
+ .glue_7        0x0800aa40        0x0 linker stubs
 
-.glue_7t        0x0800a128        0x0
- .glue_7t       0x0800a128        0x0 linker stubs
+.glue_7t        0x0800aa40        0x0
+ .glue_7t       0x0800aa40        0x0 linker stubs
 
-.vfp11_veneer   0x0800a128        0x0
- .vfp11_veneer  0x0800a128        0x0 linker stubs
+.vfp11_veneer   0x0800aa40        0x0
+ .vfp11_veneer  0x0800aa40        0x0 linker stubs
 
-.v4_bx          0x0800a128        0x0
- .v4_bx         0x0800a128        0x0 linker stubs
+.v4_bx          0x0800aa40        0x0
+ .v4_bx         0x0800aa40        0x0 linker stubs
 
-.iplt           0x0800a128        0x0
- .iplt          0x0800a128        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+.iplt           0x0800aa40        0x0
+ .iplt          0x0800aa40        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
 
-.rel.dyn        0x0800a128        0x0
- .rel.iplt      0x0800a128        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
+.rel.dyn        0x0800aa40        0x0
+ .rel.iplt      0x0800aa40        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
 
-.ARM.exidx      0x0800a128        0x0
-                0x0800a128                        __exidx_start = .
+.ARM.exidx      0x0800aa40        0x0
+                0x0800aa40                        __exidx_start = .
  *(.ARM.exidx*)
-                0x0800a128                        __exidx_end = .
-                0x0800a128                        _sidata = LOADADDR (.data)
+                0x0800aa40                        __exidx_end = .
+                0x0800aa40                        _sidata = LOADADDR (.data)
 
-.data           0x20000000        0x0 load address 0x0800a128
+.data           0x20000000        0x0 load address 0x0800aa40
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sdata = .
  *(.data)
@@ -893,10 +939,10 @@ LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _edata = .
 
-.igot.plt       0x20000000        0x0 load address 0x0800a128
+.igot.plt       0x20000000        0x0 load address 0x0800aa40
  .igot.plt      0x20000000        0x0 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/gcc/startup_stm32f303xc.s.obj
 
-.bss            0x20000000      0x914 load address 0x0800a128
+.bss            0x20000000      0x98c load address 0x0800aa40
                 0x20000000                        . = ALIGN (0x4)
                 0x20000000                        _sbss = .
  *(.bss)
@@ -916,33 +962,53 @@ LOAD /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-no
  .bss.s_pack    0x200002ec       0x14 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
  .bss.s_temps   0x20000300       0xec CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
  .bss.s_cells   0x200003ec       0xec CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+ .bss.s_pec_consec_temp
+                0x200004d8        0x1 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+ .bss.s_pec_consec_cell
+                0x200004d9        0x1 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+ *fill*         0x200004da        0x6 
  .bss.s_latched
-                0x200004d8        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
- .bss.s_active  0x200004e0        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x200004e0        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+ .bss.s_active  0x200004e8        0x8 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+ .bss.s_precharge_start_ms
+                0x200004f0        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
  .bss.s_bl_entry_requested
-                0x200004e8        0x1 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
- .bss.s_state   0x200004e9        0x1 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
- .bss.s_tx_buf  0x200004ea      0x20a CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
- .bss.s_rx      0x200006f4      0x214 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+                0x200004f4        0x1 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+ .bss.s_discharge_requested
+                0x200004f5        0x1 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+ .bss.s_charger_present
+                0x200004f6        0x1 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+ .bss.s_state   0x200004f7        0x1 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+ .bss.s_phase_active
+                0x200004f8        0x1 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+ *fill*         0x200004f9        0x3 
+ .bss.s_phase_start_ms
+                0x200004fc        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+ .bss.s_is_on_phase
+                0x20000500        0x1 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+ .bss.s_tx_buf  0x20000501      0x20a CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ *fill*         0x2000070b        0x1 
+ .bss.s_rx      0x2000070c      0x214 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+ .bss.s_diag    0x20000920       0x60 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_diagnostics.c.obj
  .bss.s_last_pack_ms
-                0x20000908        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+                0x20000980        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
  .bss.s_last_temp_ms
-                0x2000090c        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+                0x20000984        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
  .bss.s_last_cell_ms
-                0x20000910        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+                0x20000988        0x4 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
  *(COMMON)
-                0x20000914                        . = ALIGN (0x4)
-                0x20000914                        _ebss = .
+                0x2000098c                        . = ALIGN (0x4)
+                0x2000098c                        _ebss = .
 
-.stack          0x20000914     0x1004 load address 0x0800a128
-                0x20000918                        . = ALIGN (0x8)
- *fill*         0x20000914        0x4 
-                0x20000918                        _stack_end = .
-                0x20001918                        . = (. + 0x1000)
- *fill*         0x20000918     0x1000 
-                0x20001918                        . = ALIGN (0x8)
-                0x20001918                        _stack_start = .
-                0x20001918                        _estack = _stack_start
+.stack          0x2000098c     0x1004 load address 0x0800aa40
+                0x20000990                        . = ALIGN (0x8)
+ *fill*         0x2000098c        0x4 
+                0x20000990                        _stack_end = .
+                0x20001990                        . = (. + 0x1000)
+ *fill*         0x20000990     0x1000 
+                0x20001990                        . = ALIGN (0x8)
+                0x20001990                        _stack_start = .
+                0x20001990                        _estack = _stack_start
 OUTPUT(bms_firmware.elf elf32-littlearm)
 LOAD linker stubs
 
@@ -975,31 +1041,35 @@ LOAD linker stubs
  .ARM.attributes
                 0x0000020b       0x2e CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
  .ARM.attributes
-                0x00000239       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
+                0x00000239       0x2e CMakeFiles/bms_firmware.elf.dir/src/drivers/isl28022.c.obj
  .ARM.attributes
-                0x00000267       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
+                0x00000267       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
  .ARM.attributes
-                0x00000295       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
+                0x00000295       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
  .ARM.attributes
-                0x000002c3       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
+                0x000002c3       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_faults.c.obj
  .ARM.attributes
-                0x000002f1       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
+                0x000002f1       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_outputs.c.obj
  .ARM.attributes
-                0x0000031f       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
+                0x0000031f       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_state.c.obj
  .ARM.attributes
-                0x0000034d       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+                0x0000034d       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
  .ARM.attributes
-                0x0000037b       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
+                0x0000037b       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
  .ARM.attributes
-                0x000003a9       0x2e CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
+                0x000003a9       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms/bms_diagnostics.c.obj
  .ARM.attributes
-                0x000003d7       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memset.o)
+                0x000003d7       0x2e CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
  .ARM.attributes
-                0x00000405       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-init.o)
+                0x00000405       0x2e CMakeFiles/bms_firmware.elf.dir/src/main.c.obj
  .ARM.attributes
-                0x00000433       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memcpy-stub.o)
+                0x00000433       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memset.o)
  .ARM.attributes
-                0x00000461       0x1e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
+                0x00000461       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-init.o)
+ .ARM.attributes
+                0x0000048f       0x2e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/nofp/libc_nano.a(libc_a-memcpy-stub.o)
+ .ARM.attributes
+                0x000004bd       0x1e /Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/15.2.1/thumb/v7e-m/nofp/crtn.o
 
 .comment        0x00000000       0x45
  .comment       0x00000000       0x45 CMakeFiles/bms_firmware.elf.dir/vendor/STM32F3xx/Source/Templates/system_stm32f3xx.c.obj
@@ -1024,6 +1094,8 @@ LOAD linker stubs
                                  0x46 (size before relaxing)
  .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/ltc6812.c.obj
                                  0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/drivers/isl28022.c.obj
+                                 0x46 (size before relaxing)
  .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_config.c.obj
                                  0x46 (size before relaxing)
  .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_measurements.c.obj
@@ -1037,6 +1109,8 @@ LOAD linker stubs
  .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_balance.c.obj
                                  0x46 (size before relaxing)
  .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_protocol.c.obj
+                                 0x46 (size before relaxing)
+ .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms/bms_diagnostics.c.obj
                                  0x46 (size before relaxing)
  .comment       0x00000045        0x0 CMakeFiles/bms_firmware.elf.dir/src/bms_main_loop.c.obj
                                  0x46 (size before relaxing)

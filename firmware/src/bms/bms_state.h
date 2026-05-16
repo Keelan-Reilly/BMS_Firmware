@@ -22,3 +22,6 @@ void bms_state_request_bootloader_entry(void);
 
 /* External event: charger detected (from ChargeDetect GPIO). */
 void bms_state_notify_charger_present(bool present);
+
+/* External event: protocol-level request to enable/disable discharge path. */
+void bms_state_set_discharge_requested(bool requested);

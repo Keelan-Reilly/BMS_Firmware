@@ -20,27 +20,68 @@ void test_no_faults_all_permissions_granted(void) {
     TEST_ASSERT_TRUE(s & OUTPUTS_BIT_MASTER_OK);
     TEST_ASSERT_TRUE(s & OUTPUTS_BIT_DISCHARGE);
     TEST_ASSERT_TRUE(s & OUTPUTS_BIT_CHARGE);
+    TEST_ASSERT_TRUE(s & OUTPUTS_BIT_CHARGER_SAFETY);
 }
 
 void test_fatal_fault_deasserts_all(void) {
     BmsPermissionRequest req = all_wanted();
+    /* WATCHDOG is a FATAL fault — must trigger emergency deassert */
+    bms_outputs_apply(&req, FAULT_MASK(FAULT_BIT_WATCHDOG), 0u);
+    TEST_ASSERT_EQUAL(0u, bms_outputs_get_state());
+}
+
+void test_all_blocking_fault_deasserts_all(void) {
+    BmsPermissionRequest req = all_wanted();
+    /* CONFIG_INVALID blocks all permissions (but is not FATAL — device still runs) */
     bms_outputs_apply(&req, FAULT_MASK(FAULT_BIT_CONFIG_INVALID), 0u);
     TEST_ASSERT_EQUAL(0u, bms_outputs_get_state());
 }
 
-void test_discharge_blocking_fault_blocks_discharge_not_charge(void) {
+void test_cell_uv_blocks_discharge_not_charge(void) {
     BmsPermissionRequest req = all_wanted();
-    bms_outputs_apply(&req, FAULT_MASK(FAULT_BIT_CELL_UV_HARD), 0u);
+    /* CELL_UV blocks discharge+master_ok but NOT charge (per fault_bits.yaml bit 1) */
+    bms_outputs_apply(&req, FAULT_MASK(FAULT_BIT_CELL_UV), 0u);
     BmsOutputsBitmask s = bms_outputs_get_state();
     TEST_ASSERT_FALSE(s & OUTPUTS_BIT_DISCHARGE);
-    /* Charge may still be allowed (UV doesn't block charge in this design) */
+    TEST_ASSERT_FALSE(s & OUTPUTS_BIT_MASTER_OK);
+    TEST_ASSERT_TRUE(s & OUTPUTS_BIT_CHARGE);
 }
 
-void test_ov_hard_fault_blocks_charge(void) {
+void test_cell_ov_blocks_charge(void) {
     BmsPermissionRequest req = all_wanted();
-    bms_outputs_apply(&req, FAULT_MASK(FAULT_BIT_CELL_OV_HARD), 0u);
+    /* CELL_OV blocks all including charge */
+    bms_outputs_apply(&req, FAULT_MASK(FAULT_BIT_CELL_OV), 0u);
     BmsOutputsBitmask s = bms_outputs_get_state();
     TEST_ASSERT_FALSE(s & OUTPUTS_BIT_CHARGE);
+    TEST_ASSERT_FALSE(s & OUTPUTS_BIT_DISCHARGE);
+}
+
+void test_temp_over_charge_blocks_charge_not_discharge(void) {
+    BmsPermissionRequest req = all_wanted();
+    /* TEMP_OVER_CHARGE blocks charge+charger_safety but NOT discharge (bit 6) */
+    bms_outputs_apply(&req, FAULT_MASK(FAULT_BIT_TEMP_OVER_CHARGE), 0u);
+    BmsOutputsBitmask s = bms_outputs_get_state();
+    TEST_ASSERT_FALSE(s & OUTPUTS_BIT_CHARGE);
+    TEST_ASSERT_FALSE(s & OUTPUTS_BIT_CHARGER_SAFETY);
+    TEST_ASSERT_TRUE(s & OUTPUTS_BIT_DISCHARGE);
+    TEST_ASSERT_TRUE(s & OUTPUTS_BIT_MASTER_OK);
+}
+
+void test_temp_over_discharge_blocks_discharge_not_charge(void) {
+    BmsPermissionRequest req = all_wanted();
+    bms_outputs_apply(&req, FAULT_MASK(FAULT_BIT_TEMP_OVER_DISCHARGE), 0u);
+    BmsOutputsBitmask s = bms_outputs_get_state();
+    TEST_ASSERT_FALSE(s & OUTPUTS_BIT_DISCHARGE);
+    TEST_ASSERT_TRUE(s & OUTPUTS_BIT_CHARGE);
+}
+
+void test_precharge_timeout_blocks_only_master_ok(void) {
+    BmsPermissionRequest req = all_wanted();
+    bms_outputs_apply(&req, FAULT_MASK(FAULT_BIT_PRECHARGE_TIMEOUT), 0u);
+    BmsOutputsBitmask s = bms_outputs_get_state();
+    TEST_ASSERT_FALSE(s & OUTPUTS_BIT_MASTER_OK);
+    TEST_ASSERT_TRUE(s & OUTPUTS_BIT_DISCHARGE);
+    TEST_ASSERT_TRUE(s & OUTPUTS_BIT_CHARGE);
 }
 
 void test_deassert_all_clears_all_permissions(void) {
@@ -61,8 +102,12 @@ int main(void) {
     UNITY_BEGIN();
     RUN_TEST(test_no_faults_all_permissions_granted);
     RUN_TEST(test_fatal_fault_deasserts_all);
-    RUN_TEST(test_discharge_blocking_fault_blocks_discharge_not_charge);
-    RUN_TEST(test_ov_hard_fault_blocks_charge);
+    RUN_TEST(test_all_blocking_fault_deasserts_all);
+    RUN_TEST(test_cell_uv_blocks_discharge_not_charge);
+    RUN_TEST(test_cell_ov_blocks_charge);
+    RUN_TEST(test_temp_over_charge_blocks_charge_not_discharge);
+    RUN_TEST(test_temp_over_discharge_blocks_discharge_not_charge);
+    RUN_TEST(test_precharge_timeout_blocks_only_master_ok);
     RUN_TEST(test_deassert_all_clears_all_permissions);
     RUN_TEST(test_no_permission_wanted_no_output_set);
     return UNITY_END();

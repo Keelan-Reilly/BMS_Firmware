@@ -77,67 +77,113 @@ typedef struct {
 } PackMeasurement;
 
 /* ── Fault bitmaps ────────────────────────────────────────────────────────── */
-/* Bit positions — see protocol/fault_bits.yaml for full definitions. */
+/* Bit positions match protocol/fault_bits.yaml exactly.
+ * Do not reorder; the bitmap is transmitted over protocol as-is. */
 typedef enum {
-    FAULT_BIT_CELL_UV_HARD        = 0,
-    FAULT_BIT_CELL_UV_SOFT        = 1,
-    FAULT_BIT_CELL_OV_HARD        = 2,
-    FAULT_BIT_CELL_OV_SOFT        = 3,
-    FAULT_BIT_CELL_MEASUREMENT    = 4,
-    FAULT_BIT_CELL_OPEN_WIRE      = 5,
-    FAULT_BIT_TEMP_HIGH_CHARGE    = 6,
-    FAULT_BIT_TEMP_HIGH_DISCHARGE = 7,
-    FAULT_BIT_TEMP_COLD_CHARGE    = 8,
-    FAULT_BIT_TEMP_COLD_DISCHARGE = 9,
-    FAULT_BIT_TEMP_MEASUREMENT    = 10,
-    FAULT_BIT_OVERCURRENT_HARD    = 11,
-    FAULT_BIT_OVERCURRENT_WARN    = 12,
-    FAULT_BIT_VBAT_INVALID        = 13,
-    FAULT_BIT_VPACK_INVALID       = 14,
-    FAULT_BIT_PRECHARGE_TIMEOUT   = 15,
-    FAULT_BIT_PRECHARGE_DELTA     = 16,
-    FAULT_BIT_CONFIG_INVALID      = 17,
-    FAULT_BIT_STALE_CELLS         = 18,
-    FAULT_BIT_STALE_TEMPS         = 19,
-    FAULT_BIT_STALE_PACK          = 20,
-    FAULT_BIT_PEC_ERROR           = 21,
-    FAULT_BIT_I2C_ERROR           = 22,
-    FAULT_BIT_INTERNAL            = 23,
-    FAULT_BIT_WATCHDOG            = 24,
+    FAULT_BIT_CELL_OV                    = 0,   /* Cell OV hard — blocks all */
+    FAULT_BIT_CELL_UV                    = 1,   /* Cell UV hard — blocks discharge+master_ok */
+    FAULT_BIT_CELL_OV_SOFT               = 2,   /* Cell OV soft — warning only */
+    FAULT_BIT_CELL_UV_SOFT               = 3,   /* Cell UV soft — warning only */
+    FAULT_BIT_CELL_READ_INVALID          = 4,   /* PEC/stale cell data — blocks all */
+    FAULT_BIT_CELL_OPENWIRE              = 5,   /* Open-wire on cell — blocks all */
+    FAULT_BIT_TEMP_OVER_CHARGE           = 6,   /* Temp > charge hard limit — blocks charge */
+    FAULT_BIT_TEMP_OVER_DISCHARGE        = 7,   /* Temp > discharge hard limit — blocks discharge */
+    FAULT_BIT_TEMP_OVER_ABS              = 8,   /* Temp > absolute max — blocks all */
+    FAULT_BIT_TEMP_READ_INVALID          = 9,   /* PEC/stale temp data — blocks all */
+    FAULT_BIT_TEMP_COVERAGE              = 10,  /* Required temp sensors invalid — blocks all */
+    FAULT_BIT_VBAT_INVALID               = 11,  /* ISL28022 read fail — blocks all */
+    FAULT_BIT_VPACK_INVALID              = 12,  /* ADC read fail — blocks discharge+master_ok */
+    FAULT_BIT_PRECHARGE_TIMEOUT          = 13,  /* Precharge timed out — blocks master_ok */
+    FAULT_BIT_PRECHARGE_DELTA            = 14,  /* Vpack/Vbat delta after precharge — blocks discharge+master_ok */
+    FAULT_BIT_ISOSPI_CELL                = 15,  /* CELL chain comms error — blocks all */
+    FAULT_BIT_ISOSPI_TEMP                = 16,  /* TEMP chain comms error — blocks all */
+    FAULT_BIT_I2C_ISL28022               = 17,  /* ISL28022 I2C error — blocks all */
+    FAULT_BIT_WATCHDOG                   = 18,  /* IWDG fired — FATAL — blocks all */
+    FAULT_BIT_CONFIG_INVALID             = 19,  /* Stored config invalid — blocks all */
+    FAULT_BIT_OVERCURRENT                = 20,  /* |I| > overcurrent_hard_ma — blocks all */
+    FAULT_BIT_BALANCE_TEMP_VIOLATION     = 21,  /* Temp exceeded balance inhibit — no blocks */
+    FAULT_BIT_TEMP_CHAIN_BALANCE_ATTEMPT = 22,  /* DCC write to TEMP chain — FATAL */
+    FAULT_BIT_TEMP_COLD_CHARGE           = 23,  /* Temp < cold charge limit — blocks charge */
+    FAULT_BIT_TEMP_COLD_DISCHARGE        = 24,  /* Temp < cold discharge limit — warning */
     /* bits 25–63 reserved */
 } FaultBit;
 
 #define FAULT_MASK(bit)   ((uint64_t)1u << (bit))
 
-/* Severity threshold for deassert-all / halt behaviour */
-#define FAULT_FATAL_MASK  (FAULT_MASK(FAULT_BIT_CONFIG_INVALID)  | \
-                           FAULT_MASK(FAULT_BIT_INTERNAL)         | \
-                           FAULT_MASK(FAULT_BIT_WATCHDOG))
+/* Fatal: firmware bug or catastrophic hardware event → IWDG halt */
+#define FAULT_FATAL_MASK \
+    (FAULT_MASK(FAULT_BIT_WATCHDOG)                   | \
+     FAULT_MASK(FAULT_BIT_TEMP_CHAIN_BALANCE_ATTEMPT))
 
+/* Blocks master_ok output */
+#define FAULT_BLOCKS_MASTER_OK_MASK \
+    (FAULT_MASK(FAULT_BIT_CELL_OV)           | \
+     FAULT_MASK(FAULT_BIT_CELL_UV)           | \
+     FAULT_MASK(FAULT_BIT_CELL_READ_INVALID) | \
+     FAULT_MASK(FAULT_BIT_CELL_OPENWIRE)     | \
+     FAULT_MASK(FAULT_BIT_TEMP_OVER_ABS)     | \
+     FAULT_MASK(FAULT_BIT_TEMP_READ_INVALID) | \
+     FAULT_MASK(FAULT_BIT_TEMP_COVERAGE)     | \
+     FAULT_MASK(FAULT_BIT_VBAT_INVALID)      | \
+     FAULT_MASK(FAULT_BIT_VPACK_INVALID)     | \
+     FAULT_MASK(FAULT_BIT_PRECHARGE_TIMEOUT) | \
+     FAULT_MASK(FAULT_BIT_PRECHARGE_DELTA)   | \
+     FAULT_MASK(FAULT_BIT_ISOSPI_CELL)       | \
+     FAULT_MASK(FAULT_BIT_ISOSPI_TEMP)       | \
+     FAULT_MASK(FAULT_BIT_I2C_ISL28022)      | \
+     FAULT_MASK(FAULT_BIT_WATCHDOG)          | \
+     FAULT_MASK(FAULT_BIT_CONFIG_INVALID)    | \
+     FAULT_MASK(FAULT_BIT_OVERCURRENT)       | \
+     FAULT_MASK(FAULT_BIT_TEMP_CHAIN_BALANCE_ATTEMPT))
+
+/* Blocks discharge_perm output */
 #define FAULT_BLOCKS_DISCHARGE_MASK \
-    (FAULT_MASK(FAULT_BIT_CELL_UV_HARD)        | \
-     FAULT_MASK(FAULT_BIT_CELL_OV_HARD)        | \
-     FAULT_MASK(FAULT_BIT_CELL_MEASUREMENT)    | \
-     FAULT_MASK(FAULT_BIT_TEMP_HIGH_DISCHARGE) | \
-     FAULT_MASK(FAULT_BIT_TEMP_COLD_DISCHARGE) | \
-     FAULT_MASK(FAULT_BIT_TEMP_MEASUREMENT)    | \
-     FAULT_MASK(FAULT_BIT_OVERCURRENT_HARD)    | \
-     FAULT_MASK(FAULT_BIT_VBAT_INVALID)        | \
-     FAULT_MASK(FAULT_BIT_VPACK_INVALID)       | \
-     FAULT_MASK(FAULT_BIT_STALE_CELLS)         | \
-     FAULT_MASK(FAULT_BIT_STALE_PACK)          | \
-     FAULT_MASK(FAULT_BIT_CONFIG_INVALID))
+    (FAULT_MASK(FAULT_BIT_CELL_OV)               | \
+     FAULT_MASK(FAULT_BIT_CELL_UV)               | \
+     FAULT_MASK(FAULT_BIT_CELL_READ_INVALID)     | \
+     FAULT_MASK(FAULT_BIT_CELL_OPENWIRE)         | \
+     FAULT_MASK(FAULT_BIT_TEMP_OVER_DISCHARGE)   | \
+     FAULT_MASK(FAULT_BIT_TEMP_OVER_ABS)         | \
+     FAULT_MASK(FAULT_BIT_TEMP_READ_INVALID)     | \
+     FAULT_MASK(FAULT_BIT_TEMP_COVERAGE)         | \
+     FAULT_MASK(FAULT_BIT_VBAT_INVALID)          | \
+     FAULT_MASK(FAULT_BIT_VPACK_INVALID)         | \
+     FAULT_MASK(FAULT_BIT_PRECHARGE_DELTA)       | \
+     FAULT_MASK(FAULT_BIT_ISOSPI_CELL)           | \
+     FAULT_MASK(FAULT_BIT_ISOSPI_TEMP)           | \
+     FAULT_MASK(FAULT_BIT_I2C_ISL28022)          | \
+     FAULT_MASK(FAULT_BIT_WATCHDOG)              | \
+     FAULT_MASK(FAULT_BIT_CONFIG_INVALID)        | \
+     FAULT_MASK(FAULT_BIT_OVERCURRENT)           | \
+     FAULT_MASK(FAULT_BIT_TEMP_CHAIN_BALANCE_ATTEMPT))
 
+/* Blocks charge_perm output */
 #define FAULT_BLOCKS_CHARGE_MASK \
-    (FAULT_MASK(FAULT_BIT_CELL_OV_HARD)        | \
-     FAULT_MASK(FAULT_BIT_CELL_MEASUREMENT)    | \
-     FAULT_MASK(FAULT_BIT_TEMP_HIGH_CHARGE)    | \
-     FAULT_MASK(FAULT_BIT_TEMP_COLD_CHARGE)    | \
-     FAULT_MASK(FAULT_BIT_TEMP_MEASUREMENT)    | \
-     FAULT_MASK(FAULT_BIT_VBAT_INVALID)        | \
-     FAULT_MASK(FAULT_BIT_STALE_CELLS)         | \
-     FAULT_MASK(FAULT_BIT_STALE_PACK)          | \
-     FAULT_MASK(FAULT_BIT_CONFIG_INVALID))
+    (FAULT_MASK(FAULT_BIT_CELL_OV)               | \
+     FAULT_MASK(FAULT_BIT_CELL_READ_INVALID)     | \
+     FAULT_MASK(FAULT_BIT_CELL_OPENWIRE)         | \
+     FAULT_MASK(FAULT_BIT_TEMP_OVER_CHARGE)      | \
+     FAULT_MASK(FAULT_BIT_TEMP_OVER_ABS)         | \
+     FAULT_MASK(FAULT_BIT_TEMP_READ_INVALID)     | \
+     FAULT_MASK(FAULT_BIT_TEMP_COVERAGE)         | \
+     FAULT_MASK(FAULT_BIT_VBAT_INVALID)          | \
+     FAULT_MASK(FAULT_BIT_ISOSPI_CELL)           | \
+     FAULT_MASK(FAULT_BIT_ISOSPI_TEMP)           | \
+     FAULT_MASK(FAULT_BIT_I2C_ISL28022)          | \
+     FAULT_MASK(FAULT_BIT_WATCHDOG)              | \
+     FAULT_MASK(FAULT_BIT_CONFIG_INVALID)        | \
+     FAULT_MASK(FAULT_BIT_OVERCURRENT)           | \
+     FAULT_MASK(FAULT_BIT_TEMP_CHAIN_BALANCE_ATTEMPT) | \
+     FAULT_MASK(FAULT_BIT_TEMP_COLD_CHARGE))
+
+/* Blocks charger_safety output (same as charge for this design) */
+#define FAULT_BLOCKS_CHARGER_SAFETY_MASK   FAULT_BLOCKS_CHARGE_MASK
+
+/* Mask of faults that disable cell balancing */
+#define FAULT_BLOCKS_BALANCING_MASK \
+    (FAULT_BLOCKS_DISCHARGE_MASK                        | \
+     FAULT_MASK(FAULT_BIT_BALANCE_TEMP_VIOLATION)       | \
+     FAULT_MASK(FAULT_BIT_TEMP_CHAIN_BALANCE_ATTEMPT))
 
 /* ── Permission request struct (passed to bms_outputs) ───────────────────── */
 typedef struct {

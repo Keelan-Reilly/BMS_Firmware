@@ -24,6 +24,7 @@ set(BOARD_SOURCES
 set(DRIVER_SOURCES
     src/drivers/isospi.c
     src/drivers/ltc6812.c
+    src/drivers/isl28022.c
 )
 
 set(BMS_SOURCES
@@ -34,6 +35,7 @@ set(BMS_SOURCES
     src/bms/bms_state.c
     src/bms/bms_balance.c
     src/bms/bms_protocol.c
+    src/bms/bms_diagnostics.c
     src/bms_main_loop.c
     src/main.c
 )

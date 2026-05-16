@@ -10,20 +10,29 @@ Usage (subprocess):
 
 Usage (in-process):
   from tool.src.fake_target.fake_target import FakeTargetInProcess
-  target = FakeTargetInProcess()
-  target.start()
-  # Use target.client_port for BmsProtocolClient
+  ft = FakeTargetInProcess()
+  client_bytes_in, server_bytes_in = ft.get_pipes()
+  # Feed frames via server_bytes_in; responses arrive on client_bytes_in
+
+Simulation modes:
+  - 'healthy'       — nominal voltages/temps, no faults
+  - 'cell_uv'       — one cell at 2400 mV (UV fault bit 1)
+  - 'cell_ov'       — one cell at 4300 mV (OV fault bit 0)
+  - 'temp_invalid'  — all temps INVALID (bit 9 active)
+  - 'isospi_fault'  — ISOSPI_CELL fault active (bit 15)
+  - 'config_error'  — CONFIG_INVALID fault active (bit 19)
 """
 import struct
 import threading
 import io
 from typing import Optional
 
-from ..protocol.framing import encode_frame, FrameDecoder, FrameError
+from ..protocol.framing import encode_frame, FrameDecoder
 from ..protocol.packet_defs import (
     PKT_GET_CAPABILITIES, PKT_GET_VALUES, PKT_GET_CELLS, PKT_GET_TEMPS,
     PKT_GET_FAULTS, PKT_CLEAR_LATCHED_FAULTS,
     PKT_GET_CONFIG, PKT_VALIDATE_CONFIG, PKT_SET_CONFIG_RAM, PKT_STORE_CONFIG,
+    PKT_GET_DIAGNOSTICS_SUMMARY, PKT_RUN_OPENWIRE,
     PKT_GET_BOOT_INFO, PKT_ENTER_BOOTLOADER,
     PKT_BOOT_UPDATE_BEGIN, PKT_BOOT_UPDATE_CHUNK,
     PKT_BOOT_UPDATE_FINALIZE, PKT_BOOT_UPDATE_ABORT,
@@ -32,24 +41,64 @@ from ..protocol.packet_defs import (
 )
 from ..config.schema import BmsConfig
 
+TEMP_INVALID_CX10 = -0x8000  # sentinel
 
-TEMP_INVALID = 0x8000  # as int16, represents INVALID
+# Fault bit positions (must match protocol/fault_bits.yaml)
+FAULT_BIT_CELL_OV          = 0
+FAULT_BIT_CELL_UV          = 1
+FAULT_BIT_TEMP_READ_INVALID = 9
+FAULT_BIT_ISOSPI_CELL      = 15
+FAULT_BIT_CONFIG_INVALID   = 19
 
+BL_ENTRY_FLAG = 0xB007B007
+
+# ── Simulation mode presets ───────────────────────────────────────────────────
+
+def _apply_simulation_mode(target: 'FakeTarget', mode: str) -> None:
+    """Configure FakeTarget state for a named simulation mode."""
+    if mode == 'healthy':
+        pass  # defaults are healthy
+    elif mode == 'cell_uv':
+        cell_mv = [3700] * TOTAL_CELL_COUNT
+        cell_mv[0] = 2400
+        target.set_cell_mv(cell_mv)
+        target.inject_fault(FAULT_BIT_CELL_UV)
+    elif mode == 'cell_ov':
+        cell_mv = [3700] * TOTAL_CELL_COUNT
+        cell_mv[0] = 4300
+        target.set_cell_mv(cell_mv)
+        target.inject_fault(FAULT_BIT_CELL_OV)
+    elif mode == 'temp_invalid':
+        target.set_temps_cx10([TEMP_INVALID_CX10] * TOTAL_TEMP_COUNT)
+        target.inject_fault(FAULT_BIT_TEMP_READ_INVALID)
+    elif mode == 'isospi_fault':
+        target.inject_fault(FAULT_BIT_ISOSPI_CELL)
+    elif mode == 'config_error':
+        target.inject_fault(FAULT_BIT_CONFIG_INVALID)
+    else:
+        raise ValueError(f"Unknown simulation mode: {mode!r}")
+
+
+# ── Core fake target ──────────────────────────────────────────────────────────
 
 class FakeTarget:
-    """Core fake target state machine. Feed bytes in, call process() to get response bytes."""
+    """Core fake target state machine. Feed bytes in, get response bytes out."""
 
-    def __init__(self):
+    def __init__(self, mode: str = 'healthy'):
         self._decoder = FrameDecoder()
         self._config = BmsConfig()
         self._active_faults  = 0
         self._latched_faults = 0
-        self._seq_out = 0
-        # Default cell voltages: 3700 mV each
         self._cell_mv = [3700] * TOTAL_CELL_COUNT
-        # Default temps: 250 (25.0°C)
         self._temps_cx10 = [250] * TOTAL_TEMP_COUNT
         self._uptime_ms = 0
+        self._pec_errors_cell = 0
+        self._pec_errors_temp = 0
+        self._i2c_errors = 0
+        self._open_wire_valid = False
+        self._open_wire_detected = [False] * TOTAL_CELL_COUNT
+        self._reset_cause = 0x01  # POR on fresh boot
+        _apply_simulation_mode(self, mode)
 
     def feed(self, data: bytes) -> bytes:
         """Feed incoming bytes; returns all response bytes."""
@@ -71,61 +120,61 @@ class FakeTarget:
         seq     = frame['seq']
         payload = frame['payload']
 
-        if pkt_id == PKT_GET_CAPABILITIES:
-            return self._h_capabilities(seq)
-        elif pkt_id == PKT_GET_VALUES:
-            return self._h_values(seq)
-        elif pkt_id == PKT_GET_CELLS:
-            return self._h_cells(seq, payload)
-        elif pkt_id == PKT_GET_TEMPS:
-            return self._h_temps(seq)
-        elif pkt_id == PKT_GET_FAULTS:
-            return self._h_faults(seq)
-        elif pkt_id == PKT_CLEAR_LATCHED_FAULTS:
-            return self._h_clear_latched(seq, payload)
-        elif pkt_id == PKT_GET_CONFIG:
-            return self._h_get_config(seq)
-        elif pkt_id == PKT_VALIDATE_CONFIG:
-            return self._h_validate_config(seq, payload)
-        elif pkt_id == PKT_SET_CONFIG_RAM:
-            return self._h_set_config_ram(seq, payload)
-        elif pkt_id == PKT_STORE_CONFIG:
-            return self._error(pkt_id, seq, 0x0A)  # ERR_NOT_SUPPORTED
-        elif pkt_id == PKT_GET_BOOT_INFO:
-            return self._h_boot_info(seq)
-        elif pkt_id == PKT_ENTER_BOOTLOADER:
-            return self._h_enter_bootloader(seq, payload)
-        else:
-            return self._error(pkt_id, seq, 0x01)  # ERR_UNKNOWN_PACKET
+        dispatch = {
+            PKT_GET_CAPABILITIES:       lambda: self._h_capabilities(seq),
+            PKT_GET_VALUES:             lambda: self._h_values(seq),
+            PKT_GET_CELLS:              lambda: self._h_cells(seq, payload),
+            PKT_GET_TEMPS:              lambda: self._h_temps(seq),
+            PKT_GET_FAULTS:             lambda: self._h_faults(seq),
+            PKT_CLEAR_LATCHED_FAULTS:   lambda: self._h_clear_latched(seq, payload),
+            PKT_GET_CONFIG:             lambda: self._h_get_config(seq),
+            PKT_VALIDATE_CONFIG:        lambda: self._h_validate_config(seq, payload),
+            PKT_SET_CONFIG_RAM:         lambda: self._h_set_config_ram(seq, payload),
+            PKT_STORE_CONFIG:           lambda: self._error(pkt_id, seq, 0x0A),
+            PKT_GET_DIAGNOSTICS_SUMMARY: lambda: self._h_diagnostics_summary(seq),
+            PKT_RUN_OPENWIRE:           lambda: self._h_run_openwire(seq),
+            PKT_GET_BOOT_INFO:          lambda: self._h_boot_info(seq),
+            PKT_ENTER_BOOTLOADER:       lambda: self._h_enter_bootloader(seq, payload),
+            PKT_BOOT_UPDATE_BEGIN:      lambda: self._error(pkt_id, seq, 0x0A),
+            PKT_BOOT_UPDATE_CHUNK:      lambda: self._error(pkt_id, seq, 0x0A),
+            PKT_BOOT_UPDATE_FINALIZE:   lambda: self._error(pkt_id, seq, 0x0A),
+            PKT_BOOT_UPDATE_ABORT:      lambda: self._error(pkt_id, seq, 0x0A),
+        }
+        handler = dispatch.get(pkt_id)
+        if handler is None:
+            return self._error(pkt_id, seq, 0x01)
+        return handler()
+
+    # ── Packet handlers ───────────────────────────────────────────────────────
 
     def _h_capabilities(self, seq: int) -> bytes:
-        flags = 0x1F  # all features
-        # Build manually to be byte-exact (26 bytes)
         resp = bytearray(26)
-        struct.pack_into('<H', resp, 0, FIRMWARE_TYPE_BMS_APP)
-        resp[2] = 0; resp[3] = 1; resp[4] = 0  # version 0.1.0
-        struct.pack_into('<H', resp, 5, HW_PROFILE_ID)
-        struct.pack_into('<H', resp, 7, PROTOCOL_VERSION)
-        struct.pack_into('<H', resp, 9, 1)       # config schema
-        resp[11] = TOTAL_CELL_COUNT
-        resp[12] = TOTAL_TEMP_COUNT
-        struct.pack_into('<I', resp, 13, flags)
-        resp[17] = 9
-        struct.pack_into('<I', resp, 18, 188*1024)
-        struct.pack_into('<I', resp, 22, 8*1024)
+        struct.pack_into('<H', resp, 0,  FIRMWARE_TYPE_BMS_APP)
+        resp[2]  = 0   # major
+        resp[3]  = 1   # minor
+        resp[4]  = 0   # patch
+        struct.pack_into('<H', resp, 5,  HW_PROFILE_ID)
+        struct.pack_into('<H', resp, 7,  PROTOCOL_VERSION)
+        struct.pack_into('<H', resp, 9,  1)   # config_schema_version
+        resp[11] = TOTAL_CELL_COUNT & 0xFF
+        resp[12] = TOTAL_TEMP_COUNT & 0xFF
+        struct.pack_into('<I', resp, 13, 0x07)   # feature flags: cell+temp+balance
+        resp[17] = 9   # max_payload_log2
+        struct.pack_into('<I', resp, 18, 188 * 1024)  # app_region_size
+        struct.pack_into('<I', resp, 22, 8 * 1024)    # config_slot_size
         return self._respond(PKT_GET_CAPABILITIES, bytes(resp), seq)
 
     def _h_values(self, seq: int) -> bytes:
         resp = bytearray(36)
-        struct.pack_into('<i', resp, 0, 0)         # vbat_mv (invalid)
-        struct.pack_into('<i', resp, 4, 0)         # vpack_mv
-        struct.pack_into('<i', resp, 8, 0)         # i_batt_ma
-        struct.pack_into('<H', resp, 12, 1)        # state: STANDBY
+        struct.pack_into('<i', resp, 0,  0)          # vbat_mv
+        struct.pack_into('<i', resp, 4,  0)          # vpack_mv
+        struct.pack_into('<i', resp, 8,  0)          # i_batt_ma
+        struct.pack_into('<H', resp, 12, 1)          # state: STANDBY
         struct.pack_into('<Q', resp, 14, self._active_faults)
         struct.pack_into('<Q', resp, 22, self._latched_faults)
-        resp[30] = 0                               # outputs_state
+        resp[30] = 0                                 # outputs_state
         struct.pack_into('<I', resp, 31, self._uptime_ms)
-        resp[35] = 0                               # measurement_flags (all invalid)
+        resp[35] = 0
         return self._respond(PKT_GET_VALUES, bytes(resp), seq)
 
     def _h_cells(self, seq: int, payload: bytes) -> bytes:
@@ -133,10 +182,9 @@ class FakeTarget:
         resp = bytearray(156 + (10 if include_validity else 0))
         struct.pack_into('<H', resp, 0, TOTAL_CELL_COUNT)
         for i, mv in enumerate(self._cell_mv):
-            struct.pack_into('<H', resp, 2 + i*2, mv)
+            struct.pack_into('<H', resp, 2 + i*2, mv & 0xFFFF)
         struct.pack_into('<I', resp, 152, self._uptime_ms)
         if include_validity:
-            # All cells valid
             for i in range(TOTAL_CELL_COUNT):
                 resp[156 + i//8] |= (1 << (i % 8))
         return self._respond(PKT_GET_CELLS, bytes(resp), seq)
@@ -145,7 +193,7 @@ class FakeTarget:
         resp = bytearray(2 + TOTAL_TEMP_COUNT * 2)
         struct.pack_into('<H', resp, 0, TOTAL_TEMP_COUNT)
         for i, t in enumerate(self._temps_cx10):
-            struct.pack_into('<h', resp, 2 + i*2, t)
+            struct.pack_into('<h', resp, 2 + i*2, t & 0xFFFF)
         return self._respond(PKT_GET_TEMPS, bytes(resp), seq)
 
     def _h_faults(self, seq: int) -> bytes:
@@ -153,9 +201,7 @@ class FakeTarget:
         return self._respond(PKT_GET_FAULTS, resp, seq)
 
     def _h_clear_latched(self, seq: int, payload: bytes) -> bytes:
-        if len(payload) < 8:
-            return self._error(PKT_CLEAR_LATCHED_FAULTS, seq, 0x02)
-        mask = struct.unpack_from('<Q', payload)[0]
+        mask = struct.unpack_from('<Q', payload)[0] if len(payload) >= 8 else (2**64 - 1)
         clearable = mask & self._latched_faults & ~self._active_faults
         self._latched_faults &= ~clearable
         return self._respond(PKT_CLEAR_LATCHED_FAULTS, struct.pack('<Q', clearable), seq)
@@ -169,8 +215,7 @@ class FakeTarget:
             return self._error(PKT_VALIDATE_CONFIG, seq, 0x02)
         cfg = BmsConfig.unpack(payload)
         ok, err_off, _ = validate_config(cfg)
-        resp = struct.pack('<BH', 0 if ok else 1, err_off)
-        return self._respond(PKT_VALIDATE_CONFIG, resp, seq)
+        return self._respond(PKT_VALIDATE_CONFIG, struct.pack('<BH', 0 if ok else 1, err_off), seq)
 
     def _h_set_config_ram(self, seq: int, payload: bytes) -> bytes:
         from ..config.validator import validate_config
@@ -180,23 +225,54 @@ class FakeTarget:
         ok, err_off, _ = validate_config(cfg)
         if ok:
             self._config = cfg
-        resp = struct.pack('<BH', 0 if ok else 1, err_off)
-        return self._respond(PKT_SET_CONFIG_RAM, resp, seq)
+        return self._respond(PKT_SET_CONFIG_RAM, struct.pack('<BH', 0 if ok else 1, err_off), seq)
+
+    def _h_diagnostics_summary(self, seq: int) -> bytes:
+        # Layout: reset_cause(1) + pec_cell(4) + pec_temp(4) + i2c(4) +
+        #          open_wire_valid(1) + open_wire_mask(10) + uptime_ms(4) = 28 bytes
+        resp = bytearray(28)
+        resp[0] = self._reset_cause & 0xFF
+        struct.pack_into('<I', resp, 1,  self._pec_errors_cell)
+        struct.pack_into('<I', resp, 5,  self._pec_errors_temp)
+        struct.pack_into('<I', resp, 9,  self._i2c_errors)
+        resp[13] = 1 if self._open_wire_valid else 0
+        for i, det in enumerate(self._open_wire_detected):
+            if det:
+                resp[14 + i // 8] |= (1 << (i % 8))
+        struct.pack_into('<I', resp, 24, self._uptime_ms)
+        return self._respond(PKT_GET_DIAGNOSTICS_SUMMARY, bytes(resp), seq)
+
+    def _h_run_openwire(self, seq: int) -> bytes:
+        # Simulate successful open-wire check: no open wires detected
+        self._open_wire_valid = True
+        self._open_wire_detected = [False] * TOTAL_CELL_COUNT
+        resp = bytearray(11)  # status(1) + mask(10)
+        resp[0] = 0  # success
+        return self._respond(PKT_RUN_OPENWIRE, bytes(resp), seq)
 
     def _h_boot_info(self, seq: int) -> bytes:
-        # Minimal stub response
-        resp = bytes(20)
-        return self._respond(PKT_GET_BOOT_INFO, resp, seq)
+        # Layout: fw_type(2)+major(1)+minor(1)+patch(1)+hw_profile_id(2)+
+        #          proto_version(2)+reset_cause(1)+uptime_ms(4) = 14 bytes
+        resp = bytearray(14)
+        struct.pack_into('<H', resp, 0, FIRMWARE_TYPE_BMS_APP)
+        resp[2]  = 0   # major
+        resp[3]  = 1   # minor
+        resp[4]  = 0   # patch
+        struct.pack_into('<H', resp, 5,  HW_PROFILE_ID)
+        struct.pack_into('<H', resp, 7,  PROTOCOL_VERSION)
+        resp[9]  = self._reset_cause & 0xFF
+        struct.pack_into('<I', resp, 10, self._uptime_ms)
+        return self._respond(PKT_GET_BOOT_INFO, bytes(resp), seq)
 
     def _h_enter_bootloader(self, seq: int, payload: bytes) -> bytes:
         if len(payload) < 4:
             return self._error(PKT_ENTER_BOOTLOADER, seq, 0x02)
         magic = struct.unpack_from('<I', payload)[0]
-        if magic != 0xB007B007:
+        if magic != BL_ENTRY_FLAG:
             return self._error(PKT_ENTER_BOOTLOADER, seq, 0x0B)
         return self._respond(PKT_ENTER_BOOTLOADER, b'', seq)
 
-    # ── State injection helpers (for test scenarios) ──────────────────────────
+    # ── State injection helpers ───────────────────────────────────────────────
 
     def inject_fault(self, fault_bit: int) -> None:
         self._active_faults  |= (1 << fault_bit)
@@ -209,17 +285,60 @@ class FakeTarget:
         self._cell_mv = list(values)[:TOTAL_CELL_COUNT]
 
     def set_temps_cx10(self, values: list) -> None:
-        self._temps_cx10 = list(values)[:TOTAL_TEMP_COUNT]
+        self._temps_cx10 = [int(t) for t in list(values)[:TOTAL_TEMP_COUNT]]
+
+    def set_uptime_ms(self, ms: int) -> None:
+        self._uptime_ms = ms
+
+    def set_pec_errors(self, cell: int = 0, temp: int = 0) -> None:
+        self._pec_errors_cell = cell
+        self._pec_errors_temp = temp
+
+    def set_open_wire(self, valid: bool, detected: Optional[list] = None) -> None:
+        self._open_wire_valid = valid
+        if detected:
+            self._open_wire_detected = list(detected)[:TOTAL_CELL_COUNT]
+
+
+# ── In-process helper for unit tests ─────────────────────────────────────────
+
+class FakeTargetInProcess:
+    """Wrap FakeTarget for synchronous in-process testing.
+
+    Usage:
+        ft = FakeTargetInProcess(mode='healthy')
+        response_bytes = ft.exchange(request_bytes)
+    """
+
+    def __init__(self, mode: str = 'healthy'):
+        self.target = FakeTarget(mode=mode)
+
+    def exchange(self, data: bytes) -> bytes:
+        """Feed data to the target and return the response synchronously."""
+        return self.target.feed(data)
+
+    def inject_fault(self, fault_bit: int) -> None:
+        self.target.inject_fault(fault_bit)
+
+    def clear_fault(self, fault_bit: int) -> None:
+        self.target.clear_fault(fault_bit)
+
+    def set_cell_mv(self, values: list) -> None:
+        self.target.set_cell_mv(values)
+
+    def set_temps_cx10(self, values: list) -> None:
+        self.target.set_temps_cx10(values)
 
 
 # ── Subprocess entry point ────────────────────────────────────────────────────
 
-def run_on_serial_port(port_name: str, baud: int = 115200) -> None:
+def run_on_serial_port(port_name: str, baud: int = 115200,
+                       mode: str = 'healthy') -> None:
     """Run the fake target on a real or virtual serial port."""
     import serial
-    target = FakeTarget()
+    target = FakeTarget(mode=mode)
     with serial.Serial(port_name, baud, timeout=0.1) as ser:
-        print(f"[fake_target] listening on {port_name} at {baud}")
+        print(f"[fake_target] listening on {port_name} at {baud} (mode={mode})")
         while True:
             data = ser.read(512)
             if data:
@@ -233,5 +352,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='BMS fake target')
     parser.add_argument('--port', required=True, help='Serial port (e.g. /dev/pts/3)')
     parser.add_argument('--baud', type=int, default=115200)
+    parser.add_argument('--mode', default='healthy',
+                        choices=['healthy', 'cell_uv', 'cell_ov', 'temp_invalid',
+                                 'isospi_fault', 'config_error'])
     args = parser.parse_args()
-    run_on_serial_port(args.port, args.baud)
+    run_on_serial_port(args.port, args.baud, args.mode)
