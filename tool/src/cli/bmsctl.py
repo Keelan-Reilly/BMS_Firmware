@@ -619,6 +619,128 @@ def cmd_package_validate(args) -> int:
         return 1
 
 
+def cmd_diag_gpio(args) -> int:
+    mgr, model = _connect(args)
+    try:
+        r = model.get_gpio_snapshot()
+        _out(r, args.json)
+        return 0
+    except (ProtocolError, TargetRefusedError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        mgr.disconnect()
+
+
+def cmd_diag_outputs(args) -> int:
+    mgr, model = _connect(args)
+    try:
+        r = model.get_outputs_snapshot()
+        if args.json:
+            _out(r, True)
+        else:
+            logical = r['logical_state']
+            raw     = r['raw_state']
+            print(f"  logical_state: 0x{logical:02X}  (master_ok={logical&1} discharge={(logical>>1)&1} charge={(logical>>2)&1} charger_safety={(logical>>3)&1})")
+            print(f"  raw_state:     0x{raw:02X}  (pin levels: master_ok_raw={raw&1} discharge_raw={(raw>>1)&1} charge_raw={(raw>>2)&1} charger_safety_raw={(raw>>3)&1})")
+        return 0
+    except (ProtocolError, TargetRefusedError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        mgr.disconnect()
+
+
+def cmd_probe_cell_chain(args) -> int:
+    mgr, model = _connect(args)
+    try:
+        r = model.probe_cell_chain()
+        if args.json:
+            _out(r, True)
+        else:
+            print(f"  status:   {r['status']}  ({'OK' if r['status']==0 else 'FAIL'})")
+            print(f"  ic_count: {r['ic_count']}")
+            for i, ic in enumerate(r.get('ics', [])):
+                tag = 'OK' if ic['responded'] else 'NO_RESPONSE'
+                print(f"  ic[{i}]: {tag}  cfga={ic['cfga']}")
+        return 0 if r['status'] == 0 else 1
+    except (ProtocolError, TargetRefusedError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        mgr.disconnect()
+
+
+def cmd_probe_temp_chain(args) -> int:
+    mgr, model = _connect(args)
+    try:
+        r = model.probe_temp_chain()
+        if args.json:
+            _out(r, True)
+        else:
+            print(f"  status:   {r['status']}  ({'OK' if r['status']==0 else 'FAIL'})")
+            print(f"  ic_count: {r['ic_count']}")
+            for i, ic in enumerate(r.get('ics', [])):
+                tag = 'OK' if ic['responded'] else 'NO_RESPONSE'
+                print(f"  ic[{i}]: {tag}  cfga={ic['cfga']}")
+        return 0 if r['status'] == 0 else 1
+    except (ProtocolError, TargetRefusedError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        mgr.disconnect()
+
+
+def cmd_probe_isl(args) -> int:
+    mgr, model = _connect(args)
+    try:
+        r = model.probe_isl28022()
+        if args.json:
+            _out(r, True)
+        else:
+            status = r['status']
+            print(f"  status:     {status}  ({'OK' if status==0 else 'FAIL (I2C NACK)'})")
+            print(f"  config_reg: 0x{r['config_reg']:04X}")
+        return 0 if status == 0 else 1
+    except (ProtocolError, TargetRefusedError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        mgr.disconnect()
+
+
+def cmd_read_vpack_raw(args) -> int:
+    mgr, model = _connect(args)
+    try:
+        r = model.read_vpack_raw()
+        status = r['status']
+        if args.json:
+            _out(r, True)
+        else:
+            raw = r['raw_code']
+            print(f"  status:   {status}  ({'OK' if status==0 else 'FAIL'})")
+            print(f"  raw_code: {raw}  (0x{raw:04X})")
+        return 0 if status == 0 else 1
+    except (ProtocolError, TargetRefusedError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        mgr.disconnect()
+
+
+def cmd_balance_disable_all(args) -> int:
+    mgr, model = _connect(args)
+    try:
+        ok = model.balance_disable_all()
+        _out({'ok': ok}, args.json)
+        return 0 if ok else 1
+    except (ProtocolError, TargetRefusedError) as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        mgr.disconnect()
+
+
 def cmd_stlink_dry_run(args) -> int:
     try:
         _cmd, status = dry_run_app(args.file)
@@ -736,6 +858,43 @@ def build_parser() -> argparse.ArgumentParser:
     p = upd_sub.add_parser('dry-run', help='Show update plan without connecting')
     p.add_argument('file', help='.pkg firmware package')
 
+    # ── diag ─────────────────────────────────────────────────────────────────
+    diag     = sub.add_parser('diag', help='Bring-up diagnostic reads (read-only)')
+    diag_sub = diag.add_subparsers(dest='diag_command')
+
+    p = diag_sub.add_parser('gpio', help='Read raw GPIO input/output pin levels')
+    _add_connect_args(p)
+
+    p = diag_sub.add_parser('outputs', help='Read permission output logical + raw state')
+    _add_connect_args(p)
+
+    # ── probe ─────────────────────────────────────────────────────────────────
+    probe     = sub.add_parser('probe', help='Hardware probe (RDCFGA / I2C ACK check)')
+    probe_sub = probe.add_subparsers(dest='probe_command')
+
+    p = probe_sub.add_parser('cell-chain', help='Wake and read CFGA from CELL chain ICs')
+    _add_connect_args(p)
+
+    p = probe_sub.add_parser('temp-chain', help='Wake and read CFGA from TEMP chain ICs')
+    _add_connect_args(p)
+
+    p = probe_sub.add_parser('isl', help='Probe ISL28022 power monitor (I2C read config reg)')
+    _add_connect_args(p)
+
+    # ── read ──────────────────────────────────────────────────────────────────
+    read     = sub.add_parser('read', help='Single raw measurement reads')
+    read_sub = read.add_subparsers(dest='read_command')
+
+    p = read_sub.add_parser('vpack-raw', help='Read Vpack ADC raw count (PA1, ADC1_IN2)')
+    _add_connect_args(p)
+
+    # ── balance ───────────────────────────────────────────────────────────────
+    balance     = sub.add_parser('balance', help='Balance control')
+    balance_sub = balance.add_subparsers(dest='balance_command')
+
+    p = balance_sub.add_parser('disable-all', help='Clear all DCC bits (stop all balancing)')
+    _add_connect_args(p)
+
     # ── stlink ───────────────────────────────────────────────────────────────
     sl     = sub.add_parser('stlink', help='ST-Link flash operations')
     sl_sub = sl.add_subparsers(dest='sl_command')
@@ -796,6 +955,33 @@ def main(argv=None) -> int:
         if uc == 'simulate': return cmd_update_simulate(args)
         if uc == 'validate': return cmd_update_validate(args)
         if uc == 'dry-run':  return cmd_update_dry_run(args)
+
+    elif args.command == 'diag':
+        dc = getattr(args, 'diag_command', None)
+        if not dc:
+            return 1
+        if dc == 'gpio':    return cmd_diag_gpio(args)
+        if dc == 'outputs': return cmd_diag_outputs(args)
+
+    elif args.command == 'probe':
+        pc = getattr(args, 'probe_command', None)
+        if not pc:
+            return 1
+        if pc == 'cell-chain': return cmd_probe_cell_chain(args)
+        if pc == 'temp-chain': return cmd_probe_temp_chain(args)
+        if pc == 'isl':        return cmd_probe_isl(args)
+
+    elif args.command == 'read':
+        rc = getattr(args, 'read_command', None)
+        if not rc:
+            return 1
+        if rc == 'vpack-raw': return cmd_read_vpack_raw(args)
+
+    elif args.command == 'balance':
+        bc = getattr(args, 'balance_command', None)
+        if not bc:
+            return 1
+        if bc == 'disable-all': return cmd_balance_disable_all(args)
 
     elif args.command == 'stlink':
         sc = getattr(args, 'sl_command', None)

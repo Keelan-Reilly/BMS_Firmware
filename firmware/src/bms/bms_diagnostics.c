@@ -50,3 +50,19 @@ void bms_diagnostics_set_open_wire(bool valid,
 const BmsDiagnostics *bms_diagnostics_get(void) {
     return &s_diag;
 }
+
+void bms_diagnostics_store_cell_probe(const BmsChainProbeResult *r) {
+    s_diag.cell_probe = *r;
+}
+
+void bms_diagnostics_store_temp_probe(const BmsChainProbeResult *r) {
+    s_diag.temp_probe = *r;
+}
+
+void bms_diagnostics_store_isl_probe(const BmsIslProbeResult *r) {
+    s_diag.isl_probe = *r;
+}
+
+void bms_diagnostics_store_vpack_raw(const BmsVpackRawResult *r) {
+    s_diag.vpack_raw = *r;
+}

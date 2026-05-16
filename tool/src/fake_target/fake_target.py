@@ -33,6 +33,9 @@ from ..protocol.packet_defs import (
     PKT_GET_BOOT_INFO, PKT_ENTER_BOOTLOADER,
     PKT_BOOT_UPDATE_BEGIN, PKT_BOOT_UPDATE_CHUNK,
     PKT_BOOT_UPDATE_FINALIZE, PKT_BOOT_UPDATE_ABORT,
+    PKT_GET_GPIO_SNAPSHOT, PKT_GET_OUTPUTS_SNAPSHOT,
+    PKT_PROBE_CELL_CHAIN, PKT_PROBE_TEMP_CHAIN,
+    PKT_PROBE_ISL28022, PKT_READ_VPACK_RAW, PKT_BALANCE_DISABLE_ALL,
     PROTOCOL_VERSION, HW_PROFILE_ID, CONFIG_SCHEMA_SIZE,
     FIRMWARE_TYPE_BMS_APP, FIRMWARE_TYPE_BOOTLOADER,
     TOTAL_CELL_COUNT, TOTAL_TEMP_COUNT,
@@ -48,6 +51,8 @@ FAULT_BIT_TEMP_READ_INVALID = 9
 FAULT_BIT_VPACK_INVALID     = 12
 FAULT_BIT_PRECHARGE_TIMEOUT = 13
 FAULT_BIT_ISOSPI_CELL       = 15
+FAULT_BIT_ISOSPI_TEMP       = 16
+FAULT_BIT_I2C_ISL28022      = 17
 FAULT_BIT_CONFIG_INVALID    = 19
 
 BL_ENTRY_FLAG = 0xB007B007
@@ -122,6 +127,15 @@ class FakeTarget:
         self._update_chunk_size     = 512
         self._update_total_chunks   = 0
         self._update_next_chunk_idx = 0
+        # Bring-up state
+        self._gpio_cs_cell          = 1    # idle = high
+        self._gpio_cs_temp          = 1
+        self._gpio_power_button     = 0
+        self._gpio_charge_detect    = 0
+        self._gpio_power_enable     = 1
+        self._gpio_outputs          = 0    # logical permission bitmask
+        self._isl_config_reg        = 0x4127   # nominal after init
+        self._vpack_raw             = 2048     # ~50% of 4096, ~1.65 V
         _apply_simulation_mode(self, mode)
 
     # ── TCP server ────────────────────────────────────────────────────────────
@@ -191,6 +205,13 @@ class FakeTarget:
             PKT_STORE_CONFIG:           lambda: self._error(pkt_id, seq, 0x0A),
             PKT_GET_DIAGNOSTICS_SUMMARY: lambda: self._h_diagnostics_summary(seq),
             PKT_RUN_OPENWIRE:           lambda: self._h_run_openwire(seq),
+            PKT_GET_GPIO_SNAPSHOT:      lambda: self._h_get_gpio_snapshot(seq),
+            PKT_GET_OUTPUTS_SNAPSHOT:   lambda: self._h_get_outputs_snapshot(seq),
+            PKT_PROBE_CELL_CHAIN:       lambda: self._h_probe_cell_chain(seq),
+            PKT_PROBE_TEMP_CHAIN:       lambda: self._h_probe_temp_chain(seq),
+            PKT_PROBE_ISL28022:         lambda: self._h_probe_isl28022(seq),
+            PKT_READ_VPACK_RAW:         lambda: self._h_read_vpack_raw(seq),
+            PKT_BALANCE_DISABLE_ALL:    lambda: self._h_balance_disable_all(seq),
             PKT_GET_BOOT_INFO:          lambda: self._h_boot_info(seq),
             PKT_ENTER_BOOTLOADER:       lambda: self._h_enter_bootloader(seq, payload),
             PKT_BOOT_UPDATE_BEGIN:      lambda: self._h_boot_update_begin(seq, payload),
@@ -384,6 +405,83 @@ class FakeTarget:
         self._update_staged = bytearray()
         self._update_next_chunk_idx = 0
         return self._respond(PKT_BOOT_UPDATE_ABORT, b'', seq)
+
+    # ── Bring-up handlers ─────────────────────────────────────────────────────
+
+    def _h_get_gpio_snapshot(self, seq: int) -> bytes:
+        if self._firmware_type != FIRMWARE_TYPE_BMS_APP:
+            return self._error(PKT_GET_GPIO_SNAPSHOT, seq, 0x0A)
+        resp = bytes([
+            self._gpio_cs_cell, self._gpio_cs_temp,
+            self._gpio_power_button, self._gpio_charge_detect,
+            self._gpio_power_enable,
+            (self._gpio_outputs >> 0) & 1,  # master_ok_raw
+            (self._gpio_outputs >> 1) & 1,  # discharge_raw
+            (self._gpio_outputs >> 2) & 1,  # charge_raw
+            (self._gpio_outputs >> 3) & 1,  # charger_safety_raw
+        ])
+        return self._respond(PKT_GET_GPIO_SNAPSHOT, resp, seq)
+
+    def _h_get_outputs_snapshot(self, seq: int) -> bytes:
+        if self._firmware_type != FIRMWARE_TYPE_BMS_APP:
+            return self._error(PKT_GET_OUTPUTS_SNAPSHOT, seq, 0x0A)
+        logical = self._gpio_outputs & 0xFF
+        raw     = self._gpio_outputs & 0xFF   # same in simulation
+        return self._respond(PKT_GET_OUTPUTS_SNAPSHOT, bytes([logical, raw]), seq)
+
+    def _h_probe_cell_chain(self, seq: int) -> bytes:
+        if self._firmware_type != FIRMWARE_TYPE_BMS_APP:
+            return self._error(PKT_PROBE_CELL_CHAIN, seq, 0x0A)
+        is_fault = bool((self._active_faults >> FAULT_BIT_ISOSPI_CELL) & 1)
+        ic_count = 5
+        resp = bytearray(2 + ic_count * 7)
+        resp[0] = 1 if is_fault else 0
+        resp[1] = ic_count
+        for i in range(ic_count):
+            off = 2 + i * 7
+            resp[off] = 0 if is_fault else 1   # responded
+            if not is_fault:
+                resp[off + 1] = 0xF8           # nominal CFGA[0]
+        return self._respond(PKT_PROBE_CELL_CHAIN, bytes(resp), seq)
+
+    def _h_probe_temp_chain(self, seq: int) -> bytes:
+        if self._firmware_type != FIRMWARE_TYPE_BMS_APP:
+            return self._error(PKT_PROBE_TEMP_CHAIN, seq, 0x0A)
+        is_fault = bool((self._active_faults >> FAULT_BIT_ISOSPI_TEMP) & 1)
+        ic_count = 5
+        resp = bytearray(2 + ic_count * 7)
+        resp[0] = 1 if is_fault else 0
+        resp[1] = ic_count
+        for i in range(ic_count):
+            off = 2 + i * 7
+            resp[off] = 0 if is_fault else 1
+            if not is_fault:
+                resp[off + 1] = 0xF8
+        return self._respond(PKT_PROBE_TEMP_CHAIN, bytes(resp), seq)
+
+    def _h_probe_isl28022(self, seq: int) -> bytes:
+        if self._firmware_type != FIRMWARE_TYPE_BMS_APP:
+            return self._error(PKT_PROBE_ISL28022, seq, 0x0A)
+        is_fault = bool((self._active_faults >> FAULT_BIT_I2C_ISL28022) & 1)
+        status = 1 if is_fault else 0
+        cfg_hi = (self._isl_config_reg >> 8) & 0xFF
+        cfg_lo = self._isl_config_reg & 0xFF
+        if is_fault:
+            cfg_hi = cfg_lo = 0xFF
+        return self._respond(PKT_PROBE_ISL28022, bytes([status, cfg_hi, cfg_lo]), seq)
+
+    def _h_read_vpack_raw(self, seq: int) -> bytes:
+        if self._firmware_type != FIRMWARE_TYPE_BMS_APP:
+            return self._error(PKT_READ_VPACK_RAW, seq, 0x0A)
+        is_fault = bool((self._active_faults >> FAULT_BIT_VPACK_INVALID) & 1)
+        status = 1 if is_fault else 0
+        raw = 0 if is_fault else self._vpack_raw
+        return self._respond(PKT_READ_VPACK_RAW, struct.pack('<BH', status, raw & 0xFFFF), seq)
+
+    def _h_balance_disable_all(self, seq: int) -> bytes:
+        if self._firmware_type != FIRMWARE_TYPE_BMS_APP:
+            return self._error(PKT_BALANCE_DISABLE_ALL, seq, 0x0A)
+        return self._respond(PKT_BALANCE_DISABLE_ALL, bytes([0]), seq)
 
     # ── State injection helpers ───────────────────────────────────────────────
 

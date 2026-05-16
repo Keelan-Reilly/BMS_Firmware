@@ -80,3 +80,13 @@ BmsResult ltc6812_cell_chain_clear_balance(BmsChain chain, uint8_t num_ics);
  * Returns BMS_ERR_NOT_SUPPORTED until full implementation. */
 BmsResult ltc6812_run_open_wire(BmsChain chain, uint8_t num_ics,
                                  bool open_wire_detected[TOTAL_CELL_COUNT]);
+
+/* ── Bring-up probe (read CFGA, no conversion, no balance/bias changes) ───── */
+/* Wake the chain and read CFGA from each IC. pec_ok[ic] true if PEC valid.
+ * cfga_out[ic][6] receives raw register bytes (or zeroes on PEC error).
+ * Does NOT start any conversion, write any configuration, or alter CS state
+ * beyond the normal SPI transaction end.
+ * safe on both CELL and TEMP chains. */
+BmsResult ltc6812_probe_chain(BmsChain chain, uint8_t num_ics,
+                               bool pec_ok[5],
+                               uint8_t cfga_out[5][6]);

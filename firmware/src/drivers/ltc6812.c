@@ -273,3 +273,25 @@ BmsResult ltc6812_run_open_wire(BmsChain chain, uint8_t num_ics,
     }
     return BMS_OK;
 }
+
+/* ── Bring-up probe (read CFGA, no conversion, no writes) ───────────────────── */
+BmsResult ltc6812_probe_chain(BmsChain chain, uint8_t num_ics,
+                               bool pec_ok[5],
+                               uint8_t cfga_out[5][6]) {
+    isospi_wakeup(chain);
+    uint8_t raw[ISOSPI_MAX_ICS * LTC6812_REG_GROUP_BYTES];
+    bool pec_grp[ISOSPI_MAX_ICS];
+    BmsResult r = isospi_read_all(chain, LTC_CMD_RDCFGA, raw, num_ics, pec_grp);
+    if (r != BMS_OK) { return r; }
+    bool any_fail = false;
+    for (uint8_t ic = 0; ic < num_ics; ic++) {
+        pec_ok[ic] = pec_grp[ic];
+        if (!pec_grp[ic]) {
+            any_fail = true;
+            memset(cfga_out[ic], 0, LTC6812_REG_GROUP_BYTES);
+        } else {
+            memcpy(cfga_out[ic], &raw[ic * LTC6812_REG_GROUP_BYTES], LTC6812_REG_GROUP_BYTES);
+        }
+    }
+    return any_fail ? BMS_ERR_PEC : BMS_OK;
+}

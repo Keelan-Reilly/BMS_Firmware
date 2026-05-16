@@ -14,6 +14,9 @@ from .packet_defs import (
     PKT_GET_BOOT_INFO, PKT_ENTER_BOOTLOADER,
     PKT_BOOT_UPDATE_BEGIN, PKT_BOOT_UPDATE_CHUNK,
     PKT_BOOT_UPDATE_FINALIZE, PKT_BOOT_UPDATE_ABORT,
+    PKT_GET_GPIO_SNAPSHOT, PKT_GET_OUTPUTS_SNAPSHOT,
+    PKT_PROBE_CELL_CHAIN, PKT_PROBE_TEMP_CHAIN,
+    PKT_PROBE_ISL28022, PKT_READ_VPACK_RAW, PKT_BALANCE_DISABLE_ALL,
     ENTER_BOOTLOADER_MAGIC, CONFIG_SCHEMA_SIZE,
 )
 
@@ -190,3 +193,69 @@ class BmsProtocolClient:
 
     def boot_update_abort(self) -> None:
         self.send_request(PKT_BOOT_UPDATE_ABORT)
+
+    # ── Bring-up / bench diagnostic methods ─────────────────────────────────
+
+    def get_gpio_snapshot(self) -> dict:
+        p = self.send_request(PKT_GET_GPIO_SNAPSHOT)
+        if len(p) < 9:
+            raise ProtocolError(f"GET_GPIO_SNAPSHOT too short: {len(p)}")
+        return {
+            'cs_cell':            p[0],
+            'cs_temp':            p[1],
+            'power_button':       p[2],
+            'charge_detect':      p[3],
+            'power_enable':       p[4],
+            'master_ok_raw':      p[5],
+            'discharge_raw':      p[6],
+            'charge_raw':         p[7],
+            'charger_safety_raw': p[8],
+        }
+
+    def get_outputs_snapshot(self) -> dict:
+        p = self.send_request(PKT_GET_OUTPUTS_SNAPSHOT)
+        if len(p) < 2:
+            raise ProtocolError(f"GET_OUTPUTS_SNAPSHOT too short: {len(p)}")
+        return {'logical_state': p[0], 'raw_state': p[1]}
+
+    def probe_cell_chain(self) -> dict:
+        p = self.send_request(PKT_PROBE_CELL_CHAIN)
+        return self._parse_chain_probe(p)
+
+    def probe_temp_chain(self) -> dict:
+        p = self.send_request(PKT_PROBE_TEMP_CHAIN)
+        return self._parse_chain_probe(p)
+
+    @staticmethod
+    def _parse_chain_probe(p: bytes) -> dict:
+        if len(p) < 2:
+            raise ProtocolError(f"chain probe response too short: {len(p)}")
+        status   = p[0]
+        ic_count = p[1]
+        ics = []
+        for i in range(ic_count):
+            off = 2 + i * 7
+            if off + 7 > len(p):
+                break
+            ics.append({
+                'responded': bool(p[off]),
+                'cfga':      p[off+1:off+7].hex(),
+            })
+        return {'status': status, 'ic_count': ic_count, 'ics': ics}
+
+    def probe_isl28022(self) -> dict:
+        p = self.send_request(PKT_PROBE_ISL28022)
+        if len(p) < 3:
+            raise ProtocolError(f"PROBE_ISL28022 too short: {len(p)}")
+        config_reg = (p[1] << 8) | p[2]
+        return {'status': p[0], 'config_reg': config_reg}
+
+    def read_vpack_raw(self) -> dict:
+        p = self.send_request(PKT_READ_VPACK_RAW)
+        if len(p) < 3:
+            raise ProtocolError(f"READ_VPACK_RAW too short: {len(p)}")
+        return {'status': p[0], 'raw_code': struct.unpack_from('<H', p, 1)[0]}
+
+    def balance_disable_all(self) -> bool:
+        p = self.send_request(PKT_BALANCE_DISABLE_ALL)
+        return p[0] == 0

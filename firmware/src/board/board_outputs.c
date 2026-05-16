@@ -120,3 +120,19 @@ void board_outputs_disable_all(void) {
 BmsOutputsBitmask board_outputs_get_state(void) {
     return s_state;
 }
+
+void board_outputs_get_gpio_snapshot(BmsGpioSnapshot *out) {
+    /* Read raw IDR bits — no writes, no side effects. */
+    uint32_t idr_a = GPIOA->IDR;
+    uint32_t idr_b = GPIOB->IDR;
+    uint32_t idr_c = GPIOC->IDR;
+    out->cs_cell            = (uint8_t)((idr_a >> CS_CELL_PIN)         & 1u);
+    out->cs_temp            = (uint8_t)((idr_b >> CS_TEMP_PIN)         & 1u);
+    out->power_button       = (uint8_t)((idr_b >> PIN_POWER_BUTTON)    & 1u);
+    out->charge_detect      = (uint8_t)((idr_c >> PIN_CHARGE_DETECT)   & 1u);
+    out->power_enable       = (uint8_t)((idr_b >> PIN_POWER_ENABLE)    & 1u);
+    out->master_ok_raw      = (uint8_t)((idr_b >> PIN_MASTER_OK)       & 1u);
+    out->discharge_raw      = (uint8_t)((idr_b >> PIN_DISCHARGE_ENABLE)& 1u);
+    out->charge_raw         = (uint8_t)((idr_b >> PIN_CHARGE_ENABLE)   & 1u);
+    out->charger_safety_raw = (uint8_t)((idr_b >> PIN_CHARGER_SAFETY)  & 1u);
+}

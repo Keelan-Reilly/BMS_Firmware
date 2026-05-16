@@ -7,9 +7,17 @@
 #include "bms_outputs.h"
 #include "bms_state.h"
 #include "bms_diagnostics.h"
+#include "bms_balance.h"
 #include "ltc6812.h"
 #include "board_uart.h"
 #include "board_clock.h"
+#include "board_adc.h"
+#include "board_i2c.h"
+#include "board_pins.h"
+#include "isl28022.h"
+/* board_outputs.h included here only for BmsGpioSnapshot read-only diagnostic.
+ * No board_outputs_set_*() calls are made from this file. */
+#include "board_outputs.h"
 #include <string.h>
 
 /* ── CRC-16/CCITT-FALSE ──────────────────────────────────────────────────── */
@@ -299,6 +307,137 @@ static void handle_enter_bootloader(uint8_t seq, const uint8_t *payload, uint16_
     bms_state_request_bootloader_entry();
 }
 
+/* ── Bring-up / bench-diagnostic handlers ─────────────────────────────────── */
+
+static void handle_get_gpio_snapshot(uint8_t seq) {
+    BmsGpioSnapshot snap;
+    board_outputs_get_gpio_snapshot(&snap);
+    uint8_t resp[9];
+    resp[0] = snap.cs_cell;
+    resp[1] = snap.cs_temp;
+    resp[2] = snap.power_button;
+    resp[3] = snap.charge_detect;
+    resp[4] = snap.power_enable;
+    resp[5] = snap.master_ok_raw;
+    resp[6] = snap.discharge_raw;
+    resp[7] = snap.charge_raw;
+    resp[8] = snap.charger_safety_raw;
+    send_response(PKT_GET_GPIO_SNAPSHOT, seq, resp, sizeof(resp), false);
+}
+
+static void handle_get_outputs_snapshot(uint8_t seq) {
+    BmsGpioSnapshot snap;
+    board_outputs_get_gpio_snapshot(&snap);
+    uint8_t logical = bms_outputs_get_state();
+    uint8_t raw = (uint8_t)(
+        ((uint8_t)(snap.master_ok_raw    & 1u)      ) |
+        ((uint8_t)(snap.discharge_raw    & 1u) << 1u) |
+        ((uint8_t)(snap.charge_raw       & 1u) << 2u) |
+        ((uint8_t)(snap.charger_safety_raw & 1u) << 3u)
+    );
+    uint8_t resp[2] = {logical, raw};
+    send_response(PKT_GET_OUTPUTS_SNAPSHOT, seq, resp, sizeof(resp), false);
+}
+
+static void handle_probe_cell_chain(uint8_t seq) {
+    bool pec_ok[CELL_IC_COUNT];
+    uint8_t cfga_out[CELL_IC_COUNT][LTC6812_REG_GROUP_BYTES];
+    BmsResult r = ltc6812_probe_chain(BMS_CHAIN_CELL, CELL_IC_COUNT, pec_ok, cfga_out);
+
+    BmsChainProbeResult probe;
+    memset(&probe, 0, sizeof(probe));
+    probe.run         = true;
+    probe.result      = r;
+    probe.ic_count    = CELL_IC_COUNT;
+    probe.timestamp_ms = board_clock_get_ms();
+    for (uint8_t ic = 0; ic < CELL_IC_COUNT; ic++) {
+        probe.ic[ic].responded = pec_ok[ic];
+        if (pec_ok[ic]) { memcpy(probe.ic[ic].cfga, cfga_out[ic], LTC6812_REG_GROUP_BYTES); }
+    }
+    bms_diagnostics_store_cell_probe(&probe);
+
+    uint8_t resp[2u + CELL_IC_COUNT * 7u];
+    memset(resp, 0, sizeof(resp));
+    resp[0] = (r == BMS_OK) ? 0u : 1u;
+    resp[1] = CELL_IC_COUNT;
+    for (uint8_t ic = 0; ic < CELL_IC_COUNT; ic++) {
+        uint8_t *p = &resp[2u + ic * 7u];
+        p[0] = pec_ok[ic] ? 1u : 0u;
+        if (pec_ok[ic]) { memcpy(&p[1], cfga_out[ic], LTC6812_REG_GROUP_BYTES); }
+    }
+    send_response(PKT_PROBE_CELL_CHAIN, seq, resp, sizeof(resp), false);
+}
+
+static void handle_probe_temp_chain(uint8_t seq) {
+    bool pec_ok[TEMP_IC_COUNT];
+    uint8_t cfga_out[TEMP_IC_COUNT][LTC6812_REG_GROUP_BYTES];
+    BmsResult r = ltc6812_probe_chain(BMS_CHAIN_TEMP, TEMP_IC_COUNT, pec_ok, cfga_out);
+
+    BmsChainProbeResult probe;
+    memset(&probe, 0, sizeof(probe));
+    probe.run         = true;
+    probe.result      = r;
+    probe.ic_count    = TEMP_IC_COUNT;
+    probe.timestamp_ms = board_clock_get_ms();
+    for (uint8_t ic = 0; ic < TEMP_IC_COUNT; ic++) {
+        probe.ic[ic].responded = pec_ok[ic];
+        if (pec_ok[ic]) { memcpy(probe.ic[ic].cfga, cfga_out[ic], LTC6812_REG_GROUP_BYTES); }
+    }
+    bms_diagnostics_store_temp_probe(&probe);
+
+    uint8_t resp[2u + TEMP_IC_COUNT * 7u];
+    memset(resp, 0, sizeof(resp));
+    resp[0] = (r == BMS_OK) ? 0u : 1u;
+    resp[1] = TEMP_IC_COUNT;
+    for (uint8_t ic = 0; ic < TEMP_IC_COUNT; ic++) {
+        uint8_t *p = &resp[2u + ic * 7u];
+        p[0] = pec_ok[ic] ? 1u : 0u;
+        if (pec_ok[ic]) { memcpy(&p[1], cfga_out[ic], LTC6812_REG_GROUP_BYTES); }
+    }
+    send_response(PKT_PROBE_TEMP_CHAIN, seq, resp, sizeof(resp), false);
+}
+
+static void handle_probe_isl28022(uint8_t seq) {
+    uint8_t reg_buf[2] = {0u, 0u};
+    BmsResult r = board_i2c_read_reg(ISL28022_I2C_ADDR, ISL28022_REG_CONFIG, reg_buf, 2u);
+
+    BmsIslProbeResult probe;
+    probe.run         = true;
+    probe.result      = r;
+    probe.config_reg  = (r == BMS_OK)
+                      ? (uint16_t)(((uint16_t)reg_buf[0] << 8u) | reg_buf[1])
+                      : 0xFFFFu;
+    probe.timestamp_ms = board_clock_get_ms();
+    bms_diagnostics_store_isl_probe(&probe);
+
+    uint8_t resp[3] = {(r == BMS_OK) ? 0u : 1u, reg_buf[0], reg_buf[1]};
+    send_response(PKT_PROBE_ISL28022, seq, resp, sizeof(resp), false);
+}
+
+static void handle_read_vpack_raw(uint8_t seq) {
+    uint16_t raw = 0u;
+    BmsResult r = board_adc_read_raw(&raw);
+
+    BmsVpackRawResult probe;
+    probe.run         = true;
+    probe.result      = r;
+    probe.raw_code    = (r == BMS_OK) ? raw : 0u;
+    probe.timestamp_ms = board_clock_get_ms();
+    bms_diagnostics_store_vpack_raw(&probe);
+
+    uint8_t resp[3];
+    resp[0] = (r == BMS_OK) ? 0u : 1u;
+    resp[1] = (uint8_t)(raw & 0xFFu);
+    resp[2] = (uint8_t)(raw >> 8u);
+    send_response(PKT_READ_VPACK_RAW, seq, resp, sizeof(resp), false);
+}
+
+static void handle_balance_disable_all(uint8_t seq) {
+    bms_balance_disable_all();
+    uint8_t resp = 0u;
+    send_response(PKT_BALANCE_DISABLE_ALL, seq, &resp, 1u, false);
+}
+
 /* ── Frame dispatch ───────────────────────────────────────────────────────── */
 static void dispatch_packet(uint16_t pkt_id, uint8_t seq,
                              const uint8_t *payload, uint16_t payload_len) {
@@ -315,6 +454,13 @@ static void dispatch_packet(uint16_t pkt_id, uint8_t seq,
         case PKT_STORE_CONFIG:            handle_store_config(seq, payload, payload_len); break;
         case PKT_GET_DIAGNOSTICS_SUMMARY: handle_get_diagnostics_summary(seq); break;
         case PKT_RUN_OPENWIRE:            handle_run_openwire(seq); break;
+        case PKT_GET_GPIO_SNAPSHOT:       handle_get_gpio_snapshot(seq); break;
+        case PKT_GET_OUTPUTS_SNAPSHOT:    handle_get_outputs_snapshot(seq); break;
+        case PKT_PROBE_CELL_CHAIN:        handle_probe_cell_chain(seq); break;
+        case PKT_PROBE_TEMP_CHAIN:        handle_probe_temp_chain(seq); break;
+        case PKT_PROBE_ISL28022:          handle_probe_isl28022(seq); break;
+        case PKT_READ_VPACK_RAW:          handle_read_vpack_raw(seq); break;
+        case PKT_BALANCE_DISABLE_ALL:     handle_balance_disable_all(seq); break;
         case PKT_GET_BOOT_INFO:           handle_get_boot_info(seq); break;
         case PKT_ENTER_BOOTLOADER:        handle_enter_bootloader(seq, payload, payload_len); break;
         /* Bootloader update packets not supported in application firmware */

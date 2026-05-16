@@ -35,3 +35,15 @@ void board_outputs_disable_all(void) {
     s_state = 0;
 }
 BmsOutputsBitmask board_outputs_get_state(void) { return s_state; }
+
+void board_outputs_get_gpio_snapshot(BmsGpioSnapshot *out) {
+    out->cs_cell            = 1u;
+    out->cs_temp            = 1u;
+    out->power_button       = 0u;
+    out->charge_detect      = 0u;
+    out->power_enable       = 1u;
+    out->master_ok_raw      = (uint8_t)(s_state & OUTPUTS_BIT_MASTER_OK     ? 1u : 0u);
+    out->discharge_raw      = (uint8_t)(s_state & OUTPUTS_BIT_DISCHARGE     ? 1u : 0u);
+    out->charge_raw         = (uint8_t)(s_state & OUTPUTS_BIT_CHARGE        ? 1u : 0u);
+    out->charger_safety_raw = (uint8_t)(s_state & OUTPUTS_BIT_CHARGER_SAFETY ? 1u : 0u);
+}

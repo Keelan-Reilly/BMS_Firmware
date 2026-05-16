@@ -44,3 +44,20 @@ void board_outputs_disable_all(void);
 
 /* Read-back current logical output state (not MCU pin level). */
 BmsOutputsBitmask board_outputs_get_state(void);
+
+/* ── Read-only GPIO snapshot for bring-up diagnostics ─────────────────────── */
+/* Reads raw MCU input data registers — no writes, no side effects.
+ * All fields are raw MCU pin levels (0 or 1). */
+typedef struct {
+    uint8_t cs_cell;          /* PA4  — CS CELL chain (idle=1, active=0) */
+    uint8_t cs_temp;          /* PB12 — CS TEMP chain (idle=1, active=0) */
+    uint8_t power_button;     /* PB4  — Power button input */
+    uint8_t charge_detect;    /* PC14 — Charger present input */
+    uint8_t power_enable;     /* PB5  — Power latch raw MCU level */
+    uint8_t master_ok_raw;    /* PB11 — MasterOk raw MCU level */
+    uint8_t discharge_raw;    /* PB10 — Discharge_enable raw MCU level */
+    uint8_t charge_raw;       /* PB0  — Charge permission raw MCU level */
+    uint8_t charger_safety_raw; /* PB2 — ChargerSafety raw MCU level */
+} BmsGpioSnapshot;
+
+void board_outputs_get_gpio_snapshot(BmsGpioSnapshot *out);

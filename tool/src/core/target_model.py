@@ -11,6 +11,9 @@ from ..protocol.packet_defs import (
     HW_PROFILE_ID, PROTOCOL_VERSION,
     FIRMWARE_TYPE_BMS_APP, FIRMWARE_TYPE_BOOTLOADER,
     PKT_GET_DIAGNOSTICS_SUMMARY, PKT_RUN_OPENWIRE,
+    PKT_GET_GPIO_SNAPSHOT, PKT_GET_OUTPUTS_SNAPSHOT,
+    PKT_PROBE_CELL_CHAIN, PKT_PROBE_TEMP_CHAIN,
+    PKT_PROBE_ISL28022, PKT_READ_VPACK_RAW, PKT_BALANCE_DISABLE_ALL,
 )
 from ..connection.device_state import DeviceState, DeviceMode, CapabilitiesState
 from ..config.schema import BmsConfig
@@ -209,6 +212,36 @@ class TargetModel:
         if len(p) < 11:
             raise ProtocolError(f"RUN_OPENWIRE response too short: {len(p)}")
         return {'status': p[0], 'open_wire_mask': bytes(p[1:11])}
+
+    # ── Bring-up / bench diagnostics ─────────────────────────────────────────
+
+    def get_gpio_snapshot(self) -> dict:
+        self._require_app_mode()
+        return self._client.get_gpio_snapshot()
+
+    def get_outputs_snapshot(self) -> dict:
+        self._require_app_mode()
+        return self._client.get_outputs_snapshot()
+
+    def probe_cell_chain(self) -> dict:
+        self._require_app_mode()
+        return self._client.probe_cell_chain()
+
+    def probe_temp_chain(self) -> dict:
+        self._require_app_mode()
+        return self._client.probe_temp_chain()
+
+    def probe_isl28022(self) -> dict:
+        self._require_app_mode()
+        return self._client.probe_isl28022()
+
+    def read_vpack_raw(self) -> dict:
+        self._require_app_mode()
+        return self._client.read_vpack_raw()
+
+    def balance_disable_all(self) -> bool:
+        self._require_app_mode()
+        return self._client.balance_disable_all()
 
     # ── Package compatibility ─────────────────────────────────────────────────
 
