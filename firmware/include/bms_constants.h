@@ -80,7 +80,8 @@
 #define FEAT_CAN                    (1u << 4)
 
 /* Capabilities bitmask reported by BMS application */
-#define BMS_APP_FEATURE_FLAGS       (FEAT_CELL_VOLTAGE | FEAT_TEMPERATURE | FEAT_BALANCING | FEAT_CAN)
+/* FEAT_CAN reserved — board_can_send() is a stub; not yet implemented */
+#define BMS_APP_FEATURE_FLAGS       (FEAT_CELL_VOLTAGE | FEAT_TEMPERATURE | FEAT_BALANCING)
 
 /* ── Firmware version (update via cmake or version.h gen) ────────────────── */
 #ifndef FW_VERSION_MAJOR

@@ -229,7 +229,7 @@ Requires: STM32F303 board + LTC6812 evaluation or production hardware + ST-Link.
 | HIL-01 | isoSPI CELL chain wake + RDCFG round-trip | Board + LTC6812 chain |
 | HIL-02 | ADCV + RDCV all 75 cells | Board + cell simulator or real cells |
 | HIL-03 | PEC error injection (corrupt MOSI bit) | Logic analyser / signal manipulation |
-| HIL-04 | TEMP chain ADAX + RDAUX all 75 sensors | Board + temperature sensors |
+| HIL-04 | TEMP chain ADCV + RDCV all 75 sensors (sensors on C-inputs) | Board + temperature sensors |
 | HIL-05 | TEMP S outputs cycle: assert → settle → read → deassert | Oscilloscope on S-output pins |
 | HIL-06 | Balance DCC: enable → verify discharge via scope/load | Board + discharge resistors |
 | HIL-07 | ISL28022 I2C: Vbat read within 2% of DMM reference | Board + reference PSU |
@@ -255,7 +255,7 @@ Perform these in order on first hardware bring-up:
 5. **UART:** Flash BMS firmware; confirm "BMS BOOT" log appears on USB/UART at 115200.
 6. **isoSPI CELL:** `GET_DIAGNOSTICS_SUMMARY` via tool; verify zero PEC errors after RDCFG round-trip.
 7. **Cell voltages:** Apply known voltage to one cell tap; verify correct reading in tool.
-8. **isoSPI TEMP:** Verify ADAX conversion completes; verify RDAUX data non-zero.
+8. **isoSPI TEMP:** Verify ADCV conversion completes; verify RDCV data non-zero.
 9. **Temperature conversion:** Verify temperature reading within ±2°C of reference thermometer.
 10. **ISL28022:** Verify Vbat reading matches bench PSU voltage within 1%.
 11. **PA1 ADC:** Verify Vpack reading after calibration.

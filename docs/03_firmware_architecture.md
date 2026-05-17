@@ -303,7 +303,7 @@ Ltc6812Result ltc6812_write_cfgb(ChainId chain, const Ltc6812CfgB *cfg, uint8_t 
 // Start cell voltage conversion (ADCV); CELL chain only
 Ltc6812Result ltc6812_adcv(ChainId chain, uint8_t md, bool dcp);
 
-// Start AUX/GPIO conversion (ADAX); used for TEMP chain
+// Start AUX/GPIO conversion (ADAX); not used for temp sensing (TEMP chain uses ADCV on C-inputs)
 Ltc6812Result ltc6812_adax(ChainId chain, uint8_t md, uint8_t chg);
 
 // Poll for conversion complete; returns when done or timeout

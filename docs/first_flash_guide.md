@@ -21,7 +21,7 @@
 | Safety sign-off | This session is not a safety sign-off |
 
 Hardware validation questions (from `docs/01_hardware_contract.md`) that remain open:
-- HV-3: Active polarity of permission outputs (PB10/PB11/PB0/PB2) — **confirm before enabling**
+- HV-3: Active polarity of permission outputs — **confirmed: MCU HIGH = active via MOSFET stage** (see §11 of 01_hardware_contract.md)
 - HV-1/HV-2: `isospi_reverse` orientation for CELL and TEMP chains
 - HV-4: ISL28022 I2C address (A0/A1 pin strap)
 - HV-6: Vpack resistor divider ratio
@@ -63,7 +63,7 @@ export PATH="/Applications/ArmGNUToolchain/15.2.rel1/arm-none-eabi/bin:$PATH"
 
 Both commands must exit 0 before proceeding.
 
-Expected `validate_all.sh` output: `19+ passed  0 failed  0-2 skipped`
+Expected `validate_all.sh` output: `30 passed  0 failed  0-5 skipped`
 
 Expected `build_firmware.sh` output: `build_firmware/firmware.bin` created; size printed.
 
@@ -156,7 +156,7 @@ After power-on or reset following a successful flash:
 | Protocol version | `1` | From `PROTOCOL_VERSION` |
 | Config schema version | `1` | From `CONFIG_SCHEMA_VERSION` |
 | Cell count | `75` | 5 × LTC6812 × 15 cells |
-| Feature flags | `0x00000017` | Cell voltage + Temperature + Balancing + CAN |
+| Feature flags | `0x00000007` | Cell voltage + Temperature + Balancing |
 | Permission outputs | All inactive (MCU LOW) | `board_outputs_init_safe()` called at reset |
 | CS_CELL (PA4) | HIGH (idle) | Active-low; asserted only during SPI transfer |
 | CS_TEMP (PB12) | HIGH (idle) | Active-low; asserted only during SPI transfer |
@@ -231,7 +231,7 @@ Fail: CS pins report LOW — firmware may be mid-transfer or GPIO init failed.
 ```
 
 Expected: `logical_state=0x00` (all permissions inactive). `raw_state` reflects MCU GPIO
-pin levels; the mapping depends on output polarity (HV-3 open question).
+pin levels; MCU LOW = inactive for all four permission outputs (confirmed polarity).
 
 Pass: `logical_state: 0x00  (master_ok=0 discharge=0 charge=0 charger_safety=0)`.
 Fail: any permission bit is 1 — do not proceed; investigate firmware init path.
@@ -365,9 +365,9 @@ Only run after ISL28022 probe passes.
    active. This should not happen at first boot.
 3. Possible cause: `board_outputs_init_safe()` was not called or returned early due to a
    prior fault path. Check firmware startup sequence in `bms_main_loop.c`.
-4. Possible cause: output polarity constants (HV-3 open question) are inverted — the
-   logical state is correct (inactive) but the MCU GPIO level is HIGH due to polarity
-   confusion. Cross-check with a DMM.
+4. Possible cause: output polarity constant mismatch — confirmed polarity is MCU HIGH =
+   active, MCU LOW = inactive for all four permission outputs. If logical_state is wrong,
+   the firmware init path is suspect. Cross-check PB10/PB11/PB0/PB2 with a DMM.
 5. Measure PB10, PB11, PB0, PB2 with a DMM. Record actual voltage levels and compare to
    what `diag outputs raw_state` reports. If they disagree, the GPIO readback is wrong.
 

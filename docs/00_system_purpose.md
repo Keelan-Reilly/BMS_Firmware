@@ -106,7 +106,7 @@ bms_state: BOOT → IDLE
 Main loop (10 ms tick nominal):
   ├─ bms_measurements:
   │    ├─ ltc6812 CELL chain read (wake → ADCV → RDCV × 5 regs × 5 ICs)
-  │    ├─ ltc6812 TEMP chain read (wake → bias enable → settle → ADAX → RDAUX → bias off)
+  │    ├─ ltc6812 TEMP chain read (wake → bias enable → settle → ADCV → RDCV → bias off)
   │    ├─ isl28022 read (Vbat, I_shunt)
   │    └─ board_adc read (Vpack)
   │

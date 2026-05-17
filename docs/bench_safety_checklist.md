@@ -87,8 +87,8 @@ Apply power. Wait 1 second. Perform these checks before sending any bmsctl comma
 - [ ] Measure PB0 (CHARGE_PERM) with DMM. Record actual voltage: _____ V.
 - [ ] Measure PB2 (CHARGER_SAFETY) with DMM. Record actual voltage: _____ V.
 - [ ] Confirm that the levels on PB10/PB11/PB0/PB2 are at the **inactive / safe state**
-      for the downstream circuit. The exact inactive voltage (LOW or HIGH) depends on the
-      output polarity (open question HV-3). Record and confirm.
+      for the downstream circuit. Confirmed polarity: MCU LOW = inactive (deasserted);
+      all four outputs use the same MOSFET stage (MCU HIGH = active). Record measured levels.
 
 > **If any permission output is at its active level immediately after power-on: power off.
 > Do not proceed until `board_outputs_init_safe()` is verified to be working correctly.**
@@ -163,9 +163,10 @@ open questions (from `docs/01_hardware_contract.md`) have been resolved:
 - **Do not rely on open-wire detection as a safety sign-off.** The ADOW scan tests cell
   wire continuity but does not validate measurement accuracy.
 - **Do not assert any permission outputs** (MASTER_OK, DISCHARGE_PERM, CHARGE_PERM,
-  CHARGER_SAFETY) until the active polarity (HV-3) has been confirmed from the schematic.
-  There is no bmsctl command that asserts permissions during a bring-up session (the only
-  assertions are through the fault/state machine in normal operation).
+  CHARGER_SAFETY) during bring-up. There is no bmsctl command that asserts permissions in
+  a bring-up session (assertions only occur through the fault/state machine in normal
+  operation). Confirmed polarity: MCU HIGH = active via MOSFET stage (see §11 of
+  01_hardware_contract.md).
 - **Do not connect vehicle harness, charger, or inverter** during this session.
 
 ---

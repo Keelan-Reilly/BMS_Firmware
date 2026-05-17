@@ -55,7 +55,7 @@ BMS_Firmware/
 │   │   ├── cli/            bmsctl.py — thin CLI over the shared backend
 │   │   ├── gui/            PyQt6 desktop app (9 tabs)
 │   │   └── connection/     DeviceState, DeviceMode, CapabilitiesState
-│   ├── tests/              272+ pytest tests (no hardware required)
+│   ├── tests/              299 pytest tests (no hardware required)
 │   └── requirements.txt    pyserial, PyYAML, pytest, PyQt6
 ├── tests/                  C unit tests (Unity framework)
 │   ├── unit/               test_pec15.c, test_balance.c, test_openwire.c, …
@@ -108,18 +108,18 @@ Creates `.venv`, installs `tool/requirements.txt`, and checks for:
 Runs: tool detection → pytest suite → fake-target self-test → config round-trip →
 package + update simulation → firmware build.
 
-Expected output: `19+ passed  0 failed  0-2 skipped` (skipped = optional tools absent).
+Expected output: `30 passed  0 failed  0-5 skipped` (skipped = optional tools absent).
 
 ---
 
 ## Run Tests
 
-### Python tests (272+)
+### Python tests (299)
 ```bash
 python3 -m pytest tool/tests/ -q
 ```
 
-### C unit tests (50+)
+### C unit tests (158 across 13 suites)
 ```bash
 bash build_tests/run_tests.sh
 ```
