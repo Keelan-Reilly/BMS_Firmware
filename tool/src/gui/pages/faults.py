@@ -101,7 +101,7 @@ class FaultsPage(QWidget):
             self._table.setVisible(False)
             self._state_lbl.setText("No active or latched faults.")
             self._state_lbl.setStyleSheet(
-                "color:#2a6b2a; font-weight:bold; padding:12px; font-size:13px;")
+                "color:#27ae60; font-weight:bold; padding:12px; font-size:13px;")
             self._state_lbl.setVisible(True)
             return
 

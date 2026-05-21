@@ -75,21 +75,21 @@ typedef struct {
     uint8_t required_temp_mask[10];
     uint8_t balance_allowed_mask[10];
 
-    /* Calibration (16 bytes, offset 162) */
+    /* Calibration (18 bytes, offset 162) */
     uint32_t vpack_gain_x1000;
     int32_t  vpack_offset_mv;
     uint16_t vbat_gain_x1000;
     int16_t  vbat_offset_mv;
-    uint16_t current_gain_x1000;
+    uint32_t current_gain_x1000;   /* uint32: AMC1302+divider chain requires ~1,855,000 */
     int16_t  current_offset_ma;
 
-    /* CAN / communication (8 bytes, offset 178) */
+    /* CAN / communication (8 bytes, offset 180) */
     uint32_t can_watchdog_timeout_ms;
     uint16_t can_base_id;
     uint16_t reserved_can;
 
-    /* Reserved (40 bytes, offset 186) */
-    uint8_t  reserved[40];
+    /* Reserved (38 bytes, offset 188) */
+    uint8_t  reserved[38];
 } BmsConfig;
 #pragma pack(pop)
 

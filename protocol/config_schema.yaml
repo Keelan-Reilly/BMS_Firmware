@@ -462,7 +462,7 @@ sections:
         storage_order: 39
         notes: Only cells with corresponding bit set may be balanced
 
-  # ─── Calibration (16 bytes, offset 162) ──────────────────────────────────
+  # ─── Calibration (18 bytes, offset 162) ──────────────────────────────────
 
   calibration:
     fields:
@@ -471,12 +471,17 @@ sections:
         size: 4
         type: uint32
         units: "dimensionless × 1000"
-        default: 1000
+        default: 50706
         min: 100
-        max: 10000
+        max: 200000
         validation: "> 0"
         storage_order: 40
-        notes: "Vpack_mV = (adc_raw / 4095) × VREF_mV × gain / 1000 + offset"
+        notes: >
+          Vpack_mV = (adc_raw / 4096) × VREF_mV × gain / 1000 + offset.
+          Signal chain: Load+ → 4×470kΩ series ÷ 1kΩ → AMC1301 (gain 8.2) →
+          OPA2197 differential amp (33k/5.6k = ×5.893) → 10k/33k output divider →
+          MCU ADC PA1. Theoretical gain = 1881/8.2 × 5.6/33 × 43/33 = 50706.
+          Refine with bench calibration.
 
       - name: vpack_offset_mv
         offset: 166
@@ -493,11 +498,14 @@ sections:
         size: 2
         type: uint16
         units: "dimensionless × 1000"
-        default: 1000
+        default: 2000
         min: 100
         max: 10000
         validation: "> 0"
         storage_order: 42
+        notes: >
+          Signal chain: Vbat → R43/R44 (3.3kΩ/3.3kΩ, ÷2) → ISL28022 Vbus.
+          Gain = 2 (undoes the ÷2 divider). Refine with bench calibration.
 
       - name: vbat_offset_mv
         offset: 172
@@ -511,17 +519,21 @@ sections:
 
       - name: current_gain_x1000
         offset: 174
-        size: 2
-        type: uint16
+        size: 4
+        type: uint32
         units: "dimensionless × 1000"
         default: 1000
         min: 100
-        max: 10000
+        max: 10000000
         validation: "> 0"
         storage_order: 44
+        notes: >
+          Signal chain: 0.1 mΩ shunt → AMC1302 (gain ≈40) → ÷7.6 attenuator →
+          ISL28022 Vin+/Vin−. Theoretical pre-calibration value ≈ 1,855,000.
+          Must be uint32 — uint16 cannot represent the required value.
 
       - name: current_offset_ma
-        offset: 176
+        offset: 178
         size: 2
         type: int16
         units: mA
@@ -530,12 +542,12 @@ sections:
         max: 1000
         storage_order: 45
 
-  # ─── CAN / Communication (8 bytes, offset 178) ───────────────────────────
+  # ─── CAN / Communication (8 bytes, offset 180) ───────────────────────────
 
   communication:
     fields:
       - name: can_watchdog_timeout_ms
-        offset: 178
+        offset: 180
         size: 4
         type: uint32
         units: ms
@@ -546,7 +558,7 @@ sections:
         storage_order: 46
 
       - name: can_base_id
-        offset: 182
+        offset: 184
         size: 2
         type: uint16
         default: 0x0500
@@ -557,14 +569,14 @@ sections:
         notes: CAN 11-bit base message ID for BMS telemetry
 
       - name: reserved_can
-        offset: 184
+        offset: 186
         size: 2
         type: uint16
         default: 0
         validation: "== 0"
         storage_order: 48
 
-  # ─── Reserved (40 bytes, offset 186) ─────────────────────────────────────
+  # ─── Reserved (38 bytes, offset 188) ─────────────────────────────────────
 
   reserved_end:
     fields:

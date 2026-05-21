@@ -174,7 +174,13 @@ BmsResult bms_measurements_run_temp_cycle(void) {
     return (r != BMS_OK) ? r : clear_r;
 }
 
-/* ── Pack cycle (Vbat+I via ISL28022, Vpack via ADC1/PA1) ────────────────── */
+/* ── Pack cycle (Vbat+I via ISL28022, Vpack via ADC1/PA1) ────────────────── *
+ * Vbat:   ISL28022 Vbus — Vbat is divided by R43/R44 (÷2) before Vbus pin.
+ *         vbat_gain_x1000 = 2000 undoes the divider (set via config).
+ * I_batt: ISL28022 Vin+/Vin− — signal has been amplified by AMC1302 (gain ≈40)
+ *         then attenuated ÷7.6 before the ISL28022. vshunt_raw_uv is the voltage
+ *         at the ISL28022 input, not the bare shunt voltage.
+ *         Theoretical current_gain_x1000 ≈ 1,855,000 (uint32 required). */
 BmsResult bms_measurements_run_pack_cycle(void) {
     const BmsConfig *cfg = bms_config_get();
 

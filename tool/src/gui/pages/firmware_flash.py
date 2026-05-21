@@ -88,7 +88,7 @@ class FirmwareFlashPage(QWidget):
         self._sim_mode_lbl = QLabel(
             "Connect to a fake target, then Enter Bootloader to run the simulation.")
         self._sim_mode_lbl.setWordWrap(True)
-        self._sim_mode_lbl.setStyleSheet("color:#555; font-style:italic;")
+        self._sim_mode_lbl.setStyleSheet("font-style:italic;")
         sim_lay.addWidget(self._sim_mode_lbl)
 
         sim_btn_lay = QHBoxLayout()
@@ -115,13 +115,13 @@ class FirmwareFlashPage(QWidget):
         # ── Hardware execute (safety gate) ────────────────────────────────────
         exec_grp = QGroupBox("Execute Flash — Hardware Required")
         exec_grp.setStyleSheet(
-            "QGroupBox { border:2px solid #8a0000; color:#8a0000; font-weight:bold; }")
+            "QGroupBox { border:2px solid #c0392b; color:#c0392b; font-weight:bold; }")
         exec_lay = QVBoxLayout(exec_grp)
         exec_note = QLabel(
             "This flashes real hardware via ST-Link. "
             "Only proceed after reviewing docs/bench_safety_checklist.md.")
         exec_note.setWordWrap(True)
-        exec_note.setStyleSheet("color:#8a0000; font-style:italic;")
+        exec_note.setStyleSheet("color:#c0392b; font-style:italic;")
         exec_lay.addWidget(exec_note)
         self._safety_check = QCheckBox(
             "I understand this will flash real hardware via ST-Link")
@@ -153,19 +153,19 @@ class FirmwareFlashPage(QWidget):
         if is_bl:
             self._sim_mode_lbl.setText(
                 "Device is in BOOTLOADER mode — ready for protocol update simulation.")
-            self._sim_mode_lbl.setStyleSheet("color:#2a6b2a; font-weight:bold;")
+            self._sim_mode_lbl.setStyleSheet("color:#27ae60; font-weight:bold;")
             self._mode_lbl.setText(
                 "BOOTLOADER MODE — runtime telemetry disabled. "
                 "Select a package and run the simulation.")
             self._mode_lbl.setStyleSheet(
-                "color:#9a6000; font-weight:bold; background:#fff8e6; "
-                "padding:6px 10px; border:1px solid #d4a800; border-radius:4px;")
+                "color:#d4a017; font-weight:bold; "
+                "padding:6px 10px; border:1px solid #d4a017; border-radius:4px;")
             self._mode_lbl.setVisible(True)
         elif is_app:
             self._sim_mode_lbl.setText(
                 "Connect to a fake target, then click Enter Bootloader "
                 "to transition to bootloader mode and run the simulation.")
-            self._sim_mode_lbl.setStyleSheet("color:#555; font-style:italic;")
+            self._sim_mode_lbl.setStyleSheet("font-style:italic;")
             self._mode_lbl.setVisible(False)
         else:
             self._mode_lbl.setVisible(False)

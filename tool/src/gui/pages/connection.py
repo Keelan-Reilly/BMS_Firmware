@@ -3,9 +3,10 @@ from PyQt6.QtWidgets import (
     QWidget, QVBoxLayout, QHBoxLayout, QGroupBox,
     QLabel, QLineEdit, QPushButton, QComboBox, QSpinBox,
 )
-from PyQt6.QtCore import pyqtSignal
+from PyQt6.QtCore import pyqtSignal, Qt
 
 from ...core.app_state import AppState
+from ..style import MONOSPACE
 from ...connection.device_state import DeviceMode
 
 
@@ -99,7 +100,9 @@ class ConnectionPage(QWidget):
             desc_lbl = QLabel(desc)
             desc_lbl.setFixedWidth(230)
             cmd_lbl  = QLabel(cmd)
-            cmd_lbl.setStyleSheet("font-family: monospace; color: #333;")
+            cmd_lbl.setStyleSheet(f"font-family: {MONOSPACE};")
+            cmd_lbl.setTextInteractionFlags(
+                Qt.TextInteractionFlag.TextSelectableByMouse)
             row.addWidget(desc_lbl)
             row.addWidget(cmd_lbl)
             row.addStretch()

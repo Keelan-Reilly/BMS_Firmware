@@ -55,11 +55,15 @@ static const BmsConfig k_defaults = {
     .required_temp_mask          = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x07},
     .balance_allowed_mask        = {0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x07},
 
-    .vpack_gain_x1000            = 1000u,
+    /* Theoretical pre-calibration values — refine with hardware measurement.
+     * vpack: 4×470kΩ÷1kΩ → AMC1301(×8.2) → OPA2197(×5.893) → 33k/43k → ADC
+     * vbat:  R43/R44 (3.3k/3.3k ÷2) → ISL28022 Vbus
+     * current: 0.1mΩ shunt → AMC1302(×40) → ÷7.6 → ISL28022 Vin; gain ~1,855,000 */
+    .vpack_gain_x1000            = 50706u,
     .vpack_offset_mv             = 0,
-    .vbat_gain_x1000             = 1000u,
+    .vbat_gain_x1000             = 2000u,
     .vbat_offset_mv              = 0,
-    .current_gain_x1000          = 1000u,
+    .current_gain_x1000          = 1000u,   /* placeholder — calibrate on hardware */
     .current_offset_ma           = 0,
 
     .can_watchdog_timeout_ms     = 0u, /* disabled */

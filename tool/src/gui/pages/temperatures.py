@@ -9,7 +9,8 @@ from PyQt6.QtGui import QColor
 from ...core.app_state import AppState
 
 TEMP_INVALID   = -0x8000
-_INVALID_COLOR = QColor(255, 80, 80)
+_INVALID_COLOR = QColor(180, 40, 40)
+_INVALID_TEXT  = QColor(255, 255, 255)
 
 
 class TemperaturesPage(QWidget):
@@ -43,7 +44,7 @@ class TemperaturesPage(QWidget):
         self._min_lbl  = QLabel("Min: —")
         self._ts_lbl   = QLabel("Snapshot: —")
         self._warn_lbl = QLabel("")
-        self._warn_lbl.setStyleSheet("color: orange; font-weight: bold;")
+        self._warn_lbl.setStyleSheet("color: #d4a017; font-weight: bold;")
         for w in (self._max_lbl, self._avg_lbl, self._min_lbl,
                   self._ts_lbl, self._warn_lbl):
             sum_lay.addWidget(w)
@@ -80,6 +81,7 @@ class TemperaturesPage(QWidget):
             if t == TEMP_INVALID:
                 item = QTableWidgetItem(f"[{idx:02d}] INVALID")
                 item.setBackground(_INVALID_COLOR)
+                item.setForeground(_INVALID_TEXT)
             else:
                 item = QTableWidgetItem(f"[{idx:02d}] {t/10:.1f}°C")
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)

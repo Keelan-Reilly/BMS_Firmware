@@ -8,8 +8,8 @@ from PyQt6.QtGui import QColor
 
 from ...core.app_state import AppState
 
-_INVALID_COLOR = QColor(255, 80, 80)
-_NORMAL_COLOR  = QColor(255, 255, 255)
+_INVALID_COLOR = QColor(180, 40, 40)
+_INVALID_TEXT  = QColor(255, 255, 255)
 
 
 class CellsPage(QWidget):
@@ -44,7 +44,7 @@ class CellsPage(QWidget):
         self._mm_lbl   = QLabel("Mismatch: —")
         self._ts_lbl   = QLabel("Snapshot: —")
         self._warn_lbl = QLabel("")
-        self._warn_lbl.setStyleSheet("color: orange; font-weight: bold;")
+        self._warn_lbl.setStyleSheet("color: #d4a017; font-weight: bold;")
         for w in (self._min_lbl, self._max_lbl, self._avg_lbl,
                   self._mm_lbl, self._ts_lbl, self._warn_lbl):
             sum_lay.addWidget(w)
@@ -90,6 +90,7 @@ class CellsPage(QWidget):
             item.setTextAlignment(Qt.AlignmentFlag.AlignCenter)
             if not is_valid:
                 item.setBackground(_INVALID_COLOR)
+                item.setForeground(_INVALID_TEXT)
             self._table.setItem(row, col, item)
 
         self._table.resizeColumnsToContents()

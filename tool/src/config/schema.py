@@ -59,12 +59,12 @@ _STRUCT_FMT += 'I'   # vpack_gain_x1000            162
 _STRUCT_FMT += 'i'   # vpack_offset_mv             166
 _STRUCT_FMT += 'H'   # vbat_gain_x1000             170
 _STRUCT_FMT += 'h'   # vbat_offset_mv              172
-_STRUCT_FMT += 'H'   # current_gain_x1000          174
-_STRUCT_FMT += 'h'   # current_offset_ma           176
-_STRUCT_FMT += 'I'   # can_watchdog_timeout_ms     178
-_STRUCT_FMT += 'H'   # can_base_id                 182
-_STRUCT_FMT += 'H'   # reserved_can                184
-_STRUCT_FMT += '40s' # reserved                    186
+_STRUCT_FMT += 'I'   # current_gain_x1000          174  (uint32: AMC1302 chain needs ~1,855,000)
+_STRUCT_FMT += 'h'   # current_offset_ma           178
+_STRUCT_FMT += 'I'   # can_watchdog_timeout_ms     180
+_STRUCT_FMT += 'H'   # can_base_id                 184
+_STRUCT_FMT += 'H'   # reserved_can                186
+_STRUCT_FMT += '38s' # reserved                    188
 
 assert struct.calcsize(_STRUCT_FMT) == CONFIG_SCHEMA_SIZE, \
     f"Schema struct size mismatch: {struct.calcsize(_STRUCT_FMT)} != {CONFIG_SCHEMA_SIZE}"
@@ -123,19 +123,19 @@ class BmsConfig:
     required_cell_mask:             bytes = field(default_factory=lambda: _ALL_75_BITS)
     required_temp_mask:             bytes = field(default_factory=lambda: _ALL_75_BITS)
     balance_allowed_mask:           bytes = field(default_factory=lambda: _ALL_75_BITS)
-    # Calibration
-    vpack_gain_x1000:               int   = 1000
+    # Calibration — theoretical pre-hardware values; refine with bench measurement
+    vpack_gain_x1000:               int   = 50706   # 4×470k÷1k → AMC1301(8.2) → OPA(5.893) → 33k/43k
     vpack_offset_mv:                int   = 0
-    vbat_gain_x1000:                int   = 1000
+    vbat_gain_x1000:                int   = 2000    # R43/R44 (3.3k/3.3k ÷2 divider) → ISL28022 Vbus
     vbat_offset_mv:                 int   = 0
-    current_gain_x1000:             int   = 1000
+    current_gain_x1000:             int   = 1000    # placeholder — 0.1mΩ shunt+AMC1302+÷7.6 ≈ 1,855,000
     current_offset_ma:              int   = 0
     # CAN
     can_watchdog_timeout_ms:        int   = 0
     can_base_id:                    int   = 0x0500
     reserved_can:                   int   = 0
     # Reserved
-    reserved:                       bytes = field(default_factory=lambda: bytes(40))
+    reserved:                       bytes = field(default_factory=lambda: bytes(38))
 
     def pack(self) -> bytes:
         """Serialize to 226-byte blob with correct CRC."""

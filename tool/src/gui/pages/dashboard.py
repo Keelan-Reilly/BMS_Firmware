@@ -14,7 +14,7 @@ _BMS_STATES = {0: "INIT", 1: "STANDBY", 2: "PRECHARGE",
 def _card(title: str, row: int, grid: QGridLayout) -> QLabel:
     """Add a label+value pair to a grid; return the value label."""
     lbl = QLabel(title)
-    lbl.setStyleSheet("color:#555; font-size:11px;")
+    lbl.setStyleSheet("font-size:11px;")
     val = QLabel("—")
     val.setStyleSheet("font-size:16px; font-weight:bold;")
     val.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
@@ -45,7 +45,7 @@ class DashboardPage(QWidget):
         self._poll_btn    = QPushButton("Stop Polling")
         self._refresh_btn = QPushButton("Refresh Now")
         self._poll_status = QLabel("Polling: active")
-        self._poll_status.setStyleSheet("color:#2a6b2a; font-weight:bold;")
+        self._poll_status.setStyleSheet("color:#27ae60; font-weight:bold;")
 
         self._poll_btn.clicked.connect(self._on_polling_toggle)
         self._refresh_btn.clicked.connect(self.refresh_now_requested)
@@ -70,7 +70,7 @@ class DashboardPage(QWidget):
         self._ibat  = _card("Current:",     2, left_grid)
         self._state = _card("BMS State:",   3, left_grid)
         self._uptime = _card("Uptime:",     4, left_grid)
-        self._mflags = _card("Meas Flags:", 5, left_grid)
+        self._mflags = _card("Readings:",   5, left_grid)
 
         # Right: faults + outputs
         right_grp = QGroupBox("Status")
@@ -98,14 +98,18 @@ class DashboardPage(QWidget):
         if self._polling_active:
             self._poll_btn.setText("Stop Polling")
             self._poll_status.setText("Polling: active")
-            self._poll_status.setStyleSheet("color:#2a6b2a; font-weight:bold;")
+            self._poll_status.setStyleSheet("color:#27ae60; font-weight:bold;")
         else:
             self._poll_btn.setText("Start Polling")
             self._poll_status.setText("Polling: stopped")
             self._poll_status.setStyleSheet("color:#9a6000; font-weight:bold;")
 
-    def _dash(self, label: QLabel, text: str) -> None:
+    _STYLE_VAL     = "font-size:16px; font-weight:bold;"
+    _STYLE_INVALID = "font-size:16px; font-weight:bold; color:#888888;"
+
+    def _set_measured(self, label: QLabel, text: str, valid: bool) -> None:
         label.setText(text)
+        label.setStyleSheet(self._STYLE_VAL if valid else self._STYLE_INVALID)
 
     def refresh(self, state: AppState) -> None:
         vs = state.values
@@ -113,29 +117,57 @@ class DashboardPage(QWidget):
             for lbl in (self._vbat, self._vpack, self._ibat,
                         self._state, self._uptime, self._outputs,
                         self._fault_sum, self._latched, self._mflags):
-                self._dash(lbl, "—")
+                lbl.setText("—")
+                lbl.setStyleSheet(self._STYLE_VAL)
             return
 
-        self._vbat.setText(f"{vs.vbat_mv} mV")
-        self._vpack.setText(f"{vs.vpack_mv} mV")
-        self._ibat.setText(f"{vs.i_batt_ma} mA")
+        # measurement_flags: bit 0 = vbat OK, bit 1 = vpack OK, bit 2 = i_batt OK
+        vbat_ok  = bool(vs.measurement_flags & 0x01)
+        vpack_ok = bool(vs.measurement_flags & 0x02)
+        ibat_ok  = bool(vs.measurement_flags & 0x04)
+
+        self._set_measured(
+            self._vbat,
+            f"{vs.vbat_mv / 1000:.2f} V" if vbat_ok else "invalid",
+            vbat_ok)
+        self._set_measured(
+            self._vpack,
+            f"{vs.vpack_mv / 1000:.2f} V" if vpack_ok else "invalid",
+            vpack_ok)
+        self._set_measured(
+            self._ibat,
+            f"{vs.i_batt_ma / 1000:.2f} A" if ibat_ok else "invalid",
+            ibat_ok)
+
         self._state.setText(_BMS_STATES.get(vs.bms_state, str(vs.bms_state)))
+        self._state.setStyleSheet(self._STYLE_VAL)
         self._uptime.setText(f"{vs.uptime_ms / 1000:.1f} s")
+        self._uptime.setStyleSheet(self._STYLE_VAL)
         self._outputs.setText(f"0x{vs.outputs_state:02X}")
-        self._mflags.setText(f"0x{vs.measurement_flags:02X}")
+        self._outputs.setStyleSheet(self._STYLE_VAL)
+
+        # Reading validity summary instead of raw hex flags
+        parts = []
+        parts.append("Vbat ✓" if vbat_ok else "Vbat ✗")
+        parts.append("Vpack ✓" if vpack_ok else "Vpack ✗")
+        parts.append("I ✓" if ibat_ok else "I ✗")
+        self._mflags.setText("  ".join(parts))
+        self._mflags.setStyleSheet(
+            self._STYLE_VAL if (vbat_ok and vpack_ok and ibat_ok)
+            else self._STYLE_INVALID)
 
         n_active = bin(vs.active_faults).count('1')
         fa_text  = f"{n_active} active" if n_active else "none"
         self._fault_sum.setText(fa_text)
         self._fault_sum.setStyleSheet(
-            "font-size:16px; font-weight:bold; color:#8a0000;"
+            "font-size:16px; font-weight:bold; color:#c0392b;"
             if n_active else
-            "font-size:16px; font-weight:bold; color:#2a6b2a;")
+            "font-size:16px; font-weight:bold; color:#27ae60;")
 
         n_latched = bin(vs.latched_faults).count('1')
         lat_text  = f"{n_latched} latched" if n_latched else "none"
         self._latched.setText(lat_text)
         self._latched.setStyleSheet(
-            "font-size:16px; font-weight:bold; color:#9a6000;"
+            "font-size:16px; font-weight:bold; color:#d4a017;"
             if n_latched else
-            "font-size:16px; font-weight:bold; color:#2a6b2a;")
+            "font-size:16px; font-weight:bold; color:#27ae60;")

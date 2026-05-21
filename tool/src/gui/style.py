@@ -2,24 +2,24 @@
 
 # Mode badge: (background hex, foreground hex)
 _MODE_PALETTE = {
-    'BMS_APP':      ('#2a6b2a', '#ffffff'),
-    'BOOTLOADER':   ('#9a6000', '#ffffff'),
-    'UNSUPPORTED':  ('#8a0000', '#ffffff'),
-    'DISCONNECTED': ('#555555', '#ffffff'),
+    'BMS_APP':      ('#2a8a2a', '#ffffff'),
+    'BOOTLOADER':   ('#b87800', '#ffffff'),
+    'UNSUPPORTED':  ('#c0392b', '#ffffff'),
+    'DISCONNECTED': ('#666666', '#ffffff'),
 }
 
-MONOSPACE = "Courier New, Courier, monospace"
+MONOSPACE = "Menlo, Consolas, 'Courier New', monospace"
 
-# Status-label colours
-COLOR_OK      = '#1a6b1a'
-COLOR_WARN    = '#9a6000'
-COLOR_ERROR   = '#8a0000'
-COLOR_NEUTRAL = '#444444'
-COLOR_MODIFIED = '#0050a0'
+# Semantic status colours — chosen to be readable on both light and dark system backgrounds.
+COLOR_OK       = '#27ae60'   # medium green
+COLOR_WARN     = '#d4a017'   # medium amber
+COLOR_ERROR    = '#c0392b'   # medium red
+COLOR_NEUTRAL  = '#888888'   # mid gray
+COLOR_MODIFIED = '#2980b9'   # medium blue
 
 
 def mode_badge_style(mode_name: str) -> str:
-    bg, fg = _MODE_PALETTE.get(mode_name, ('#555555', '#ffffff'))
+    bg, fg = _MODE_PALETTE.get(mode_name, ('#666666', '#ffffff'))
     return (
         f"background-color:{bg}; color:{fg}; "
         "font-weight:bold; padding:2px 10px; border-radius:3px;"
@@ -38,7 +38,8 @@ def status_label_style(kind: str) -> str:
     return f"color:{color}; font-weight:bold;"
 
 
-# Shared stylesheet applied to the whole application
+# Structural stylesheet — no background/foreground colour overrides so the system
+# palette (including macOS dark mode) applies correctly to all widgets.
 APP_STYLESHEET = """
 QGroupBox {
     font-weight: bold;
@@ -48,11 +49,5 @@ QGroupBox {
 QGroupBox::title {
     subcontrol-origin: margin;
     left: 8px;
-}
-QTableWidget {
-    alternate-background-color: #f5f5f5;
-}
-QTextEdit[readOnly="true"] {
-    background: #f8f8f8;
 }
 """

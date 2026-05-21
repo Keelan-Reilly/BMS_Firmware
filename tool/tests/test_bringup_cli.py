@@ -202,10 +202,10 @@ class TestProbeIsl28022:
         r = _model().probe_isl28022()
         assert r['status'] == 0
 
-    def test_healthy_config_reg_nonzero(self):
+    def test_healthy_config_reg_matches_firmware(self):
         r = _model().probe_isl28022()
-        # Nominal fake value is 0x4127
-        assert r['config_reg'] == 0x4127
+        # 0x599F = BRNG=60V, PGA=/8, BADC/SADC=12-bit/532µs, continuous shunt+bus
+        assert r['config_reg'] == 0x599F
 
     def test_bootloader_returns_error(self):
         with pytest.raises(TargetRefusedError):

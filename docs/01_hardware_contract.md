@@ -170,24 +170,53 @@ S outputs must be cleared on success and on every failure/error path.
 
 | Signal | Source | Path | Notes |
 |---|---|---|---|
-| Vbat | Battery terminal | ISL28022 V_bus register | Battery-side voltage; 16-bit; 4 mV LSB (32V range) or 8 mV LSB (60V range) |
-| I_batt | Shunt resistor | ISL28022 V_shunt register | Current via CSM2F-8518 shunt; programmable gain |
-| Vpack | Load side / precharge bus | PA1 ADC (12-bit, 3.3V ref) | Scaled by external resistor divider; calibrated in config |
+| Vbat | Battery terminal | ISL28022 V_bus register | Vbat → R43/R44 (3.3kΩ/3.3kΩ, ÷2) → ISL28022 Vbus. `vbat_gain_x1000` = 2000 (theoretical). |
+| I_batt | Shunt resistor | ISL28022 V_shunt register | 0.1mΩ shunt → AMC1302 (isolated, gain ≈40) → ÷7.6 attenuator → ISL28022 Vin+/Vin−. `current_gain_x1000` ≈ 1,855,000 — **requires hardware calibration**. |
+| Vpack | Load side / precharge bus | PA1 ADC (12-bit, 3.3V ref) | Load+ → 4×470kΩ÷1kΩ → AMC1301 (isolated, gain 8.2) → OPA2197 (×5.893) → 10k/33k → PA1. `vpack_gain_x1000` = 50706 (theoretical). |
 
-**ISL28022 configuration:**
-- I2C address: 0x40 (A0 and A1 unconnected = pulled low = default address). **Verify on board before first I2C test** (HV-4).
-- Shunt resistor: CSM2F-8518-L100J01, 0.1 mΩ (0.0001 Ω). Current path includes AMC1302 isolation amplifier; full current scaling requires calibration (see `current_gain_x1000` in config).
-- Register 0x00 (Configuration): V_bus 60V range, PGA/8 (±320 mV shunt), 12-bit continuous mode.
-- Register 0x01 (Shunt Voltage): signed 16-bit, 80 µV/LSB with PGA=/8 (firmware setting). Calibration register set to 0 — raw shunt voltage returned; scaling applied in `bms_measurements.c`.
-- Register 0x02 (Bus Voltage): unsigned 16-bit, 4 mV/LSB (right-shift 3). Vbat = Vbus_reading × ~38.93 (front-end gain from OPA2197 conditioning, Voutmax ≈ 11.56 V at Vinmax = 450 V). Scaling constant stored in `vbat_gain_x1000` config field; requires board calibration.
-- I2C rate: 100 kHz standard mode (conservative for bring-up; 4.75 kΩ external pull-ups).
+**ISL28022 configuration (U10):**
+- I2C address: 0x40 (A0, A1 = 0 per schematic). Verify on board before first I2C test (HV-4).
+- Firmware config register value: `0x599F` — BRNG=60V, PGA=/8 (±320mV), BADC/SADC=12-bit/532µs, continuous shunt+bus.
+- Register 0x01 (Shunt Voltage): signed 16-bit, 80 µV/LSB (PGA=/8). ISL28022 calibration register set to 0; raw shunt voltage used. Scaling applied in `bms_measurements.c` via `current_gain_x1000`.
+- Register 0x02 (Bus Voltage): bits[15:3], 4 mV/LSB. Vbus reads Vbat/2 (R43/R44 ÷2 divider). `vbat_gain_x1000` = 2000 restores the battery voltage.
+- I2C rate: 100 kHz standard mode; 4.75 kΩ external pull-ups (R50, R53).
 
-**PA1 Vpack ADC:**
-- STM32F303 ADC1 channel 2 (PA1)
-- 12-bit; VREF+ = 3.3V (or dedicated Vref — OPEN QUESTION)
-- External divider ratio: **OPEN QUESTION — confirm from schematic to establish calibration constants**
-- Vpack = (ADC_raw / 4095) × VREF × VPACK_DIVIDER_RATIO + VPACK_OFFSET
-- Calibration constants stored in config: `vpack_gain`, `vpack_offset`
+**Vbat signal chain (confirmed from schematic):**
+```
+Battery+ ─── R43 (3.3kΩ) ─┬─ R47 (1kΩ) ─── ISL28022 Vbus (pin 8)
+                            └─ R44 (3.3kΩ) ─── GND
+```
+Divider: Vbus = Vbat × R44/(R43+R44) = Vbat × 0.5.  `vbat_gain_x1000 = 2000` undoes this.
+
+**I_batt signal chain (confirmed from schematic):**
+```
+BAT− ─── R21 (1kΩ) ─── AMC1302 VINP  ┐
+                                       ├─ AMC1302 (U6, gain ≈40) ─── VOUTP/VOUTN
+Current ─ R22 (1kΩ) ─── AMC1302 VINN ┘
+    └─ 0.1mΩ CSM2F shunt between BAT− and Current nodes
+
+VOUTP ─── 3.3kΩ ─── 3.3kΩ ─┬─── ISL28022 Vin+ (pin 10)
+VOUTN ─── 3.3kΩ ─── 3.3kΩ ─┼─── ISL28022 Vin− (pin 9)
+                              └─── 1kΩ ─── GND (shared)
+```
+Attenuation: Vin = VOUTP × 1/(3.3+3.3+1) = VOUTP/7.6.  
+`current_gain_x1000 ≈ 1,855,000` (uint32). **Calibrate on first bench run.**
+
+**Vpack signal chain (confirmed from schematic):**
+```
+Load+ ─── 470kΩ ─── 470kΩ ─── 470kΩ ─── 470kΩ ─┬─── 10Ω ─── AMC1301 VINP
+                                                   └─── 1kΩ ─── GNDREF
+AMC1301 VINN ─── GNDREF
+
+AMC1301 (U?, gain 8.2, isolated) VOUTP/VOUTN ─── 100Ω + 1kΩ filter ───
+  ─── OPA2197 differential amp (5.6kΩ in / 33kΩ feedback, gain = 5.893) ───
+  ─── 10kΩ ─┬─── PA1 (MCU ADC, 12-bit, 3.3V ref)
+              └─── 33kΩ ─── GND
+```
+Total gain: 1/1881 × 8.2 × 5.893 × (33/43) = 0.01972.  
+`vpack_gain_x1000 = 50706`. Refine with bench calibration against known voltage.
+
+**PA1 ADC reference:** `VPACK_VREF_MV = 3300` (assumed; see HV-13 for Vref source).
 
 ---
 
@@ -281,8 +310,8 @@ Neither interface is a safety authority. CAN or USB activity alone must not caus
 | LTC6812 CFGRA UV = (VUV × 10000)/16 - 1 (12-bit) | LTC6812 datasheet §9.1 |
 | LTC6812 CFGRA OV = (VOV × 10000)/16 (12-bit) | LTC6812 datasheet §9.1 |
 | LTC6820 SPI Mode 3, master | LTC6820 datasheet |
-| ISL28022 V_shunt LSB = 10 µV | ISL28022 datasheet Table 3 |
-| ISL28022 V_bus LSB = 4 mV (32V range) | ISL28022 datasheet Table 3 |
+| ISL28022 V_shunt LSB = 80 µV (PGA=/8, firmware setting) | ISL28022 datasheet Table 3 |
+| ISL28022 V_bus LSB = 4 mV (all ranges, bits[15:3]) | ISL28022 datasheet Table 3 |
 | STM32F303 SPI1 AF5 (PA5/PA6/PA7) | STM32F303 datasheet Table 14 |
 | STM32F303 I2C2 AF4 (PA9/PA10) | STM32F303 datasheet Table 14 |
 | STM32F303 USART2 AF7 (PA2/PA3) | STM32F303 datasheet Table 14 |
@@ -296,7 +325,7 @@ These are assumed based on the hardware description and must be verified against
 
 1. CS_CELL and CS_TEMP are never asserted simultaneously — guaranteed by firmware sequencing.
 2. Permission output GPIOs have sufficient drive strength for downstream circuit input impedance.
-3. VPACK resistor divider does not exceed PA1 ADC input clamp range under any operating condition.
+3. Vpack signal chain (4×470kΩ → AMC1301 → OPA2197 → 10k/33k → PA1) saturates ADC at ~167V Vpack. Pack voltage must remain below this under all conditions.
 4. ISL28022 ALERT pin (if present) is either connected or pulled appropriately.
 5. LTC6820 MISO is only driven when its CS is asserted (three-state assumed per datasheet).
 6. All LTC6812 VCC supply is stable before firmware begins isoSPI transactions.
@@ -311,8 +340,8 @@ These are assumed based on the hardware description and must be verified against
 | HV-2 | isospi_reverse orientation for TEMP chain | Sensor-to-device mapping wrong |
 | HV-3 | ~~Active polarity of all 4 permission GPIOs~~ **RESOLVED** — MCU HIGH = asserted via MOSFET; see §11 | — |
 | HV-4 | ISL28022 I2C address — A0/A1 unconnected assumed LOW → 0x40. **Verify on board with DMM before first isl28022_init() call.** | I2C communication fails |
-| HV-5 | CSM2F-8518-L100J01 shunt resistance confirmed 0.1 mΩ. AMC1302 gain and current scaling must be calibrated on bench. | Current reading wrong without calibration |
-| HV-6 | Vpack resistor divider ratio | Pack voltage reading wrong; precharge validation wrong |
+| HV-5 | CSM2F-8518-L100J01 shunt resistance confirmed 0.1 mΩ. AMC1302 (gain ≈40) + ÷7.6 attenuator → `current_gain_x1000` ≈ 1,855,000. **Must calibrate on bench with known current before trusting any current reading.** | Current reading wrong until calibrated |
+| HV-6 | ~~Vpack resistor divider ratio~~ **RESOLVED** — full signal chain confirmed from schematic: 4×470kΩ÷1kΩ → AMC1301(×8.2) → OPA2197(×5.893) → 10k/33k → PA1. `vpack_gain_x1000` = 50706. Refine with bench calibration. | — |
 | HV-7 | POWER_ENABLE GPIO pin | Power latch fails |
 | HV-8 | POWER_BUTTON and CHARGE_DETECT GPIO pins | Wake detection fails |
 | HV-9 | LTC6812 S-output to sensor bias mapping (which S# → which sensor) | Sensor bias sequence wrong |

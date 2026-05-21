@@ -35,8 +35,8 @@ class BringupPage(QWidget):
         self._mode_notice = QLabel(
             "Bring-up actions require BMS_APP mode.")
         self._mode_notice.setStyleSheet(
-            "color:#9a6000; font-weight:bold; font-size:12px; "
-            "padding:6px 10px; background:#fff8e6; border:1px solid #d4a800; "
+            "color:#d4a017; font-weight:bold; font-size:12px; "
+            "padding:6px 10px; border:1px solid #d4a017; "
             "border-radius:4px;")
         self._mode_notice.setWordWrap(True)
         self._mode_notice.setVisible(False)
@@ -284,7 +284,41 @@ class BringupPage(QWidget):
 
     def _on_probe_isl(self) -> None:
         self._probe_out.clear()
-        self._run(lambda m: m.probe_isl28022(), self._probe_out)
+        model = self._model()
+        if model is None:
+            self._emit(self._probe_out, "Not connected.")
+            return
+        try:
+            r = model.probe_isl28022()
+            reg = r['config_reg']
+            if r['status'] != 0:
+                self._emit(self._probe_out, f"ISL28022 probe FAILED (I2C error) — config_reg=0x{reg:04X}")
+                return
+            brng  = (reg >> 13) & 0x3
+            pg    = (reg >> 11) & 0x3
+            badc  = (reg >>  7) & 0xF
+            sadc  = (reg >>  3) & 0xF
+            mode  = reg & 0x7
+            _brng = {0: '16V', 1: '32V', 2: '60V', 3: 'reserved'}.get(brng, '?')
+            _pg   = {0: '/1 (10µV/LSB)', 1: '/2 (20µV/LSB)',
+                     2: '/4 (40µV/LSB)', 3: '/8 (80µV/LSB)'}.get(pg, '?')
+            _mode = {7: 'continuous shunt+bus', 3: 'continuous bus',
+                     5: 'continuous shunt'}.get(mode, f'0x{mode:X}')
+            expected = 0x599F
+            match = "✓ matches firmware" if reg == expected else f"✗ expected 0x{expected:04X}"
+            lines = [
+                f"ISL28022 config_reg = 0x{reg:04X}  ({match})",
+                f"  BRNG  [{brng}]: {_brng}",
+                f"  PG    [{pg}]: {_pg}",
+                f"  BADC  [{badc}]: 12-bit / 532 µs" if badc == 3 else f"  BADC  [{badc}]",
+                f"  SADC  [{sadc}]: 12-bit / 532 µs" if sadc == 3 else f"  SADC  [{sadc}]",
+                f"  MODE  [{mode}]: {_mode}",
+            ]
+            self._emit(self._probe_out, "\n".join(lines))
+        except TargetRefusedError as e:
+            self._emit(self._probe_out, f"Refused: {e}")
+        except ProtocolError as e:
+            self._emit(self._probe_out, f"Protocol error: {e}")
 
     def _on_vpack_raw(self) -> None:
         self._probe_out.clear()

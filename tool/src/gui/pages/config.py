@@ -47,7 +47,7 @@ def _mask_edit(parent) -> QLineEdit:
 
 def _ro_label(text: str = "—") -> QLabel:
     lbl = QLabel(text)
-    lbl.setStyleSheet("color:#555; font-family:monospace;")
+    lbl.setStyleSheet("font-family:monospace;")
     return lbl
 
 
@@ -102,7 +102,7 @@ class ConfigPage(QWidget):
         # ── Status bar ────────────────────────────────────────────────────────
         self._status_lbl = QLabel("No config loaded.")
         self._status_lbl.setWordWrap(True)
-        self._status_lbl.setStyleSheet("color:#444444; padding:2px 0;")
+        self._status_lbl.setStyleSheet("padding:2px 0;")
         outer.addWidget(self._status_lbl)
 
         # ── Tabs: Editor / Raw ────────────────────────────────────────────────
@@ -118,8 +118,8 @@ class ConfigPage(QWidget):
             "Apply to RAM only — config reverts to stored flash values on reboot.")
         note.setWordWrap(True)
         note.setStyleSheet(
-            "color:#555; font-style:italic; font-size:11px; "
-            "padding:4px 6px; background:#f0f0f0; border-radius:3px;")
+            "font-style:italic; font-size:11px; "
+            "padding:4px 6px; border-radius:3px;")
         outer.addWidget(note)
 
     def _build_editor_tab(self) -> QWidget:
@@ -233,22 +233,53 @@ class ConfigPage(QWidget):
         layout.addWidget(tim_grp)
 
         # ── Calibration ───────────────────────────────────────────────────────
-        cal_grp  = QGroupBox("Calibration  (gain x1000 = 1000 → ×1.000)")
+        cal_grp  = QGroupBox("Calibration")
         cal_form = QFormLayout(cal_grp)
 
-        self._f['vpack_gain_x1000']    = _spin(cal_grp, 1, 10000)
-        self._f['vpack_offset_mv']     = _spin(cal_grp, -50000, 50000)
-        self._f['vbat_gain_x1000']     = _spin(cal_grp, 1, 10000)
-        self._f['vbat_offset_mv']      = _spin(cal_grp, -5000, 5000)
-        self._f['current_gain_x1000']  = _spin(cal_grp, 1, 10000)
-        self._f['current_offset_ma']   = _spin(cal_grp, -5000, 5000)
+        # Vpack: Load+ → 4×470kΩ÷1kΩ → AMC1301(×8.2) → OPA2197(×5.893) → 33k/43k → ADC
+        self._f['vpack_gain_x1000']   = _spin(cal_grp, 1, 200000, 100)
+        self._f['vpack_gain_x1000'].setToolTip(
+            "Vpack_mV = ADC_mV × gain / 1000\n"
+            "Chain: Load+ → 4×470kΩ÷1kΩ → AMC1301(×8.2) → OPA2197(33k/5.6k) → 10k/33k → ADC\n"
+            "Theoretical: 50706  |  Refine with bench calibration.")
+        self._f['vpack_offset_mv']    = _spin(cal_grp, -50000, 50000)
 
-        cal_form.addRow("Vpack Gain (×1000):",  self._f['vpack_gain_x1000'])
-        cal_form.addRow("Vpack Offset (mV):",   self._f['vpack_offset_mv'])
-        cal_form.addRow("Vbat Gain (×1000):",   self._f['vbat_gain_x1000'])
-        cal_form.addRow("Vbat Offset (mV):",    self._f['vbat_offset_mv'])
-        cal_form.addRow("Current Gain (×1000):", self._f['current_gain_x1000'])
-        cal_form.addRow("Current Offset (mA):", self._f['current_offset_ma'])
+        # Vbat: Vbat → R43/R44 (3.3k/3.3k, ÷2) → ISL28022 Vbus (4 mV/LSB)
+        self._f['vbat_gain_x1000']    = _spin(cal_grp, 1, 10000)
+        self._f['vbat_gain_x1000'].setToolTip(
+            "Vbat_mV = ISL28022_Vbus_mV × gain / 1000\n"
+            "Chain: Vbat → R43/R44 (3.3kΩ/3.3kΩ, ÷2) → ISL28022 Vbus pin\n"
+            "Theoretical: 2000  |  Refine with bench calibration.")
+        self._f['vbat_offset_mv']     = _spin(cal_grp, -5000, 5000)
+
+        # I_batt: 0.1mΩ shunt → AMC1302(×40) → ÷7.6 → ISL28022 Vin+/Vin−
+        # Formula: i_ma = vshunt_raw_uV × gain / 1,000,000  (note: /1e6, not /1e3)
+        # Theoretical gain ≈ 1,855,000 — must calibrate on hardware
+        cur_gain_spin = QSpinBox(cal_grp)
+        cur_gain_spin.setRange(1, 10_000_000)
+        cur_gain_spin.setSingleStep(1000)
+        cur_gain_spin.setMinimumWidth(120)
+        cur_gain_spin.setToolTip(
+            "i_batt_mA = ISL28022_vshunt_µV × gain / 1,000,000\n"
+            "Chain: 0.1mΩ shunt → AMC1302(×40) → ÷7.6 attenuator → ISL28022 Vin+/Vin−\n"
+            "Theoretical: ~1,855,000  |  REQUIRES hardware calibration with known current.\n"
+            "Default of 1000 is a placeholder — readings will be wrong until calibrated.")
+        self._f['current_gain_x1000'] = cur_gain_spin
+
+        cal_note = QLabel(
+            "Vpack/Vbat: theoretical defaults loaded. "
+            "Current gain requires hardware calibration.")
+        cal_note.setWordWrap(True)
+        cal_note.setStyleSheet("font-style: italic; font-size: 11px;")
+        self._f['current_offset_ma']  = _spin(cal_grp, -5000, 5000)
+
+        cal_form.addRow("Vpack Gain (×1000):",   self._f['vpack_gain_x1000'])
+        cal_form.addRow("Vpack Offset (mV):",    self._f['vpack_offset_mv'])
+        cal_form.addRow("Vbat Gain (×1000):",    self._f['vbat_gain_x1000'])
+        cal_form.addRow("Vbat Offset (mV):",     self._f['vbat_offset_mv'])
+        cal_form.addRow("Current Gain (×1e6):",  self._f['current_gain_x1000'])
+        cal_form.addRow("Current Offset (mA):",  self._f['current_offset_ma'])
+        cal_form.addRow("", cal_note)
         layout.addWidget(cal_grp)
 
         # ── CAN ───────────────────────────────────────────────────────────────
@@ -469,7 +500,7 @@ class ConfigPage(QWidget):
                 except ValueError:
                     bad = True
             w.setStyleSheet(
-                "font-family:monospace; background:#ffe0e0;" if bad
+                f"font-family:monospace; border: 1px solid #c0392b;" if bad
                 else "font-family:monospace;")
 
     # ── refresh() — called on every AppState change ───────────────────────────

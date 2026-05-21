@@ -142,7 +142,7 @@ class FakeTarget:
         self._gpio_charge_detect    = 0
         self._gpio_power_enable     = 1
         self._gpio_outputs          = 0    # logical permission bitmask
-        self._isl_config_reg        = 0x4127   # nominal after init
+        self._isl_config_reg        = 0x599F   # matches firmware CFG_VALUE: BRNG=60V, PG=/8, 12-bit, continuous
         self._vpack_raw             = 2048     # ~50% of 4096, ~1.65 V
         _apply_simulation_mode(self, mode)
 
@@ -255,16 +255,26 @@ class FakeTarget:
         return self._respond(PKT_GET_CAPABILITIES, bytes(resp), seq)
 
     def _h_values(self, seq: int) -> bytes:
+        i2c_fault   = bool((self._active_faults >> FAULT_BIT_I2C_ISL28022) & 1)
+        vpack_fault = bool((self._active_faults >> FAULT_BIT_VPACK_INVALID) & 1)
+        vbat_mv   = 0 if i2c_fault   else 48000
+        vpack_mv  = 0 if vpack_fault else 48000
+        i_batt_ma = 0
+        meas_flags = (
+            (0 if i2c_fault   else 1) |   # bit0: vbat_valid
+            (0 if vpack_fault else 2) |   # bit1: vpack_valid
+            (0 if i2c_fault   else 4)     # bit2: i_batt_valid
+        )
         resp = bytearray(36)
-        struct.pack_into('<i', resp, 0,  0)          # vbat_mv
-        struct.pack_into('<i', resp, 4,  0)          # vpack_mv
-        struct.pack_into('<i', resp, 8,  0)          # i_batt_ma
+        struct.pack_into('<i', resp, 0,  vbat_mv)
+        struct.pack_into('<i', resp, 4,  vpack_mv)
+        struct.pack_into('<i', resp, 8,  i_batt_ma)
         struct.pack_into('<H', resp, 12, 1)          # state: STANDBY
         struct.pack_into('<Q', resp, 14, self._active_faults)
         struct.pack_into('<Q', resp, 22, self._latched_faults)
         resp[30] = 0                                 # outputs_state
         struct.pack_into('<I', resp, 31, self._uptime_ms)
-        resp[35] = 0
+        resp[35] = meas_flags
         return self._respond(PKT_GET_VALUES, bytes(resp), seq)
 
     def _h_cells(self, seq: int, payload: bytes) -> bytes:

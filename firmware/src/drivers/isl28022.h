@@ -1,10 +1,15 @@
 /* isl28022.h — ISL28022 power monitor driver (I2C, 16-bit ADC).
  *
- * Used for Vbat and I_batt measurement. PA9=SCL, PA10=SDA via I2C2.
- * I2C address: ISL28022_I2C_ADDR (from board_pins.h — confirm A0/A1 strap).
+ * Vbat:   ISL28022 Vbus pin ← Vbat through R43/R44 (3.3k/3.3k) ÷2 divider.
+ *         vbus_raw_mv = measured battery voltage ÷ 2.
+ *         Undo with vbat_gain_x1000 = 2000 (hardware calibration will refine).
  *
- * Raw readings are returned to the caller; scaling to engineering units is
- * done in bms_measurements using config-provided gain/offset.
+ * I_batt: 0.1 mΩ shunt → AMC1302 (isolated amp, gain ≈40) → resistor attenuator
+ *         (÷7.6) → ISL28022 Vin+/Vin−. vshunt_raw_uv is the attenuated/amplified
+ *         voltage at the ISL28022 input, not the raw shunt voltage.
+ *         Theoretical current_gain_x1000 ≈ 1,855,000 (requires uint32).
+ *
+ * I2C: PA9=SCL, PA10=SDA via I2C2. ISL28022_I2C_ADDR set by A0/A1 strap on U10.
  */
 #pragma once
 #include <stdint.h>
