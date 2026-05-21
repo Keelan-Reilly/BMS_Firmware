@@ -36,6 +36,7 @@ set(BMS_SOURCES
     src/bms/bms_balance.c
     src/bms/bms_protocol.c
     src/bms/bms_diagnostics.c
+    src/bms/bms_can.c
     src/bms_main_loop.c
     src/main.c
 )

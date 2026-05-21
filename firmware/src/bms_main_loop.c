@@ -7,6 +7,7 @@
 #include "bms_state.h"
 #include "bms_balance.h"
 #include "bms_protocol.h"
+#include "bms_can.h"
 #include "ltc6812.h"
 #include "board_outputs.h"
 #include "board_clock.h"
@@ -36,6 +37,7 @@ void bms_main_loop_init(void) {
     /* Initialise BMS subsystems */
     bms_state_init();
     bms_protocol_init();
+    bms_can_init();
 
     if (cfg_r != BMS_OK) {
         bms_faults_set(FAULT_BIT_CONFIG_INVALID);
@@ -109,5 +111,8 @@ void bms_main_loop_run(void) {
 
         /* ── Protocol ─────────────────────────────────────────────────────── */
         bms_protocol_tick();
+
+        /* ── CAN telemetry ────────────────────────────────────────────────── */
+        bms_can_tick();
     }
 }
